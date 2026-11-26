@@ -395,8 +395,9 @@ function Chrome({ lenis, theme, onTheme }: { lenis: Lenis | null; theme: Theme; 
     e.preventDefault()
     const el = document.getElementById(id)
     if (!el) throw new Error(`Missing section #${id}`)
-    if (lenis) lenis.scrollTo(el, { duration: 1.4 })
-    else el.scrollIntoView()
+    // Phones use native scroll-snap, which only cooperates with native smooth scrolling.
+    if (lenis && window.matchMedia('(min-width: 821px)').matches) lenis.scrollTo(el, { duration: 1.4 })
+    else el.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' })
   }
   return (
     <>

@@ -338,14 +338,26 @@ main, .footer { position: relative; z-index: 1; }
   .media-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .media-cell { min-height: 110px; }
   .quest { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 1.5rem; padding: 140px 0 110px; }
-  .phone { height: min(48svh, 420px); }
   .media { max-height: none; }
   .quest-name .headline { text-align: center; }
   .quest-copy p { margin-inline: auto; }
   .said { grid-template-columns: 1fr; }
   .pill a { padding: 0.5rem 0.7rem; font-size: 0.76rem; }
   .pill a:nth-child(2) { display: none; }
+
+  /* Phones: native scroll-snap, one screen per swipe. Sections are sized to fit one screen. */
+  html { scroll-snap-type: y mandatory; }
+  [data-snap] { scroll-snap-align: start; scroll-snap-stop: always; }
+  .footer { scroll-snap-align: end; }
+  .project { padding: 84px 0 96px; }
+  .project .media { aspect-ratio: auto; }
+  .project .media-grid { grid-template-columns: repeat(3, 1fr); }
+  .project .media-cell { min-height: 92px; }
+  .project .media-cell.wide { display: none; }
+  .quest { padding: 128px 0 96px; gap: 1rem; }
+  .phone { height: min(38svh, 340px); }
 }
+[data-splash] body { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

@@ -36,7 +36,7 @@ function TileBody({ study, kind, n }: { study: CaseStudy; kind: Kind; n: number 
             <i /><i /><i /><i />
           </aside>
           <div>
-            <b className="t-title">{study.title}</b>
+            <b className="t-title">{study.name}</b>
             <div className="t-bars">
               {[48, 72, 36, 88, 60, 95, 70].map((h, i) => (
                 <span key={i} style={{ height: `${h}%` }} />
@@ -66,7 +66,7 @@ function TileBody({ study, kind, n }: { study: CaseStudy; kind: Kind; n: number 
     case 'list':
       return (
         <div className="t-list">
-          <b className="t-title">{study.title}</b>
+          <b className="t-title">{study.name}</b>
           {study.built.slice(0, 3).map((b) => (
             <p key={b}>
               <i /> {b}

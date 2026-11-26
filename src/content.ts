@@ -4,7 +4,7 @@
 export type CaseStudy = {
   id: string
   eyebrow: string
-  title: string
+  name: string
   oneLiner: string
   role: string
   years: string
@@ -20,10 +20,10 @@ export const site = {
   name: 'Prathamesh Ashra',
   url: 'https://prathameshashra.com',
   // TODO: replace placeholder hook + title
-  eyebrow: 'An engineer who thinks like a PM',
+  kicker: 'An engineer who thinks like a PM',
   title: 'Product Builder',
   hook: 'I build products that make it out of the demo and into people’s pockets.',
-  statement: ['Love shipping', 'things people', 'actually'],
+  statement: ['Love shipping things', 'people actually'],
   statementWord: 'use',
   about:
     'A decade of shipping software across web, mobile and AI. I founded Codeamesh in 2020, led builds from first commit to pan-India launch, and now think about products as much as I build them.',
@@ -47,13 +47,13 @@ export const work: CaseStudy[] = [
     id: 'events',
     eyebrow: 'Founding developer · Consumer social',
     // TODO: client name withheld until cleared
-    title: 'A pan-India events platform, from zero',
+    name: 'Events platform',
     oneLiner: 'First developer on the founding team. Built every surface, then scaled it to live events across the country.',
     role: 'Lead developer, founding team',
     years: '2 years',
     metrics: [
       { value: '1M+', label: 'views' },
-      { value: 'Pan-India', label: 'live events' },
+      { value: '2 yrs', label: 'to a pan-India launch' },
       { value: '3', label: 'platforms shipped' },
     ],
     problem:
@@ -72,14 +72,13 @@ export const work: CaseStudy[] = [
   {
     id: 'pearbae',
     eyebrow: 'Social app · India',
-    title: 'Pearbae',
+    name: 'Pearbae',
     oneLiner: 'A trust-first social app: verified people, real-time chat and in-app calling.',
     role: 'Lead developer',
     years: '1 year build · just launched',
     metrics: [
-      { value: 'Aadhaar', label: 'verified profiles' },
-      { value: 'In-app', label: 'voice calling' },
-      { value: 'Real-time', label: 'everything' },
+      { value: '1 yr', label: 'commit to launch' },
+      { value: '0', label: 'numbers shared to call' },
     ],
     problem:
       'Meeting new people online in India runs on trust, and most apps can’t prove anyone is real. The brief: make every profile verifiable without killing the vibe.',
@@ -96,14 +95,13 @@ export const work: CaseStudy[] = [
   {
     id: 'energy',
     eyebrow: 'Energy trading · via The Data Duck',
-    title: 'Tools for trading electricity across continents',
+    name: 'Power trading',
     oneLiner: 'Five years building the trading tools a power-trading desk relies on every day.',
     role: 'Developer, long-term partner',
     years: '5 years',
     metrics: [
-      { value: '5 yrs', label: 'ongoing partnership' },
-      { value: 'Multi-market', label: 'Europe & Asia' },
-      { value: 'Daily', label: 'live trading use' },
+      { value: '5 yrs', label: 'and counting' },
+      { value: '2', label: 'continents of markets' },
     ],
     problem:
       'An energy trading company trades electricity across Europe and Asia. Traders need fast, reliable tooling to build and run their trades in markets that never sit still.',
@@ -120,14 +118,14 @@ export const work: CaseStudy[] = [
     id: 'travel',
     eyebrow: 'Digital transformation · Travel',
     // TODO: agency name + impact numbers
-    title: 'Taking a 50-year-old travel agency fully online',
+    name: 'Travel, online',
     oneLiner: 'Five decades of offline operations, rebuilt into one online flow from enquiry to trip.',
     role: 'Tech lead',
     years: '4 years',
     metrics: [
-      { value: '50 yrs', label: 'of legacy, modernised' },
-      { value: '100%', label: 'online, start to end' },
-      { value: '4 yrs', label: 'transformation' },
+      { value: '50 yrs', label: 'of offline, modernised' },
+      { value: '100%', label: 'online now' },
+      { value: '4 yrs', label: 'steady rollout' },
     ],
     problem:
       'A trusted agency with 50 years of history ran almost everything on phone calls, paper and memory. Growing meant going digital without losing what customers loved.',

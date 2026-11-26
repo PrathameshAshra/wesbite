@@ -60,12 +60,12 @@ function Hero({ ready }: { ready: boolean }) {
       <Sphere />
       <div className="hero-copy">
         <motion.p
-          className="kicker"
+          className="eyebrow"
           initial={reducedMotion ? false : { opacity: 0, y: 10 }}
           animate={shown ? { opacity: 1, y: 0 } : undefined}
           transition={{ duration: 0.8, ease, delay: 0.15 }}
         >
-          {site.eyebrow}
+          {site.kicker}
         </motion.p>
         <motion.h1
           className="mega"
@@ -113,7 +113,7 @@ function WorkMedia({ study }: { study: CaseStudy }) {
   // TODO: replace with real project screenshots / video
   return (
     <div className="media" style={{ '--accent': study.accent } as React.CSSProperties}>
-      <div className="media-grid">
+      <div className="media-grid" style={{ gridTemplateColumns: `repeat(${study.metrics.length}, 1fr)` }}>
         {study.metrics.map((m, i) => (
           <motion.div
             key={m.label}
@@ -128,7 +128,7 @@ function WorkMedia({ study }: { study: CaseStudy }) {
           </motion.div>
         ))}
         <div className="media-cell wide">
-          <span className="media-label">{study.eyebrow}</span>
+          <span className="eyebrow accent">{study.eyebrow}</span>
           <p>{study.outcome}</p>
         </div>
       </div>
@@ -143,8 +143,8 @@ function Work({ onOpen }: { onOpen: (s: CaseStudy) => void }) {
         <article key={s.id} className="project" id={s.id} data-snap>
           <Reveal className="project-head">
             <div>
-              {i === 0 && <p className="label">Featured work:</p>}
-              <h2 className="headline left">{s.title}</h2>
+              {i === 0 && <p className="eyebrow section-label">Featured work</p>}
+              <h2 className="project-title">{s.name}</h2>
               <p className="sub">{s.oneLiner}</p>
             </div>
             <button className="chip" onClick={() => onOpen(s)}>
@@ -175,7 +175,7 @@ function SideQuests() {
       {sideQuests.map((q, i) => (
         <div key={q.name} className="quest" data-snap style={{ '--accent': q.accent } as React.CSSProperties}>
           <div className="quest-label" aria-hidden={i > 0}>
-            <p className="label center">Side quests</p>
+            <p className="eyebrow">Side quests</p>
             <div className="quest-dots">
               {sideQuests.map((d, j) => (
                 <i key={d.name} className={j === i ? 'on' : ''} />
@@ -183,7 +183,7 @@ function SideQuests() {
             </div>
           </div>
           <Reveal className="quest-name">
-            <h3 className="headline">{q.name}</h3>
+            <h3 className="project-title">{q.name}</h3>
           </Reveal>
           <motion.div
             className="phone"
@@ -218,7 +218,7 @@ function Testimonials() {
   return (
     <section className="said" id="testimonials" data-snap>
       <Reveal>
-        <h2 className="headline left">That’s what they said.</h2>
+        <h2 className="headline">That’s what they said</h2>
       </Reveal>
       <div className="said-list">
         {testimonials.map((t, i) => (
@@ -245,7 +245,7 @@ function Build() {
   return (
     <section className="build" id="build" data-snap>
       <Reveal>
-        <p className="label center">What I build:</p>
+        <p className="eyebrow section-label">What I build</p>
       </Reveal>
       {site.services.map((s) => (
         <motion.p
@@ -275,7 +275,7 @@ function Contact() {
             {/* TODO: your photo at /public/me.jpg */}
             <span>Photo</span>
           </div>
-          <h2 className="headline">{site.name}</h2>
+          <h2 className="project-title">{site.name}</h2>
           <p className="status">
             <i /> {site.status}
           </p>
@@ -338,21 +338,22 @@ function StoryPanel({ study, onClose }: { study: CaseStudy; onClose: () => void 
         <button className="close" onClick={onClose} aria-label="Close" autoFocus>
           ✕
         </button>
-        <p className="panel-eyebrow">{study.eyebrow}</p>
-        <h2 id="story-title" className="headline left">{study.title}</h2>
+        <p className="eyebrow accent">{study.eyebrow}</p>
+        <h2 id="story-title" className="project-title">{study.name}</h2>
+        <p className="panel-lede">{study.oneLiner}</p>
         <p className="meta">
           {study.role} · {study.years}
         </p>
         <WorkMedia study={study} />
-        <h3>The problem</h3>
+        <h3 className="eyebrow">The problem</h3>
         <p>{study.problem}</p>
-        <h3>What I built</h3>
+        <h3 className="eyebrow">What I built</h3>
         <ul className="built">
           {study.built.map((b) => (
             <li key={b}>{b}</li>
           ))}
         </ul>
-        <h3>The outcome</h3>
+        <h3 className="eyebrow">The outcome</h3>
         <p className="outcome">{study.outcome}</p>
         <div className="stack">
           {study.stack.map((s) => (

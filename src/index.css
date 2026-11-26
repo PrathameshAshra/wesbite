@@ -263,98 +263,21 @@ main, .footer { position: relative; z-index: 1; }
 .media-cell.wide { grid-column: 1 / -1; justify-content: center; gap: 0.5rem; }
 .media-cell.wide p { font-size: var(--fs-lg); line-height: var(--lh-snug); max-width: 40ch; font-weight: 500; color: #fff; }
 
-/* ---------- Work teasers (illustrated product shots) ---------- */
+/* ---------- Work teasers (full-bleed photo) ---------- */
 .teaser {
   position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: calc(100svh - 360px); overflow: hidden; border-radius: 22px;
-  background:
-    radial-gradient(90% 120% at 85% 0%, color-mix(in srgb, var(--accent) 85%, #fff) 0%, transparent 55%),
-    radial-gradient(80% 100% at 0% 100%, color-mix(in srgb, var(--accent) 40%, #0b1626) 0%, transparent 60%),
-    linear-gradient(150deg, color-mix(in srgb, var(--accent) 70%, #0b2a55), #0b1626);
-  box-shadow: 0 30px 80px rgba(0, 20, 60, 0.3);
+  background: color-mix(in srgb, var(--accent) 50%, #0b1626); box-shadow: 0 30px 80px rgba(0, 20, 60, 0.3);
 }
 .teaser::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14); pointer-events: none; }
-.tz-layer { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 4%; padding: 6% 8% 0; }
-.tz-back, .tz-front { transition: transform 0.5s var(--ease); }
-.media-wrap:hover .tz-back { transform: translateY(-8px) rotate(-1deg); }
-.media-wrap:hover .tz-front { transform: translateY(-14px) rotate(1deg); }
+.tz-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.tz-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, rgba(8, 18, 40, 0.55) 0%, rgba(8, 18, 40, 0.15) 38%, rgba(8, 18, 40, 0) 60%),
+    linear-gradient(to top, color-mix(in srgb, var(--accent) 30%, transparent), transparent 45%);
+  transition: opacity 0.5s var(--ease);
+}
+.media-wrap:hover .tz-shade { opacity: 0.7; }
 .media-wrap:hover .tz-metric { transform: translateY(-4px); }
-
-/* devices */
-.tz-phone {
-  position: relative; width: clamp(150px, 24%, 290px); aspect-ratio: 9 / 18.5; border-radius: 30px; padding: 8px; background: #0b1626;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35), inset 0 0 0 2px #26304a; margin-bottom: -12%;
-}
-.tz-notch { position: absolute; top: 14px; left: 50%; translate: -50% 0; width: 32%; height: 14px; border-radius: 8px; background: #000; z-index: 2; }
-.tz-screen { height: 100%; border-radius: 23px; overflow: hidden; background: #f7f7f5; color: #0b1626; padding: 40px 12px 12px; display: flex; flex-direction: column; gap: 8px; font-size: var(--fs-xs); }
-.tz-h { font-weight: 700; font-size: var(--fs-sm); line-height: 1.2; }
-.tz-browser {
-  width: min(62%, 640px); border-radius: 14px; overflow: hidden; background: #fff; color: #0b1626;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35); margin-bottom: -4%; font-size: var(--fs-xs);
-}
-.tz-wide { width: min(74%, 820px); }
-.tz-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #eef0f4; }
-.tz-bar i { width: 10px; height: 10px; border-radius: 50%; background: #d4d8e0; }
-.tz-bar i:first-child { background: #ff6b5f; } .tz-bar i:nth-child(2) { background: #ffbd2e; } .tz-bar i:nth-child(3) { background: #28c840; }
-.tz-bar span { margin-left: 10px; padding: 3px 12px; border-radius: 6px; background: #fff; color: #5b6478; font-size: 12px; }
-.tz-page { padding: 20px; display: flex; flex-direction: column; gap: 12px; min-height: 320px; }
-.tz-card { width: clamp(220px, 34%, 400px); border-radius: 18px; background: #fff; color: #0b1626; padding: 16px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3); margin-bottom: 6%; }
-
-/* events */
-.tz-event { display: flex; gap: 10px; align-items: center; background: #fff; border-radius: 12px; padding: 8px; box-shadow: 0 2px 8px rgba(11, 22, 38, 0.06); }
-.tz-event b { width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0; }
-.tz-event strong { display: block; font-size: 13px; line-height: 1.2; }
-.tz-event span { font-size: 11px; color: #5b6478; }
-.tz-tabs { margin-top: auto; display: flex; justify-content: space-around; padding-top: 8px; border-top: 1px solid #e6e8ee; }
-.tz-tabs i { width: 18px; height: 6px; border-radius: 3px; background: #d4d8e0; }
-.tz-tabs i.on { background: var(--accent); }
-.tz-map .tz-grid {
-  position: relative; height: 200px; margin-top: 10px; border-radius: 12px;
-  background: linear-gradient(#e8f0e6 1px, transparent 1px) 0 0 / 22px 22px, linear-gradient(90deg, #e8f0e6 1px, transparent 1px) 0 0 / 22px 22px, #f4f8f2;
-}
-.tz-pin { position: absolute; width: 16px; height: 16px; border-radius: 50% 50% 50% 0; rotate: -45deg; background: var(--accent); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); animation: pin-bob 2.4s ease-in-out infinite; }
-@keyframes pin-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -5px; } }
-
-/* pearbae */
-.tz-profile { height: 46%; border-radius: 14px; background: radial-gradient(60% 60% at 50% 40%, #ffd1e3, #ff5d8f 70%, #a36bff); }
-.tz-badge { align-self: flex-start; padding: 3px 9px; border-radius: 999px; background: #e7fbea; color: #157a35; font-weight: 600; font-size: 11px; }
-.tz-chips { display: flex; flex-wrap: wrap; gap: 5px; }
-.tz-chips i { font-style: normal; font-size: 11px; padding: 3px 8px; border-radius: 999px; background: #f1eef9; }
-.tz-call .tz-screen { background: linear-gradient(170deg, #2a1040, #0b1626); color: #fff; align-items: center; text-align: center; padding-top: 60px; }
-.tz-avatar { width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #ffd1e3, #ff5d8f); box-shadow: 0 0 0 8px rgba(255, 93, 143, 0.18), 0 0 0 16px rgba(255, 93, 143, 0.08); animation: ring 2s ease-out infinite; }
-@keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(255, 93, 143, 0.4); } 100% { box-shadow: 0 0 0 22px rgba(255, 93, 143, 0); } }
-.tz-timer { color: rgba(255, 255, 255, 0.7); font-variant-numeric: tabular-nums; }
-.tz-call-btns { margin-top: auto; display: flex; gap: 14px; }
-.tz-call-btns i { width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
-.tz-call-btns i.end { background: #ff3b3b; }
-
-/* energy */
-.tz-trade { display: grid; grid-template-columns: 1.6fr 1fr; gap: 14px; }
-.tz-tabs-row { display: flex; gap: 6px; }
-.tz-tabs-row i { font-style: normal; font-weight: 600; font-size: 11px; padding: 3px 9px; border-radius: 6px; background: #eef0f4; }
-.tz-tabs-row i.on { background: var(--accent); color: #fff; }
-.tz-price { font-size: var(--fs-lg); font-weight: 800; margin: 8px 0 4px; font-variant-numeric: tabular-nums; }
-.tz-price span { font-size: 12px; font-weight: 500; color: #5b6478; }
-.tz-chart svg { width: 100%; height: 190px; display: block; }
-.tz-area { fill: color-mix(in srgb, var(--accent) 18%, transparent); }
-.tz-line { fill: none; stroke: var(--accent); stroke-width: 1.6; vector-effect: non-scaling-stroke; stroke-dasharray: 400; stroke-dashoffset: 400; animation: draw-line 2.4s var(--ease) 0.4s forwards; }
-@keyframes draw-line { to { stroke-dashoffset: 0; } }
-.tz-book { display: flex; flex-direction: column; gap: 5px; justify-content: center; }
-.tz-row { position: relative; height: 22px; border-radius: 5px; overflow: hidden; display: flex; align-items: center; justify-content: flex-end; padding: 0 8px; font-size: 11px; font-variant-numeric: tabular-nums; }
-.tz-row b { position: absolute; right: 0; top: 0; bottom: 0; }
-.tz-row.bid b { background: rgba(46, 196, 120, 0.16); }
-.tz-row.ask b { background: rgba(255, 93, 93, 0.14); }
-.tz-row span { position: relative; }
-
-/* travel */
-.tz-steps { display: flex; gap: 6px; }
-.tz-steps span { flex: 1; text-align: center; padding: 6px 0; border-radius: 8px; background: #eef0f4; font-weight: 600; font-size: 12px; }
-.tz-steps span.done { background: color-mix(in srgb, var(--accent) 22%, #fff); color: color-mix(in srgb, var(--accent) 60%, #0b1626); }
-.tz-itin { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: #f7f7f5; font-size: 13px; }
-.tz-itin i { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
-.tz-ticket .tz-screen { background: linear-gradient(170deg, color-mix(in srgb, var(--accent) 35%, #fff), #fff); }
-.tz-route { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; font-size: var(--fs-lg); }
-.tz-route span { color: var(--accent); }
-.tz-barcode { margin-top: auto; height: 46px; border-radius: 6px; background: repeating-linear-gradient(90deg, #0b1626 0 2px, transparent 2px 5px, #0b1626 5px 6px, transparent 6px 9px); }
 
 /* metric chips floating over the shot */
 .tz-metrics { position: absolute; left: 4%; top: 7%; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; pointer-events: none; }
@@ -522,12 +445,6 @@ main, .footer { position: relative; z-index: 1; }
   .project { padding: 88px 0 96px; }
   .media-cell strong { font-size: var(--fs-lg); }
   .teaser { aspect-ratio: 4 / 5; max-height: calc(100svh - 380px); }
-  .tz-layer { padding: 8% 6% 0; gap: 3%; }
-  .tz-phone { width: 44%; border-radius: 22px; }
-  .tz-browser, .tz-wide { width: 100%; }
-  .tz-card, .tz-travel .tz-browser { display: none; }
-  .tz-trade { grid-template-columns: 1fr; }
-  .tz-book { display: none; }
   .tz-metrics { left: 4%; top: 4%; gap: 6px; }
   .tz-metric { padding: 6px 10px; }
   .tz-metric strong { font-size: var(--fs-md); }

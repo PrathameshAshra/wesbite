@@ -14,6 +14,8 @@ export type CaseStudy = {
   outcome: string
   stack: string[]
   accent: string
+  // Stock photo from Unsplash (free licence), hotlinked by photo id. Replace with real screenshots later.
+  photo: { id: string; alt: string }
 }
 
 export const site = {
@@ -68,6 +70,7 @@ export const work: CaseStudy[] = [
       'Thousands of downloads, over a million views, and events running live across India within two years.',
     stack: ['React', 'React Native', 'Node.js', 'AWS', 'AI curation'],
     accent: '#ff8a3d',
+    photo: { id: '1501281668745-f7f57925c3b4', alt: 'A crowd at a live concert, phones up filming the stage' },
   },
   {
     id: 'pearbae',
@@ -91,6 +94,7 @@ export const work: CaseStudy[] = [
     outcome: 'A year of building, now live for users across India.',
     stack: ['React Native', 'Node.js', 'WebRTC / VoIP', 'Real-time sync'],
     accent: '#ff5d8f',
+    photo: { id: '1511632765486-a01980e01a18', alt: 'Four friends with arms around each other watching a sunset' },
   },
   {
     id: 'energy',
@@ -113,6 +117,7 @@ export const work: CaseStudy[] = [
     outcome: 'Still the team’s go-to for trading tooling, five years in.',
     stack: ['TypeScript', 'Node.js', 'Data pipelines'],
     accent: '#4da3ff',
+    photo: { id: '1473341304170-971dccb5ac1e', alt: 'Electricity pylons and power lines against an orange sunset' },
   },
   {
     id: 'travel',
@@ -137,6 +142,7 @@ export const work: CaseStudy[] = [
     outcome: 'The agency now runs online, start to finish.',
     stack: ['React', 'Node.js', 'Cloud'],
     accent: '#2ec4a6',
+    photo: { id: '1512343879784-a960bf40e7f2', alt: 'A palm-lined tropical beach with turquoise water' },
   },
 ]
 

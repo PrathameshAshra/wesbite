@@ -33,8 +33,8 @@ export const site = {
     // TODO: confirm email
     email: 'hello@prathameshashra.com',
     call: 'https://meetings-na2.hubspot.com/prathamesh-ashra?uuid=8213bdde-e0dc-404e-80fb-1cb748c9ffbe',
-    // TODO: real profile URLs
-    linkedin: 'https://www.linkedin.com/in/',
+    // TODO: confirm LinkedIn slug; X and YouTube still placeholders
+    linkedin: 'https://www.linkedin.com/in/prathamesh-ashra-b2318bab/',
     x: 'https://x.com/',
     youtube: 'https://www.youtube.com/',
     // TODO: resume PDF in /public

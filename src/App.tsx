@@ -10,6 +10,7 @@ import { Signature } from './Signature'
 import { SideQuests, Build } from './Pinned'
 import { FooterScene } from './FooterScene'
 import { Cursor } from './Cursor'
+import { WorkVisual } from './WorkVisual'
 
 const ease = [0.32, 0.72, 0, 1] as const
 
@@ -143,7 +144,7 @@ function Work({ onOpen }: { onOpen: (s: CaseStudy) => void }) {
   return (
     <section className="work" id="work">
       {work.map((s, i) => (
-        <article key={s.id} className="project" id={s.id} data-snap>
+        <article key={s.id} className="project" id={s.id} data-snap data-case={i}>
           <Reveal className="project-head">
             <div>
               {i === 0 && <p className="eyebrow section-label">Featured work</p>}
@@ -154,19 +155,48 @@ function Work({ onOpen }: { onOpen: (s: CaseStudy) => void }) {
               View project <span aria-hidden>→</span>
             </button>
           </Reveal>
-          <motion.div
-            initial={reducedMotion ? false : { opacity: 0, scale: 0.94, y: 40 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: true, margin: '-8% 0px' }}
-            transition={{ duration: 1, ease }}
-            onClick={() => onOpen(s)}
-            className="media-wrap"
-          >
-            <WorkMedia study={s} />
-          </motion.div>
+          <button className="media-wrap" onClick={() => onOpen(s)} aria-label={`Open the ${s.name} case study`}>
+            <WorkVisual study={s} />
+          </button>
         </article>
       ))}
     </section>
+  )
+}
+
+// Right-edge rail: one dot per case study, visible while the work section is on screen.
+function WorkRail({ go }: { go: (id: string) => (e: React.MouseEvent) => void }) {
+  const [active, setActive] = useState(-1)
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(Number((e.target as HTMLElement).dataset.case))),
+      { rootMargin: '-45% 0px -45% 0px' },
+    )
+    const outside = new IntersectionObserver(([e]) => !e.isIntersecting && setActive(-1), { threshold: 0 })
+    const cases = document.querySelectorAll('[data-case]')
+    if (cases.length !== work.length) throw new Error('Work rail expects one [data-case] per case study')
+    cases.forEach((el) => io.observe(el))
+    const section = document.getElementById('work')
+    if (!section) throw new Error('Missing #work section')
+    outside.observe(section)
+    return () => {
+      io.disconnect()
+      outside.disconnect()
+    }
+  }, [])
+
+  return (
+    <nav className={`work-rail ${active >= 0 ? 'show' : ''}`} aria-label="Case studies">
+      <span className="rail-count" aria-hidden>
+        {String(Math.max(active, 0) + 1).padStart(2, '0')} / {String(work.length).padStart(2, '0')}
+      </span>
+      {work.map((s, i) => (
+        <a key={s.id} href={`#${s.id}`} onClick={go(s.id)} className={i === active ? 'on' : ''} aria-current={i === active ? 'true' : undefined}>
+          <span className="rail-label">{s.name}</span>
+          <i />
+        </a>
+      ))}
+    </nav>
   )
 }
 
@@ -325,6 +355,7 @@ function Chrome({ lenis, theme, onTheme }: { lenis: Lenis | null; theme: Theme; 
       <button className="theme" onClick={onTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
         {theme === 'dark' ? '☀' : '☾'}
       </button>
+      <WorkRail go={go} />
       <nav className="pill" aria-label="Sections">
         {NAV.map((n) => (
           <a key={n.id} href={`#${n.id}`} onClick={go(n.id)} className={active === n.id ? 'on' : ''}>

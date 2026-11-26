@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import type Lenis from 'lenis'
 import { site, work, sideQuests, testimonials, type CaseStudy } from './content'
-import { reducedMotion, startScroll } from './scroll'
+import { reducedMotion, startScroll, startSnap } from './scroll'
 import { applyTheme, initialTheme, type Theme } from './theme'
 import { Sphere } from './Sphere'
 import { Splash } from './Splash'
@@ -56,7 +56,7 @@ function Backdrop() {
 function Hero({ ready }: { ready: boolean }) {
   const shown = reducedMotion || ready
   return (
-    <section className="hero" id="top">
+    <section className="hero" id="top" data-snap>
       <Sphere />
       <div className="hero-copy">
         <motion.p
@@ -85,7 +85,7 @@ function Hero({ ready }: { ready: boolean }) {
 
 function Statement() {
   return (
-    <section className="statement">
+    <section className="statement" data-snap>
       {site.statement.map((line, i) => (
         <Reveal key={line} delay={i * 0.08}>
           <p className="headline">{line}</p>
@@ -139,13 +139,11 @@ function WorkMedia({ study }: { study: CaseStudy }) {
 function Work({ onOpen }: { onOpen: (s: CaseStudy) => void }) {
   return (
     <section className="work" id="work">
-      <Reveal>
-        <p className="label">Featured work:</p>
-      </Reveal>
-      {work.map((s) => (
-        <article key={s.id} className="project" id={s.id}>
+      {work.map((s, i) => (
+        <article key={s.id} className="project" id={s.id} data-snap>
           <Reveal className="project-head">
             <div>
+              {i === 0 && <p className="label">Featured work:</p>}
               <h2 className="headline left">{s.title}</h2>
               <p className="sub">{s.oneLiner}</p>
             </div>
@@ -174,11 +172,16 @@ function Work({ onOpen }: { onOpen: (s: CaseStudy) => void }) {
 function SideQuests() {
   return (
     <section className="quests" id="side-quests">
-      <Reveal>
-        <p className="label center">Side quests</p>
-      </Reveal>
       {sideQuests.map((q, i) => (
-        <div key={q.name} className="quest" style={{ '--accent': q.accent } as React.CSSProperties}>
+        <div key={q.name} className="quest" data-snap style={{ '--accent': q.accent } as React.CSSProperties}>
+          <div className="quest-label" aria-hidden={i > 0}>
+            <p className="label center">Side quests</p>
+            <div className="quest-dots">
+              {sideQuests.map((d, j) => (
+                <i key={d.name} className={j === i ? 'on' : ''} />
+              ))}
+            </div>
+          </div>
           <Reveal className="quest-name">
             <h3 className="headline">{q.name}</h3>
           </Reveal>
@@ -213,7 +216,7 @@ function SideQuests() {
 function Testimonials() {
   if (testimonials.length === 0) return null
   return (
-    <section className="said" id="testimonials">
+    <section className="said" id="testimonials" data-snap>
       <Reveal>
         <h2 className="headline left">That’s what they said.</h2>
       </Reveal>
@@ -240,7 +243,7 @@ function Testimonials() {
 
 function Build() {
   return (
-    <section className="build" id="build">
+    <section className="build" id="build" data-snap>
       <Reveal>
         <p className="label center">What I build:</p>
       </Reveal>
@@ -265,7 +268,7 @@ function Build() {
 function Contact() {
   const c = site.contact
   return (
-    <section className="contact" id="contact">
+    <section className="contact" id="contact" data-snap>
       <Reveal>
         <div className="card glass">
           <div className="photo">
@@ -434,7 +437,11 @@ export default function App() {
   useEffect(() => {
     const l = startScroll()
     setLenis(l)
-    return () => l?.destroy()
+    const snap = l ? startSnap(l) : null
+    return () => {
+      snap?.destroy()
+      l?.destroy()
+    }
   }, [])
 
   useEffect(() => {

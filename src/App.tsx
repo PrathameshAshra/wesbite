@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import type Lenis from 'lenis'
 import { site, work, sideQuests, testimonials, type CaseStudy } from './content'
 import { reducedMotion, startScroll } from './scroll'
 import { applyTheme, initialTheme, type Theme } from './theme'
+import { Sphere } from './Sphere'
+import { Splash } from './Splash'
+import { Signature } from './Signature'
 
 const ease = [0.32, 0.72, 0, 1] as const
 
@@ -24,59 +27,51 @@ function Reveal({ children, delay = 0, y = 32, className }: { children: React.Re
 /* ---------- Backdrop ---------- */
 
 function Backdrop() {
+  const clouds = useRef<HTMLDivElement>(null)
+  // Clouds only belong in the blue part of the sky: fade them in once the navy top has scrolled past.
+  useEffect(() => {
+    const update = () => {
+      if (!clouds.current) return
+      const vh = window.innerHeight
+      clouds.current.style.opacity = String(Math.min(1, Math.max(0, (window.scrollY - vh * 1.1) / vh)))
+    }
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [])
   return (
     <div className="backdrop" aria-hidden>
       <div className="stars" />
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <span key={i} className={`cloud c${i}`} />
-      ))}
-    </div>
-  )
-}
-
-/* ---------- Hero: perspective wall of work tiles ---------- */
-
-function Tile({ study, n }: { study: CaseStudy; n: number }) {
-  return (
-    <div className="tile" style={{ '--accent': study.accent } as React.CSSProperties}>
-      <div className="tile-bar">
-        <i /><i /><i />
-      </div>
-      <strong>{study.metrics[n % study.metrics.length].value}</strong>
-      <span>{study.title}</span>
-      <div className="tile-rows">
-        <b style={{ width: `${55 + ((n * 17) % 40)}%` }} />
-        <b style={{ width: `${35 + ((n * 23) % 50)}%` }} />
+      <div ref={clouds} className="clouds">
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <span key={i} className={`cloud c${i}`} />
+        ))}
       </div>
     </div>
   )
 }
 
-function Hero() {
-  const cols = 6
+/* ---------- Hero: inside a sphere of work ---------- */
+
+function Hero({ ready }: { ready: boolean }) {
+  const shown = reducedMotion || ready
   return (
     <section className="hero" id="top">
-      <div className="wall" aria-hidden>
-        <div className="wall-inner">
-          {Array.from({ length: cols }, (_, c) => (
-            <div key={c} className={`col ${c % 2 ? 'up' : 'down'}`} style={{ animationDuration: `${38 + c * 6}s` }}>
-              {Array.from({ length: 8 }, (_, r) => (
-                <Tile key={r} study={work[(c + r) % work.length]} n={c * 8 + r} />
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="hero-fade" />
+      <Sphere />
       <div className="hero-copy">
-        <motion.p className="kicker" initial={reducedMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.3 }}>
+        <motion.p
+          className="kicker"
+          initial={reducedMotion ? false : { opacity: 0, y: 10 }}
+          animate={shown ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.8, ease, delay: 0.15 }}
+        >
           {site.eyebrow}
         </motion.p>
         <motion.h1
           className="mega"
           initial={reducedMotion ? false : { opacity: 0, y: 40, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 1.1, ease, delay: 0.45 }}
+          animate={shown ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
+          transition={{ duration: 1.1, ease, delay: 0.3 }}
         >
           {site.title}
         </motion.h1>
@@ -402,8 +397,8 @@ function Chrome({ lenis, theme, onTheme }: { lenis: Lenis | null; theme: Theme; 
   }
   return (
     <>
-      <a className="logo" href="#top" onClick={go('top')}>
-        prathamesh<span>.</span>
+      <a className="logo" href="#top" onClick={go('top')} aria-label="prathamesh, back to top">
+        <Signature className="logo-sig" strokeWidth={12} />
       </a>
       <button className="theme" onClick={onTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
         {theme === 'dark' ? '☀' : '☾'}
@@ -426,6 +421,8 @@ export default function App() {
   const [lenis, setLenis] = useState<Lenis | null>(null)
   const [open, setOpen] = useState<CaseStudy | null>(null)
   const [theme, setTheme] = useState<Theme>(initialTheme)
+  const [ready, setReady] = useState(false)
+  const onSplashDone = useCallback(() => setReady(true), [])
 
   useEffect(() => applyTheme(theme), [theme])
 
@@ -437,16 +434,17 @@ export default function App() {
 
   useEffect(() => {
     if (!lenis) return
-    if (open) lenis.stop()
+    if (open || !ready) lenis.stop()
     else lenis.start()
-  }, [open, lenis])
+  }, [open, ready, lenis])
 
   return (
     <>
+      <Splash onDone={onSplashDone} />
       <Backdrop />
       <Chrome lenis={lenis} theme={theme} onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
       <main>
-        <Hero />
+        <Hero ready={ready} />
         <Statement />
         <Work onOpen={setOpen} />
         <SideQuests />

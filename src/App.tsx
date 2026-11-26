@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import type Lenis from 'lenis'
-import { site, work, sideQuests, testimonials, type CaseStudy } from './content'
+import { site, work, testimonials, type CaseStudy } from './content'
 import { reducedMotion, startScroll, startSnap } from './scroll'
 import { applyTheme, initialTheme, type Theme } from './theme'
 import { Sphere } from './Sphere'
 import { Splash } from './Splash'
 import { Signature } from './Signature'
+import { SideQuests, Build } from './Pinned'
+import { FooterScene } from './FooterScene'
+import { Cursor } from './Cursor'
 
 const ease = [0.32, 0.72, 0, 1] as const
 
@@ -167,50 +170,6 @@ function Work({ onOpen }: { onOpen: (s: CaseStudy) => void }) {
   )
 }
 
-/* ---------- Side quests ---------- */
-
-function SideQuests() {
-  return (
-    <section className="quests" id="side-quests">
-      {sideQuests.map((q, i) => (
-        <div key={q.name} className="quest" data-snap style={{ '--accent': q.accent } as React.CSSProperties}>
-          <div className="quest-label" aria-hidden={i > 0}>
-            <p className="eyebrow">Side quests</p>
-            <div className="quest-dots">
-              {sideQuests.map((d, j) => (
-                <i key={d.name} className={j === i ? 'on' : ''} />
-              ))}
-            </div>
-          </div>
-          <Reveal className="quest-name">
-            <h3 className="project-title">{q.name}</h3>
-          </Reveal>
-          <motion.div
-            className="phone"
-            aria-hidden
-            initial={reducedMotion ? false : { opacity: 0, y: 60, rotate: i % 2 ? 6 : -6 }}
-            whileInView={{ opacity: 1, y: 0, rotate: i % 2 ? 3 : -3 }}
-            viewport={{ once: true, margin: '-10% 0px' }}
-            transition={{ type: 'spring', stiffness: 90, damping: 16 }}
-          >
-            <div className="screen">
-              <span className="notch" />
-              <strong>{q.name}</strong>
-              <b /><b /><b />
-            </div>
-          </motion.div>
-          <Reveal className="quest-copy" delay={0.15}>
-            <p>{q.blurb}</p>
-            <a className="chip" href={q.href} target="_blank" rel="noreferrer">
-              {q.cta} <span aria-hidden>↗</span>
-            </a>
-          </Reveal>
-        </div>
-      ))}
-    </section>
-  )
-}
-
 /* ---------- Testimonials (hidden until real quotes exist) ---------- */
 
 function Testimonials() {
@@ -235,30 +194,6 @@ function Testimonials() {
           </Reveal>
         ))}
       </div>
-    </section>
-  )
-}
-
-/* ---------- What I build ---------- */
-
-function Build() {
-  return (
-    <section className="build" id="build" data-snap>
-      <Reveal>
-        <p className="eyebrow section-label">What I build</p>
-      </Reveal>
-      {site.services.map((s) => (
-        <motion.p
-          key={s}
-          className="headline build-item"
-          initial={reducedMotion ? false : { opacity: 0.25 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ margin: '-40% 0px -40% 0px' }}
-          transition={{ duration: 0.4, ease }}
-        >
-          {s}
-        </motion.p>
-      ))}
     </section>
   )
 }
@@ -290,24 +225,6 @@ function Contact() {
         </div>
       </Reveal>
     </section>
-  )
-}
-
-function Footer() {
-  const c = site.contact
-  return (
-    <footer className="footer">
-      <nav aria-label="Elsewhere">
-        <a href={`mailto:${c.email}`}>Email</a>
-        <a href={c.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-        <a href={c.x} target="_blank" rel="noreferrer">X</a>
-        <a href={c.youtube} target="_blank" rel="noreferrer">YouTube</a>
-        {c.resume && <a href={c.resume} target="_blank" rel="noreferrer">Resume</a>}
-      </nav>
-      <p>
-        prathamesh<span>.</span> · {site.name}, {site.title}
-      </p>
-    </footer>
   )
 }
 
@@ -455,6 +372,7 @@ export default function App() {
   return (
     <>
       <Splash onDone={onSplashDone} />
+      <Cursor />
       <Backdrop />
       <Chrome lenis={lenis} theme={theme} onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
       <main>
@@ -466,7 +384,7 @@ export default function App() {
         <Build />
         <Contact />
       </main>
-      <Footer />
+      <FooterScene />
       <AnimatePresence>{open && <StoryPanel key={open.id} study={open} onClose={() => setOpen(null)} />}</AnimatePresence>
     </>
   )

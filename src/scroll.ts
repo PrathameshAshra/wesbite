@@ -31,7 +31,10 @@ export function startSnap(lenis: Lenis) {
   let lastWheelAt = 0
   let cooldownUntil = 0
 
-  const tops = () => [...document.querySelectorAll<HTMLElement>('[data-snap]')].map((el) => el.offsetTop)
+  const tops = () =>
+    [...document.querySelectorAll<HTMLElement>('[data-snap]')]
+      .map((el) => Math.round(el.getBoundingClientRect().top + window.scrollY))
+      .sort((a, b) => a - b)
 
   const jump = (dir: 1 | -1) => {
     const y = lenis.scroll

@@ -16,13 +16,16 @@ function alreadySeen() {
 
 // Signature draws itself on a night sky, then lifts away. Once per browser session.
 export function Splash({ onDone }: { onDone: () => void }) {
-  const [show, setShow] = useState(() => !reducedMotion && !alreadySeen())
+  const [skip] = useState(() => reducedMotion || alreadySeen())
+  const [show, setShow] = useState(!skip)
+
+  // Skipped splash: hand over straight away. Played splash: hand over when the exit finishes (onExitComplete).
+  useEffect(() => {
+    if (skip) onDone()
+  }, [skip, onDone])
 
   useEffect(() => {
-    if (!show) {
-      onDone()
-      return
-    }
+    if (!show) return
     const t = setTimeout(() => {
       try {
         sessionStorage.setItem(SEEN, '1')
@@ -40,11 +43,19 @@ export function Splash({ onDone }: { onDone: () => void }) {
         <motion.div
           className="splash"
           aria-hidden
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+          exit={{ opacity: 1 }}
+          transition={{ duration: 0.9 }}
         >
-          <div className="stars" />
-          <motion.div exit={{ scale: 0.35, y: '-42vh', opacity: 0 }} transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}>
+          {/* Night sky fades away to reveal the work sphere behind it. */}
+          <motion.div className="splash-bg" exit={{ opacity: 0 }} transition={{ duration: 0.9, ease: [0.32, 0.72, 0, 1] }}>
+            <div className="stars" />
+          </motion.div>
+          {/* Shrinks onto the logo spot at the top centre, then the logo takes over. */}
+          <motion.div
+            className="splash-sig-wrap"
+            exit={{ scale: 0.112, y: 'calc(-50vh + 26px)' }}
+            transition={{ duration: 0.9, ease: [0.32, 0.72, 0, 1] }}
+          >
             <Signature className="splash-sig" draw />
           </motion.div>
         </motion.div>

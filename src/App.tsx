@@ -426,6 +426,11 @@ export default function App() {
 
   useEffect(() => applyTheme(theme), [theme])
 
+  // The splash signature flies into the logo spot; keep the real logo hidden until it lands.
+  useEffect(() => {
+    document.documentElement.toggleAttribute('data-splash', !ready)
+  }, [ready])
+
   useEffect(() => {
     const l = startScroll()
     setLenis(l)

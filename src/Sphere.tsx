@@ -5,14 +5,26 @@ import { reducedMotion } from './scroll'
 // A wall of work tiles wrapped around the viewer, like standing inside a sphere.
 // Pure CSS 3D: the scene sits at the camera, tiles are pushed out to radius R.
 
+// 420x300 tiles with ~14px gaps: 16 columns around the full circle, 5 rows stacked by the same gap.
 const COLS = 16
-const ROWS = [-26, -9, 9, 26] // degrees above/below the horizon
-const R = 1150
+const R = 1105
+const ROW_STEP = 16.3
+const ROWS = [-2, -1, 0, 1, 2].map((r) => r * ROW_STEP) // degrees above/below the horizon
 const VISIBLE = 105 // hide tiles further than this from straight ahead (they'd be behind the camera)
 const SPEED = 2.2 // degrees per second
 
 type Kind = 'dashboard' | 'phone' | 'metric' | 'list'
 const KINDS: Kind[] = ['dashboard', 'phone', 'metric', 'list']
+// Bright backdrops behind each "screenshot", like a dribbble shot.
+const BACKDROPS = [
+  ['#7b5cff', '#53a4ff'],
+  ['#ff8a3d', '#ffd25e'],
+  ['#2ec4a6', '#c6ff7a'],
+  ['#ff5d8f', '#a36bff'],
+  ['#53a4ff', '#94fffe'],
+  ['#1d55a0', '#7b5cff'],
+  ['#ffd25e', '#ff5d8f'],
+]
 
 function TileBody({ study, kind, n }: { study: CaseStudy; kind: Kind; n: number }) {
   const m = study.metrics[n % study.metrics.length]
@@ -74,9 +86,10 @@ export function Sphere() {
       ROWS.flatMap((phi, r) =>
         Array.from({ length: COLS }, (_, c) => ({
           phi,
-          base: (c + (r % 2 ? 0.5 : 0)) * (360 / COLS),
+          base: c * (360 / COLS),
           study: work[(c + r * 3) % work.length],
-          kind: KINDS[(c + r) % KINDS.length],
+          kind: KINDS[(c * 3 + r) % KINDS.length],
+          backdrop: BACKDROPS[(c * 2 + r * 3) % BACKDROPS.length],
           n: c + r,
         })),
       ),
@@ -129,10 +142,12 @@ export function Sphere() {
             ref={(el) => {
               tiles.current[i] = el
             }}
-            className={`tile k-${t.kind}`}
-            style={{ '--accent': t.study.accent } as React.CSSProperties}
+            className="tile"
+            style={{ '--accent': t.study.accent, '--g1': t.backdrop[0], '--g2': t.backdrop[1] } as React.CSSProperties}
           >
-            <TileBody study={t.study} kind={t.kind} n={t.n} />
+            <div className={`tile-inner k-${t.kind}`}>
+              <TileBody study={t.study} kind={t.kind} n={t.n} />
+            </div>
           </div>
         ))}
       </div>

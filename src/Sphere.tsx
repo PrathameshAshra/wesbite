@@ -10,7 +10,10 @@ const COLS = 16
 const R = 1105
 const ROW_STEP = 16.3
 const ROWS = [-2, -1, 0, 1, 2].map((r) => r * ROW_STEP) // degrees above/below the horizon
-const VISIBLE = 105 // hide tiles further than this from straight ahead (they'd be behind the camera)
+const HALF_FOV = 34 // degrees from centre to the screen edge on wide screens (about 3 columns across)
+const MIN_PERSP = 560 // phones: keep tiles readable instead of shrinking them to fit the FOV
+const TILE_HALF = 11 // half a tile's width, in degrees
+const LOOK_X = 7 // max sideways mouse-look, in degrees
 const SPEED = 2.2 // degrees per second
 
 type Kind = 'dashboard' | 'phone' | 'metric' | 'list'
@@ -78,6 +81,7 @@ function TileBody({ study, kind, n }: { study: CaseStudy; kind: Kind; n: number 
 }
 
 export function Sphere() {
+  const root = useRef<HTMLDivElement>(null)
   const scene = useRef<HTMLDivElement>(null)
   const tiles = useRef<(HTMLDivElement | null)[]>([])
 
@@ -99,10 +103,23 @@ export function Sphere() {
   useEffect(() => {
     const look = { x: 0, y: 0, tx: 0, ty: 0 }
     const onMove = (e: PointerEvent) => {
-      look.tx = (e.clientX / window.innerWidth - 0.5) * 14
+      look.tx = (e.clientX / window.innerWidth - 0.5) * LOOK_X * 2
       look.ty = (e.clientY / window.innerHeight - 0.5) * -8
     }
     window.addEventListener('pointermove', onMove, { passive: true })
+
+    // Perspective follows the viewport, so the dome keeps the same gentle curve on any screen.
+    // Tiles are only drawn inside the field of view; ones near 90° sit beside the camera and
+    // CSS perspective blows them up into huge overlapping shapes.
+    let visible = 0
+    const fit = () => {
+      const half = window.innerWidth / 2
+      const persp = Math.max(half / Math.tan((HALF_FOV * Math.PI) / 180), MIN_PERSP)
+      root.current?.style.setProperty('--persp', `${persp}px`)
+      visible = (Math.atan(half / persp) * 180) / Math.PI + TILE_HALF + LOOK_X
+    }
+    fit()
+    window.addEventListener('resize', fit)
 
     let raf = 0
     let last = performance.now()
@@ -120,9 +137,9 @@ export function Sphere() {
         const el = tiles.current[i]
         if (!el) return
         const theta = ((((t.base + drift) % 360) + 540) % 360) - 180
-        const visible = Math.abs(theta) < VISIBLE
-        el.style.visibility = visible ? 'visible' : 'hidden'
-        if (visible) el.style.transform = `rotateY(${theta}deg) rotateX(${t.phi}deg) translateZ(${-R}px)`
+        const show = Math.abs(theta) < visible
+        el.style.visibility = show ? 'visible' : 'hidden'
+        if (show) el.style.transform = `rotateY(${theta}deg) rotateX(${t.phi}deg) translateZ(${-R}px)`
       })
       raf = requestAnimationFrame(frame)
     }
@@ -130,11 +147,12 @@ export function Sphere() {
     return () => {
       cancelAnimationFrame(raf)
       window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('resize', fit)
     }
   }, [layout])
 
   return (
-    <div className="sphere" aria-hidden>
+    <div className="sphere" ref={root} aria-hidden>
       <div className="sphere-scene" ref={scene}>
         {layout.map((t, i) => (
           <div

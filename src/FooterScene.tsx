@@ -61,7 +61,7 @@ export function FooterScene() {
   return (
     <footer className="footer">
       <div className="footer-sig" aria-hidden>
-        <Signature strokeWidth={14} />
+        <Signature weight={6} />
       </div>
       <Butterfly />
       <svg className="hill" viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax slice" aria-hidden>

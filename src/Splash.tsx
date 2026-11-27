@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Signature } from './Signature'
+import { Stars } from './Stars'
 import { reducedMotion } from './scroll'
 
 const SEEN = 'splash-seen'
@@ -60,7 +61,7 @@ export function Splash({ onDone }: { onDone: () => void }) {
         >
           {/* Night sky fades away to reveal the work sphere behind it. */}
           <motion.div className="splash-bg" exit={{ opacity: 0 }} transition={{ duration: 0.9, ease: [0.32, 0.72, 0, 1] }}>
-            <div className="stars" />
+            <Stars count={160} />
           </motion.div>
           {/* Shrinks onto the logo spot at the top centre, then the logo takes over. */}
           <motion.div

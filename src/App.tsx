@@ -1,16 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import type Lenis from 'lenis'
-import { site, work, testimonials, type CaseStudy } from './content'
+import { site, work, testimonials } from './content'
 import { reducedMotion, startScroll, startSnap } from './scroll'
 import { applyTheme, initialTheme, type Theme } from './theme'
 import { Sphere } from './Sphere'
+import { Stars } from './Stars'
 import { Splash } from './Splash'
 import { Signature } from './Signature'
 import { SideQuests, Build } from './Pinned'
 import { FooterScene } from './FooterScene'
 import { Cursor } from './Cursor'
 import { WorkVisual } from './WorkVisual'
+import { CasePage } from './CasePage'
+import { linkTo, navigate, usePath } from './router'
 
 const ease = [0.32, 0.72, 0, 1] as const
 
@@ -45,7 +48,7 @@ function Backdrop() {
   }, [])
   return (
     <div className="backdrop" aria-hidden>
-      <div className="stars" />
+      <Stars count={220} />
       <div ref={clouds} className="clouds">
         {[0, 1, 2, 3, 4, 5].map((i) => (
           <span key={i} className={`cloud c${i}`} />
@@ -61,6 +64,7 @@ function Hero({ ready }: { ready: boolean }) {
   const shown = reducedMotion || ready
   return (
     <section className="hero" id="top" data-snap>
+      <Stars count={120} />
       <Sphere />
       <div className="hero-copy">
         <motion.p
@@ -113,34 +117,7 @@ function Statement() {
 
 /* ---------- Featured work ---------- */
 
-function WorkMedia({ study }: { study: CaseStudy }) {
-  // TODO: replace with real project screenshots / video
-  return (
-    <div className="media" style={{ '--accent': study.accent } as React.CSSProperties}>
-      <div className="media-grid" style={{ gridTemplateColumns: `repeat(${study.metrics.length}, 1fr)` }}>
-        {study.metrics.map((m, i) => (
-          <motion.div
-            key={m.label}
-            className="media-cell"
-            initial={reducedMotion ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-10% 0px' }}
-            transition={{ duration: 0.8, ease, delay: 0.15 + i * 0.1 }}
-          >
-            <strong>{m.value}</strong>
-            <span>{m.label}</span>
-          </motion.div>
-        ))}
-        <div className="media-cell wide">
-          <span className="eyebrow accent">{study.eyebrow}</span>
-          <p>{study.outcome}</p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Work({ onOpen }: { onOpen: (s: CaseStudy) => void }) {
+function Work() {
   return (
     <section className="work" id="work">
       {work.map((s, i) => (
@@ -151,13 +128,13 @@ function Work({ onOpen }: { onOpen: (s: CaseStudy) => void }) {
               <h2 className="project-title">{s.name}</h2>
               <p className="sub">{s.oneLiner}</p>
             </div>
-            <button className="chip" onClick={() => onOpen(s)}>
+            <a className="chip" href={`/work/${s.id}`} onClick={linkTo(`/work/${s.id}`)}>
               View project <span aria-hidden>→</span>
-            </button>
+            </a>
           </Reveal>
-          <button className="media-wrap" onClick={() => onOpen(s)} aria-label={`Open the ${s.name} case study`}>
+          <a className="media-wrap" href={`/work/${s.id}`} onClick={linkTo(`/work/${s.id}`)} aria-label={`Open the ${s.name} case study`}>
             <WorkVisual study={s} />
-          </button>
+          </a>
         </article>
       ))}
     </section>
@@ -258,60 +235,6 @@ function Contact() {
   )
 }
 
-/* ---------- Story panel ---------- */
-
-function StoryPanel({ study, onClose }: { study: CaseStudy; onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
-
-  return (
-    <motion.div className="overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3, ease }} onClick={onClose}>
-      <motion.aside
-        className="panel"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="story-title"
-        data-lenis-prevent
-        style={{ '--accent': study.accent } as React.CSSProperties}
-        initial={reducedMotion ? { opacity: 0 } : { y: '100%' }}
-        animate={reducedMotion ? { opacity: 1 } : { y: 0 }}
-        exit={reducedMotion ? { opacity: 0 } : { y: '100%' }}
-        transition={{ duration: 0.55, ease }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button className="close" onClick={onClose} aria-label="Close" autoFocus>
-          ✕
-        </button>
-        <p className="eyebrow accent">{study.eyebrow}</p>
-        <h2 id="story-title" className="project-title">{study.name}</h2>
-        <p className="panel-lede">{study.oneLiner}</p>
-        <p className="meta">
-          {study.role} · {study.years}
-        </p>
-        <WorkMedia study={study} />
-        <h3 className="eyebrow">The problem</h3>
-        <p>{study.problem}</p>
-        <h3 className="eyebrow">What I built</h3>
-        <ul className="built">
-          {study.built.map((b) => (
-            <li key={b}>{b}</li>
-          ))}
-        </ul>
-        <h3 className="eyebrow">The outcome</h3>
-        <p className="outcome">{study.outcome}</p>
-        <div className="stack">
-          {study.stack.map((s) => (
-            <span key={s}>{s}</span>
-          ))}
-        </div>
-      </motion.aside>
-    </motion.div>
-  )
-}
-
 /* ---------- Chrome: logo, theme toggle, pill nav ---------- */
 
 const NAV = [
@@ -319,6 +242,8 @@ const NAV = [
   { id: 'side-quests', label: 'Side Quests' },
   { id: 'build', label: 'What I build' },
 ]
+
+const SECTIONS = [...NAV.map((n) => n.id), 'contact']
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState('')
@@ -337,10 +262,35 @@ function useActiveSection(ids: string[]) {
   return active
 }
 
-function Chrome({ lenis, theme, onTheme }: { lenis: Lenis | null; theme: Theme; onTheme: () => void }) {
-  const active = useActiveSection([...NAV.map((n) => n.id), 'contact'])
-  const go = (id: string) => (e: React.MouseEvent) => {
+type Go = (id: string) => (e: React.MouseEvent) => void
+
+function Pill({ go, active }: { go: Go; active: string }) {
+  return (
+    <nav className="pill" aria-label="Sections">
+      {NAV.map((n) => (
+        <a key={n.id} href={`/#${n.id}`} onClick={go(n.id)} className={active === n.id ? 'on' : ''}>
+          {n.label}
+        </a>
+      ))}
+      <a href="/#contact" onClick={go('contact')} className="cta">
+        Say hi
+      </a>
+    </nav>
+  )
+}
+
+function ActivePill({ go }: { go: Go }) {
+  return <Pill go={go} active={useActiveSection(SECTIONS)} />
+}
+
+function Chrome({ home, lenis, theme, onTheme }: { home: boolean; lenis: Lenis | null; theme: Theme; onTheme: () => void }) {
+  const go: Go = (id) => (e) => {
     e.preventDefault()
+    // From a case study page, go back to the home page at that section.
+    if (!home) {
+      navigate(id === 'top' ? '/' : `/#${id}`)
+      return
+    }
     const el = document.getElementById(id)
     if (!el) throw new Error(`Missing section #${id}`)
     // Phones use native scroll-snap, which only cooperates with native smooth scrolling.
@@ -349,35 +299,75 @@ function Chrome({ lenis, theme, onTheme }: { lenis: Lenis | null; theme: Theme; 
   }
   return (
     <>
-      <a className="logo" href="#top" onClick={go('top')} aria-label="prathamesh, back to top">
-        <Signature className="logo-sig" strokeWidth={12} />
+      <a className="logo" href="/" onClick={go('top')} aria-label="prathamesh, home">
+        <Signature className="logo-sig" weight={4} />
       </a>
       <button className="theme" onClick={onTheme} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
         {theme === 'dark' ? '☀' : '☾'}
       </button>
-      <WorkRail go={go} />
-      <nav className="pill" aria-label="Sections">
-        {NAV.map((n) => (
-          <a key={n.id} href={`#${n.id}`} onClick={go(n.id)} className={active === n.id ? 'on' : ''}>
-            {n.label}
-          </a>
-        ))}
-        <a href="#contact" onClick={go('contact')} className="cta">
-          Say hi
-        </a>
-      </nav>
+      {home && <WorkRail go={go} />}
+      {home ? <ActivePill go={go} /> : <Pill go={go} active="" />}
     </>
   )
 }
 
+function Home({ ready }: { ready: boolean }) {
+  // Arriving from a case study at "/#section": jump straight there, then tidy the URL.
+  useEffect(() => {
+    const id = location.hash.slice(1)
+    if (!id) {
+      window.scrollTo(0, 0)
+      return
+    }
+    const el = document.getElementById(id)
+    if (!el) throw new Error(`Missing section #${id}`)
+    el.scrollIntoView({ behavior: 'instant' })
+    history.replaceState(null, '', '/')
+  }, [])
+  return (
+    <>
+      <main>
+        <Hero ready={ready} />
+        <Statement />
+        <Work />
+        <SideQuests />
+        <Testimonials />
+        <Build />
+        <Contact />
+      </main>
+      <FooterScene />
+    </>
+  )
+}
+
+const caseFor = (path: string) => {
+  const m = path.match(/^\/work\/([^/]+)\/?$/)
+  if (!m) return null
+  const i = work.findIndex((w) => w.id === m[1])
+  return i < 0 ? null : { study: work[i], next: work[(i + 1) % work.length] }
+}
+
 export default function App() {
+  const path = usePath()
+  const page = caseFor(path)
+  const home = !page
   const [lenis, setLenis] = useState<Lenis | null>(null)
-  const [open, setOpen] = useState<CaseStudy | null>(null)
   const [theme, setTheme] = useState<Theme>(initialTheme)
   const [ready, setReady] = useState(false)
   const onSplashDone = useCallback(() => setReady(true), [])
 
-  useEffect(() => applyTheme(theme), [theme])
+  useEffect(() => {
+    applyTheme(theme)
+  }, [theme])
+
+  // Unknown paths fall back to the home page.
+  useEffect(() => {
+    if (home && path !== '/') history.replaceState(null, '', '/' + location.hash)
+  }, [home, path])
+
+  useEffect(() => {
+    document.title = page ? `${page.study.name} · ${site.name}` : `${site.name} · Engineer turned Product Manager`
+  }, [page])
 
   // The splash signature flies into the logo spot; keep the real logo hidden until it lands.
   useEffect(() => {
@@ -387,36 +377,31 @@ export default function App() {
   useEffect(() => {
     const l = startScroll()
     setLenis(l)
-    const snap = l ? startSnap(l) : null
-    return () => {
-      snap?.destroy()
-      l?.destroy()
-    }
+    return () => l?.destroy()
   }, [])
+
+  // One-screen-per-gesture snapping belongs to the home page only; case studies scroll freely.
+  useEffect(() => {
+    if (!lenis || !home) return
+    const snap = startSnap(lenis)
+    return () => snap?.destroy()
+  }, [lenis, home])
 
   useEffect(() => {
     if (!lenis) return
-    if (open || !ready) lenis.stop()
-    else lenis.start()
-  }, [open, ready, lenis])
+    if (ready) lenis.start()
+    else lenis.stop()
+  }, [ready, lenis])
 
   return (
     <>
       <Splash onDone={onSplashDone} />
       <Cursor />
       <Backdrop />
-      <Chrome lenis={lenis} theme={theme} onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
-      <main>
-        <Hero ready={ready} />
-        <Statement />
-        <Work onOpen={setOpen} />
-        <SideQuests />
-        <Testimonials />
-        <Build />
-        <Contact />
-      </main>
-      <FooterScene />
-      <AnimatePresence>{open && <StoryPanel key={open.id} study={open} onClose={() => setOpen(null)} />}</AnimatePresence>
+      <Chrome home={home} lenis={lenis} theme={theme} onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
+      <motion.div key={path} initial={reducedMotion ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, ease }}>
+        {page ? <CasePage study={page.study} next={page.next} /> : <Home ready={ready} />}
+      </motion.div>
     </>
   )
 }

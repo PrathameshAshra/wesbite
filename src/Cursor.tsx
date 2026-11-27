@@ -1,37 +1,62 @@
 import { useEffect, useRef } from 'react'
 import { reducedMotion } from './scroll'
 
-// Custom pointer: an arrow that tracks the mouse exactly, plus a soft dot that trails behind it.
+// iPad-style pointer, like the reference: a soft translucent circle that follows the mouse and,
+// over a link or button, morphs into a highlight around it (pulled slightly toward the mouse).
 // Desktop mice only; touch, pens and reduced-motion visitors keep the system cursor.
 const enabled = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reducedMotion
 
+const DOT = 18
+const PAD = 6 // highlight padding around a hovered element
+const PULL = 0.12 // how far the highlight leans toward the mouse
+const TARGETS = 'a, button, [role="button"]'
+
 export function Cursor() {
-  const arrow = useRef<HTMLDivElement>(null)
-  const dot = useRef<HTMLDivElement>(null)
+  const el = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!enabled()) return
+    const ptr = el.current
+    if (!ptr) throw new Error('Cursor element missing')
     document.documentElement.classList.add('custom-cursor')
-    const pos = { x: -100, y: -100, dx: -100, dy: -100 }
+
+    const mouse = { x: -100, y: -100 }
+    const cur = { x: -100, y: -100, w: DOT, h: DOT, r: DOT / 2 }
+    let target: HTMLElement | null = null
     let raf = 0
 
     const onMove = (e: PointerEvent) => {
-      pos.x = e.clientX
-      pos.y = e.clientY
-      const interactive = (e.target as Element).closest('a, button, [role="button"], .media-wrap')
-      arrow.current?.classList.toggle('over', !!interactive)
-      arrow.current?.classList.add('on')
-      dot.current?.classList.add('on')
+      mouse.x = e.clientX
+      mouse.y = e.clientY
+      target = (e.target as Element).closest<HTMLElement>(TARGETS)
+      ptr.classList.add('on')
+      ptr.classList.toggle('is-block', !!target)
     }
-    const onLeave = () => {
-      arrow.current?.classList.remove('on')
-      dot.current?.classList.remove('on')
-    }
+    const onLeave = () => ptr.classList.remove('on')
+
     const frame = () => {
-      pos.dx += (pos.x - pos.dx) * 0.18
-      pos.dy += (pos.y - pos.dy) * 0.18
-      if (arrow.current) arrow.current.style.transform = `translate(${pos.x}px, ${pos.y}px)`
-      if (dot.current) dot.current.style.transform = `translate(${pos.dx}px, ${pos.dy}px)`
+      let goal = { x: mouse.x - DOT / 2, y: mouse.y - DOT / 2, w: DOT, h: DOT, r: DOT / 2 }
+      if (target && target.isConnected) {
+        const b = target.getBoundingClientRect()
+        const radius = parseFloat(getComputedStyle(target).borderRadius) || 12
+        goal = {
+          x: b.left - PAD + (mouse.x - (b.left + b.width / 2)) * PULL,
+          y: b.top - PAD + (mouse.y - (b.top + b.height / 2)) * PULL,
+          w: b.width + PAD * 2,
+          h: b.height + PAD * 2,
+          r: Math.min(radius + PAD, (b.height + PAD * 2) / 2),
+        }
+      }
+      const k = target ? 0.25 : 0.5
+      cur.x += (goal.x - cur.x) * k
+      cur.y += (goal.y - cur.y) * k
+      cur.w += (goal.w - cur.w) * 0.25
+      cur.h += (goal.h - cur.h) * 0.25
+      cur.r += (goal.r - cur.r) * 0.25
+      ptr.style.transform = `translate(${cur.x}px, ${cur.y}px)`
+      ptr.style.width = `${cur.w}px`
+      ptr.style.height = `${cur.h}px`
+      ptr.style.borderRadius = `${cur.r}px`
       raf = requestAnimationFrame(frame)
     }
     window.addEventListener('pointermove', onMove, { passive: true })
@@ -45,14 +70,5 @@ export function Cursor() {
     }
   }, [])
 
-  return (
-    <>
-      <div ref={dot} className="cursor-dot" aria-hidden />
-      <div ref={arrow} className="cursor-arrow" aria-hidden>
-        <svg viewBox="0 0 24 28" width="24" height="28">
-          <path d="M2 2 L2 22 L7.5 17 L11 25.5 L14.5 24 L11 15.8 L18.5 15.5 Z" fill="#fff" stroke="#0b1626" strokeWidth="1.6" strokeLinejoin="round" />
-        </svg>
-      </div>
-    </>
-  )
+  return <div ref={el} className="ipad-pointer" aria-hidden />
 }

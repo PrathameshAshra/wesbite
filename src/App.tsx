@@ -179,16 +179,29 @@ function WorkRail({ go }: { go: (id: string) => (e: React.MouseEvent) => void })
   )
 }
 
-/* ---------- Testimonials (hidden until real quotes exist) ---------- */
+/* ---------- Testimonials ---------- */
 
+// Real quotes only. Until there are some, an invite card asks past clients for one.
 function Testimonials() {
-  if (testimonials.length === 0) return null
   return (
     <section className="said" id="testimonials" data-snap>
       <Reveal>
         <h2 className="headline">That’s what they said.</h2>
       </Reveal>
-      <Notes items={testimonials} />
+      <div className="said-col">
+        {testimonials.length > 0 && <Notes items={testimonials} />}
+        <a className="note invite" href={`mailto:${site.contact.email}?subject=${encodeURIComponent('A few words about working together')}`}>
+          <span className="note-face" aria-hidden>
+            ✍︎
+          </span>
+          <span className="note-body">
+            <span className="note-who">
+              <strong>Worked with me?</strong>
+            </span>
+            <span className="note-quote">Send a line or two about how it went. It’ll show up right here.</span>
+          </span>
+        </a>
+      </div>
     </section>
   )
 }
@@ -228,7 +241,7 @@ function Contact() {
 const NAV = [
   { id: 'work', label: 'Work' },
   { id: 'side-quests', label: 'Side Quests' },
-  ...(testimonials.length > 0 ? [{ id: 'testimonials', label: 'Testimonials' }] : []),
+  { id: 'testimonials', label: 'Testimonials' },
   { id: 'build', label: 'What I build' },
 ]
 

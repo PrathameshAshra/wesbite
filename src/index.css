@@ -185,7 +185,12 @@ p { text-wrap: pretty; }
 .tile-strip { position: absolute; top: -150px; height: 300px; overflow: hidden; backface-visibility: hidden; }
 .tile-face {
   position: absolute; top: 0; width: 420px; height: 300px; border-radius: 14px; overflow: hidden; padding: 20px 26px 0;
-  background: linear-gradient(140deg, var(--g1), var(--g2));
+  /* Gradient with character: film grain, a fine dot grid and a soft light bloom. */
+  background:
+    url('/grain.png'),
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.22) 1px, transparent 1.4px) 0 0 / 14px 14px,
+    radial-gradient(120% 90% at 15% 0%, rgba(255, 255, 255, 0.35), transparent 55%),
+    linear-gradient(140deg, var(--g1), var(--g2));
 }
 .tile-inner { height: 100%; border-radius: 10px 10px 0 0; overflow: hidden; box-shadow: 0 12px 30px rgba(8, 28, 64, 0.28); }
 .t-shot { position: relative; height: 100%; }

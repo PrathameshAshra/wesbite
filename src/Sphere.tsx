@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { work, bannerShots, type CaseStudy } from './content'
+import { work, bannerProjects, type BannerProject, type CaseStudy } from './content'
 import { reducedMotion } from './scroll'
 
 // A wall of work tiles wrapped around the viewer, like standing inside a sphere.
@@ -35,19 +35,18 @@ const BACKDROPS = [
   ['#ffd25e', '#ff5d8f'],
 ]
 
-// Every 4th tile (staggered by row) is a real screenshot instead of a mock screen,
-// alternating between website shots and app-store shots.
-type ShotKind = keyof typeof bannerShots
-const shotKind = (c: number, r: number): ShotKind | null => ((c + r * 2) % 4 === 0 ? ((Math.floor(c / 4) + r) % 2 === 0 ? 'web' : 'app') : null)
+// Every 4th tile (staggered by row) is a real project, cycling through its own screenshots.
+const isShotTile = (c: number, r: number) => (c + r * 2) % 4 === 0
 const SHOT_MS = 2400
 
-// The current frame of a tile's slideshow; keyed by src so each new frame fades in.
-function ShotTile({ kind, frame }: { kind: ShotKind; frame: number }) {
-  const list = bannerShots[kind]
-  const src = list[frame % list.length]
+// The project's current frame; keyed by src so each new frame fades in.
+function ShotTile({ project, frame }: { project: BannerProject; frame: number }) {
+  const shot = project.shots[frame % project.shots.length]
   return (
-    <div className={`t-shot t-shot-${kind}`}>
-      <img key={src} src={src} alt="" />
+    <div className={`tile-inner k-shot k-shot-${shot.kind}`}>
+      <div className="t-shot">
+        <img key={shot.src} src={shot.src} alt="" />
+      </div>
     </div>
   )
 }
@@ -115,9 +114,9 @@ export function Sphere() {
     return () => clearInterval(id)
   }, [])
 
-  const layout = useMemo(
-    () =>
-      ROWS.flatMap((phi, r) =>
+  const layout = useMemo(() => {
+    let shots = 0
+    return ROWS.flatMap((phi, r) =>
         Array.from({ length: COLS }, (_, c) => ({
           phi,
           base: c * (360 / COLS),
@@ -125,11 +124,11 @@ export function Sphere() {
           kind: KINDS[(c * 3 + r) % KINDS.length],
           backdrop: BACKDROPS[(c * 2 + r * 3) % BACKDROPS.length],
           n: c + r,
-          shot: shotKind(c, r),
+          // Handed out in order, so neighbouring shot tiles show different projects.
+          project: isShotTile(c, r) ? bannerProjects[shots++ % bannerProjects.length] : null,
         })),
-      ),
-    [],
-  )
+    )
+  }, [])
 
   useEffect(() => {
     const look = { x: 0, y: 0, tx: 0, ty: 0 }
@@ -209,10 +208,8 @@ export function Sphere() {
                   className="tile-face"
                   style={{ left: -s * STRIP_W, '--accent': t.study.accent, '--g1': t.backdrop[0], '--g2': t.backdrop[1] } as React.CSSProperties}
                 >
-                  {t.shot ? (
-                    <div className={`tile-inner k-shot k-shot-${t.shot}`}>
-                      <ShotTile kind={t.shot} frame={frame + t.n} />
-                    </div>
+                  {t.project ? (
+                    <ShotTile project={t.project} frame={frame + t.n} />
                   ) : (
                     <div className={`tile-inner k-${t.kind}`}>
                       <TileBody study={t.study} kind={t.kind} n={t.n} />

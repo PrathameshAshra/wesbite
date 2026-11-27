@@ -204,20 +204,22 @@ export const testimonials: Testimonial[] = [
   },
 ]
 
-// Real screenshots for the hero sphere. Each shot tile cycles through its list like a GIF.
-export const bannerShots = {
-  web: ['/shots/spontaa-web.jpg', '/shots/pearbae-web.jpg', '/shots/tdd-web.jpg', '/shots/chandan-web.jpg', '/shots/svalife-web.jpg'],
-  app: [
-    '/shots/spontaa-app-1.jpg',
-    '/shots/pearbae-app-1.jpg',
-    '/shots/spontaa-app-2.jpg',
-    '/shots/pearbae-app-2.jpg',
-    '/shots/spontaa-app-3.jpg',
-    '/shots/pearbae-app-3.jpg',
-    '/shots/spontaa-app-4.jpg',
-    '/shots/pearbae-app-4.jpg',
-    '/shots/spontaa-app-5.jpg',
-    '/shots/pearbae-app-5.jpg',
-    '/shots/spontaa-app-6.jpg',
-  ],
-}
+// Real screenshots for the hero sphere. Each shot tile is one project and cycles through
+// only that project's frames, like a GIF. `web` frames fill the card; `app` frames sit as a phone.
+export type Shot = { src: string; kind: 'web' | 'app' }
+export type BannerProject = { name: string; shots: Shot[] }
+const web = (src: string): Shot => ({ src: `/shots/${src}.jpg`, kind: 'web' })
+const app = (src: string): Shot => ({ src: `/shots/${src}.jpg`, kind: 'app' })
+export const bannerProjects: BannerProject[] = [
+  {
+    name: 'Spontaa',
+    shots: [web('spontaa-web'), app('spontaa-app-1'), web('spontaa-web-2'), app('spontaa-app-2'), app('spontaa-app-3'), app('spontaa-app-4'), app('spontaa-app-5'), app('spontaa-app-6')],
+  },
+  {
+    name: 'Pearbae',
+    shots: [web('pearbae-web'), app('pearbae-app-1'), web('pearbae-web-2'), app('pearbae-app-2'), web('pearbae-web-3'), app('pearbae-app-3'), app('pearbae-app-4'), app('pearbae-app-5')],
+  },
+  { name: 'The Data Duck', shots: [web('tdd-web'), web('tdd-web-2'), web('tdd-web-3')] },
+  { name: 'Chandan Mukhwas', shots: [web('chandan-web'), web('chandan-web-2'), web('chandan-web-3')] },
+  { name: 'Sva Life', shots: [web('svalife-web'), app('svalife-grid')] },
+]

@@ -360,7 +360,9 @@ main, .footer { position: relative; z-index: 1; }
 
 /* ---------- Footer scene ---------- */
 .footer { position: relative; z-index: 1; height: 100svh; min-height: 560px; overflow: hidden; }
-.footer-sig { position: absolute; left: 4%; right: 4%; top: 18%; color: rgba(255, 255, 255, 0.22); }
+/* Sits fully in the sky, clear of the hill. Opacity is on the whole shape (not the colour),
+   so the letter fill and its outline don't stack into a hollow double line. */
+.footer-sig { position: absolute; left: 50%; bottom: 46%; width: min(74%, 1120px); translate: -50% 0; color: #fff; opacity: 0.26; }
 .footer-sig svg { width: 100%; height: auto; display: block; }
 .hill { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 62%; }
 .flower-head { animation: sway 4s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 50% 100%; }
@@ -570,7 +572,7 @@ main, .footer { position: relative; z-index: 1; }
   html { scroll-snap-type: y mandatory; }
   [data-snap] { scroll-snap-align: start; scroll-snap-stop: always; }
   .footer { scroll-snap-align: start; }
-  .footer-sig { top: 22%; left: 8%; right: 10%; }
+  .footer-sig { width: 86%; bottom: 52%; }
   .hill { height: 55%; }
   .project { padding: 88px 0 96px; }
   .teaser { aspect-ratio: 4 / 5; max-height: calc(100svh - 380px); }

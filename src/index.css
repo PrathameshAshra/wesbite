@@ -780,12 +780,11 @@ main, .footer { position: relative; z-index: 1; }
 }
 
 /* ---------- Line-by-line reveal (Reveal.tsx) ---------- */
-/* Each word or piece wipes over its own width; its delay (set per piece from its line and x)
-   makes every line sweep left → right in turn, and right → left on the way out. */
+/* Each piece is uncovered while the line's edge crosses it: linear, with its start and length
+   set from its position on the line, so the whole line reads as one continuous wipe. */
 .rv-w { display: inline-block; }
 .rv .rv-u {
-  clip-path: inset(-25% 100% -25% 0%); opacity: 0.3; translate: -10px 0;
-  transition: clip-path 0.45s var(--ease), opacity 0.45s var(--ease), translate 0.45s var(--ease);
-  transition-delay: var(--rout, 0s);
+  clip-path: inset(-25% 100% -25% 0%);
+  transition: clip-path var(--rout-d, 0.2s) linear var(--rout, 0s);
 }
-.rv.shown .rv-u { clip-path: inset(-25% 0% -25% 0%); opacity: 1; translate: 0 0; transition-delay: var(--rin, 0s); }
+.rv.shown .rv-u { clip-path: inset(-25% 0% -25% 0%); transition: clip-path var(--rin-d, 0.3s) linear var(--rin, 0s); }

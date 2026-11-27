@@ -1,16 +1,18 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { reducedMotion } from './scroll'
 
-// Line-by-line wipe. Text is split into words and each word is timed by the line it lands on
-// (measured after wrapping, re-measured on resize) and how far along that line it sits, so each
-// line wipes in left → right, one line after another. Leaving the view (either direction)
-// plays it in reverse: right → left, bottom line first. Buttons, chips, images and gradient
-// text can't be split, so each wipes as one piece in its line slot.
+// Line-by-line wipe. Text is split into words, then grouped into the lines they land on
+// (measured after wrapping, re-measured on resize). Each line is revealed by one edge that
+// sweeps across it left → right at a steady speed: every word starts when the edge reaches
+// it and finishes when the edge passes it, so the line reads as a single wipe. Lines go one
+// after another. Leaving the view (either direction) runs it backwards: right → left, bottom
+// line first. Buttons, chips, images and gradient text can't be split, so the edge crosses
+// each as one piece.
 
-const LINE_IN = 0.14 // s between lines on the way in
-const SWEEP_IN = 0.4 // s for the wipe to cross a line
-const LINE_OUT = 0.07
-const SWEEP_OUT = 0.22
+const LINE_IN = 0.22 // s between line starts on the way in
+const SWEEP_IN = 0.6 // s for the edge to cross a full line
+const LINE_OUT = 0.1
+const SWEEP_OUT = 0.35
 
 // Pieces that wipe whole instead of word by word.
 function isUnit(el: Element) {
@@ -53,26 +55,34 @@ function split(root: HTMLElement) {
   visit(root)
 }
 
-// Time every piece by its line (top position, after wrapping) and its x across the block.
+// Group pieces into lines (by top, after wrapping), then time each piece by where it sits
+// along its line, so a single edge crosses the line at a steady speed.
 function measure(root: HTMLElement, delay: number) {
-  const box = root.getBoundingClientRect()
   const pieces = [...root.querySelectorAll<HTMLElement>('.rv-u')].map((el) => ({ el, r: el.getBoundingClientRect() }))
   pieces.sort((a, b) => a.r.top - b.r.top)
-  const lines: number[] = []
-  let line = -1
+  const lines: (typeof pieces)[] = []
   let lineTop = -Infinity
   for (const p of pieces) {
     if (p.r.top - lineTop > 8) {
-      line++
+      lines.push([])
       lineTop = p.r.top
     }
-    lines.push(line)
+    lines[lines.length - 1].push(p)
   }
-  const last = Math.max(line, 0)
-  pieces.forEach((p, i) => {
-    const x = box.width ? (p.r.left - box.left) / box.width : 0
-    p.el.style.setProperty('--rin', `${delay + lines[i] * LINE_IN + x * SWEEP_IN}s`)
-    p.el.style.setProperty('--rout', `${(last - lines[i]) * LINE_OUT + (1 - x) * SWEEP_OUT}s`)
+  const last = lines.length - 1
+  lines.forEach((line, li) => {
+    const left = Math.min(...line.map((p) => p.r.left))
+    const right = Math.max(...line.map((p) => p.r.right))
+    const width = Math.max(right - left, 1)
+    for (const p of line) {
+      const from = (p.r.left - left) / width
+      const span = p.r.width / width
+      const to = (right - p.r.right) / width
+      p.el.style.setProperty('--rin', `${delay + li * LINE_IN + from * SWEEP_IN}s`)
+      p.el.style.setProperty('--rin-d', `${span * SWEEP_IN}s`)
+      p.el.style.setProperty('--rout', `${(last - li) * LINE_OUT + to * SWEEP_OUT}s`)
+      p.el.style.setProperty('--rout-d', `${span * SWEEP_OUT}s`)
+    }
   })
 }
 

@@ -113,7 +113,7 @@ function Statement() {
     <section className="statement" data-snap>
       <Toys />
       {site.statement.map((line, i) => (
-        <Reveal key={line} delay={i * 0.08}>
+        <Reveal key={line} delay={i * 0.45}>
           <p className="headline">{line}</p>
         </Reveal>
       ))}
@@ -122,11 +122,11 @@ function Statement() {
         initial={reducedMotion ? false : { opacity: 0, scale: 0.6, rotate: -6 }}
         whileInView={{ opacity: 1, scale: 1, rotate: -3 }}
         viewport={{ once: true, margin: '-15% 0px' }}
-        transition={{ type: 'spring', stiffness: 140, damping: 12, delay: 0.2 }}
+        transition={{ type: 'spring', stiffness: 140, damping: 12, delay: 0.9 }}
       >
         {site.statementWord}
       </motion.p>
-      <Reveal delay={0.3}>
+      <Reveal delay={1.1}>
         <p className="about-line">{site.about}</p>
       </Reveal>
     </section>

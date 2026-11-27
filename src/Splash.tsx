@@ -41,7 +41,7 @@ export function Splash({ onReveal }: { onReveal: () => void }) {
   // Phase 1 → 2: measure the logo, then start the flight. The landing has to be in state
   // before the splash unmounts, or the exit animation never sees it.
   useEffect(() => {
-    if (skip) return
+    if (skip || landing) return
     const fly = () => {
       const logo = document.querySelector('.logo-sig')
       if (!logo || !sig.current) throw new Error('Splash needs the .logo-sig logo to land on')
@@ -64,7 +64,7 @@ export function Splash({ onReveal }: { onReveal: () => void }) {
       clearTimeout(t)
       events.forEach((e) => window.removeEventListener(e, early))
     }
-  }, [skip])
+  }, [skip, landing])
 
   useEffect(() => {
     if (!landing) return

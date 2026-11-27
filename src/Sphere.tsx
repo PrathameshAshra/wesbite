@@ -161,6 +161,8 @@ export function Sphere() {
               tiles.current[i] = el
             }}
             className="tile"
+            // Rows below the horizon sit faded behind the headline; only the clear rows are selectable.
+            data-select={t.phi <= 0 ? t.study.name : undefined}
             style={{ '--accent': t.study.accent, '--g1': t.backdrop[0], '--g2': t.backdrop[1] } as React.CSSProperties}
           >
             <div className={`tile-inner k-${t.kind}`}>

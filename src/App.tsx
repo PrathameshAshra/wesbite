@@ -13,6 +13,7 @@ import { FooterScene } from './FooterScene'
 import { Cursor } from './Cursor'
 import { WorkVisual } from './WorkVisual'
 import { CasePage } from './CasePage'
+import { Branding } from './Branding'
 import { linkTo, navigate, usePath } from './router'
 
 const ease = [0.32, 0.72, 0, 1] as const
@@ -132,7 +133,7 @@ function Work() {
               View project <span aria-hidden>→</span>
             </a>
           </Reveal>
-          <a className="media-wrap" href={`/work/${s.id}`} onClick={linkTo(`/work/${s.id}`)} aria-label={`Open the ${s.name} case study`}>
+          <a className="media-wrap" data-select={s.name} href={`/work/${s.id}`} onClick={linkTo(`/work/${s.id}`)} aria-label={`Open the ${s.name} case study`}>
             <WorkVisual study={s} />
           </a>
         </article>
@@ -340,17 +341,21 @@ function Home({ ready }: { ready: boolean }) {
   )
 }
 
-const caseFor = (path: string) => {
+type Route = { kind: 'home' } | { kind: 'branding' } | { kind: 'case'; study: (typeof work)[number]; next: (typeof work)[number] }
+
+function route(path: string): Route {
+  if (/^\/branding\/?$/.test(path)) return { kind: 'branding' }
   const m = path.match(/^\/work\/([^/]+)\/?$/)
-  if (!m) return null
-  const i = work.findIndex((w) => w.id === m[1])
-  return i < 0 ? null : { study: work[i], next: work[(i + 1) % work.length] }
+  const i = m ? work.findIndex((w) => w.id === m[1]) : -1
+  return i < 0 ? { kind: 'home' } : { kind: 'case', study: work[i], next: work[(i + 1) % work.length] }
 }
+
+const TITLES = { home: 'Engineer turned Product Manager', branding: 'Brand kit' }
 
 export default function App() {
   const path = usePath()
-  const page = caseFor(path)
-  const home = !page
+  const page = route(path)
+  const home = page.kind === 'home'
   const [lenis, setLenis] = useState<Lenis | null>(null)
   const [theme, setTheme] = useState<Theme>(initialTheme)
   const [ready, setReady] = useState(false)
@@ -366,7 +371,7 @@ export default function App() {
   }, [home, path])
 
   useEffect(() => {
-    document.title = page ? `${page.study.name} · ${site.name}` : `${site.name} · Engineer turned Product Manager`
+    document.title = page.kind === 'case' ? `${page.study.name} · ${site.name}` : `${site.name} · ${TITLES[page.kind]}`
   }, [page])
 
   useEffect(() => {
@@ -395,7 +400,9 @@ export default function App() {
       <Backdrop />
       <Chrome home={home} lenis={lenis} theme={theme} onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
       <motion.div key={path} initial={reducedMotion ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, ease }}>
-        {page ? <CasePage study={page.study} next={page.next} /> : <Home ready={ready} />}
+        {page.kind === 'case' && <CasePage study={page.study} next={page.next} />}
+        {page.kind === 'branding' && <Branding />}
+        {page.kind === 'home' && <Home ready={ready} />}
       </motion.div>
     </>
   )

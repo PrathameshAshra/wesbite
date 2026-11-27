@@ -1,5 +1,6 @@
 import { site } from './content'
 import { Signature } from './Signature'
+import { linkTo } from './router'
 
 // Our own illustrated ending: a giant faded signature behind a flowery hill, a butterfly, and the links on the grass.
 
@@ -89,6 +90,7 @@ export function FooterScene() {
           <a href={c.x} target="_blank" rel="noreferrer">X</a>
           <a href={c.youtube} target="_blank" rel="noreferrer">YouTube</a>
           {c.resume && <a href={c.resume} target="_blank" rel="noreferrer">Resume</a>}
+          <a href="/branding" onClick={linkTo('/branding')}>Brand kit</a>
         </nav>
         <p>
           © {new Date().getFullYear()} {site.name}

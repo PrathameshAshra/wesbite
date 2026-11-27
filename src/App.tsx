@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import type Lenis from 'lenis'
-import { site, work, testimonials, draftTestimonials } from './content'
+import { site, work, testimonials } from './content'
 import { holdScroll, reducedMotion, startScroll, startSnap } from './scroll'
 import { applyTheme, initialTheme, type Theme } from './theme'
 import { Sphere } from './Sphere'
@@ -181,11 +181,7 @@ function WorkRail({ go }: { go: (id: string) => (e: React.MouseEvent) => void })
 
 /* ---------- Testimonials ---------- */
 
-// Real quotes only. Until there are some, an invite card asks past clients for one.
-// Drafts awaiting approval show only on /?preview, so they're never presented to visitors as real.
-const preview = new URLSearchParams(location.search).has('preview')
-const shownQuotes = preview ? [...testimonials, ...draftTestimonials] : testimonials
-
+// Client quotes, then an invite card asking other past clients for one.
 function Testimonials() {
   return (
     <section className="said" id="testimonials" data-snap>
@@ -193,7 +189,7 @@ function Testimonials() {
         <h2 className="headline">That’s what they said.</h2>
       </Reveal>
       <div className="said-col">
-        {shownQuotes.length > 0 && <Notes items={shownQuotes} />}
+        <Notes items={testimonials} />
         <a className="note invite" href={`mailto:${site.contact.email}?subject=${encodeURIComponent('A few words about working together')}`}>
           <span className="note-face" aria-hidden>
             ✍︎

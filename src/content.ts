@@ -102,10 +102,10 @@ export const work: CaseStudy[] = [
   },
   {
     id: 'energy',
-    eyebrow: 'Energy trading · embedded via The Data Duck',
-    name: 'Power trading',
+    eyebrow: 'Energy trading · embedded engineer',
+    name: 'The Data Duck',
     oneLiner: 'Five years embedded with a global power-trading firm, building the UIs its quants and developers trade on.',
-    role: 'Embedded engineer, outsourced via The Data Duck',
+    role: 'Embedded engineer',
     years: '5 years',
     metrics: [
       { value: '5 yrs', label: 'and counting' },

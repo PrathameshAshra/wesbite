@@ -19,10 +19,10 @@ const SPEED = 2.2 // degrees per second
 // Each card is a sticker on the inside of the sphere: built from vertical strips, each one
 // turned to sit on the surface, so the card's top and bottom edges follow the curve.
 const W = 420
-// Phones get 2 strips per card instead of 8: iOS Safari drops and redraws 3D layers when the
-// hero scrolls off screen, and 640 of them came back as a black flash. The curve barely shows on
-// a narrow screen anyway.
-const STRIPS = window.matchMedia('(max-width: 820px)').matches ? 2 : 8
+// Phones get one flat piece per card instead of 8 strips: iOS Safari left a dark crack along
+// every seam, and drops and redraws 3D layers when the hero scrolls off screen (a black flash).
+// The bend barely shows on a narrow screen anyway.
+const STRIPS = window.matchMedia('(max-width: 820px)').matches ? 1 : 8
 const STRIP_RAD = W / R / STRIPS
 const STRIP_DEG = STRIP_RAD * (180 / Math.PI)
 // Each flat strip spans the chord of its arc, so neighbours meet exactly.
@@ -199,7 +199,7 @@ export function Sphere() {
                 className="tile-strip"
                 style={{
                   left: -STRIP_W / 2,
-                  width: STRIP_W + 0.6, // a hair of overlap hides the seams between strips
+                  width: STRIP_W + (STRIPS > 1 ? 1.5 : 0), // overlap hides seams; content is offset by the chord, so it lines up
                   // Bend the card sideways first (strips around a vertical axis meet exactly at every
                   // height), then tilt the whole bent card up/down into its row. Tilting each strip
                   // before bending made strips overlap or gap away from the horizon, eating letters.

@@ -9,7 +9,7 @@ const CITIES = ['Mumbai', 'Pune', 'Bangalore', 'Delhi', 'Goa']
 function Events() {
   return (
     <div className="im im-events">
-      <small>Events platform · pan-India in 2 yrs</small>
+      <small>Spontaa · pan-India in 2 yrs</small>
       <div className="im-views">
         <b className="im-count" aria-hidden />
         <b className="im-million">1M+</b>

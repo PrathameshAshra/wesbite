@@ -14,8 +14,11 @@ export type CaseStudy = {
   outcome: string
   stack: string[]
   accent: string
-  // Stock photo from Unsplash (free licence), hotlinked by photo id. Replace with real screenshots later.
+  // Stock photo from Unsplash (free licence), hotlinked by photo id. Case page hero only.
   photo: { id: string; alt: string }
+  // The real product on the Work card: a website shot in a browser frame plus an app shot in a
+  // phone. Projects without screenshots (null) show their animated impact card instead.
+  showcase: { url: string; web: string; app: string } | null
 }
 
 export const site = {
@@ -48,9 +51,8 @@ export const work: CaseStudy[] = [
   {
     id: 'events',
     eyebrow: 'Founding developer · Consumer social',
-    // TODO: client name withheld until cleared
-    name: 'Events platform',
-    oneLiner: 'First developer on the founding team. Built every surface, then scaled it to live events across the country.',
+    name: 'Spontaa',
+    oneLiner: 'Founding developer. Took a spontaneous-plans app from zero to a pan-India launch in two years.',
     role: 'Lead developer, founding team',
     years: '2 years',
     metrics: [
@@ -71,12 +73,13 @@ export const work: CaseStudy[] = [
     stack: ['React', 'React Native', 'Node.js', 'AWS', 'AI curation'],
     accent: '#ff8a3d',
     photo: { id: '1501281668745-f7f57925c3b4', alt: 'A crowd at a live concert, phones up filming the stage' },
+    showcase: { url: 'spontaa.ai', web: '/shots/spontaa-web-lg.jpg', app: '/shots/spontaa-app-lg.jpg' },
   },
   {
     id: 'pearbae',
     eyebrow: 'Social app · India',
     name: 'Pearbae',
-    oneLiner: 'A trust-first social app: verified people, real-time chat and in-app calling.',
+    oneLiner: 'Shipped a trust-first social app in a year: every profile ID-verified, calls without sharing numbers.',
     role: 'Lead developer',
     years: '1 year build · just launched',
     metrics: [
@@ -95,12 +98,13 @@ export const work: CaseStudy[] = [
     stack: ['React Native', 'Node.js', 'WebRTC / VoIP', 'Real-time sync'],
     accent: '#ff5d8f',
     photo: { id: '1511632765486-a01980e01a18', alt: 'Four friends with arms around each other watching a sunset' },
+    showcase: { url: 'pearbae.com', web: '/shots/pearbae-web-lg.jpg', app: '/shots/pearbae-app-lg.jpg' },
   },
   {
     id: 'energy',
     eyebrow: 'Energy trading · via The Data Duck',
     name: 'Power trading',
-    oneLiner: 'Five years building the trading tools a power-trading desk relies on every day.',
+    oneLiner: 'Five years as the go-to developer behind a power-trading desk’s daily tools, across Europe and Asia.',
     role: 'Developer, long-term partner',
     years: '5 years',
     metrics: [
@@ -118,13 +122,14 @@ export const work: CaseStudy[] = [
     stack: ['TypeScript', 'Node.js', 'Data pipelines'],
     accent: '#4da3ff',
     photo: { id: '1473341304170-971dccb5ac1e', alt: 'Electricity pylons and power lines against an orange sunset' },
+    showcase: null,
   },
   {
     id: 'travel',
     eyebrow: 'Digital transformation · Travel',
     // TODO: agency name + impact numbers
     name: 'Travel, online',
-    oneLiner: 'Five decades of offline operations, rebuilt into one online flow from enquiry to trip.',
+    oneLiner: 'Took a 50-year-old travel agency fully online over four years, without the business ever stopping.',
     role: 'Tech lead',
     years: '4 years',
     metrics: [
@@ -143,6 +148,7 @@ export const work: CaseStudy[] = [
     stack: ['React', 'Node.js', 'Cloud'],
     accent: '#2ec4a6',
     photo: { id: '1512343879784-a960bf40e7f2', alt: 'A palm-lined tropical beach with turquoise water' },
+    showcase: null,
   },
 ]
 

@@ -18,7 +18,10 @@ const SPEED = 2.2 // degrees per second
 // Each card is a sticker on the inside of the sphere: built from vertical strips, each one
 // turned to sit on the surface, so the card's top and bottom edges follow the curve.
 const W = 420
-const STRIPS = 8
+// Phones get 2 strips per card instead of 8: iOS Safari drops and redraws 3D layers when the
+// hero scrolls off screen, and 640 of them came back as a black flash. The curve barely shows on
+// a narrow screen anyway.
+const STRIPS = window.matchMedia('(max-width: 820px)').matches ? 2 : 8
 const STRIP_W = W / STRIPS
 const STRIP_DEG = (W / R / STRIPS) * (180 / Math.PI)
 
@@ -130,12 +133,23 @@ export function Sphere() {
   const scene = useRef<HTMLDivElement>(null)
   const tiles = useRef<(HTMLDivElement | null)[]>([])
   const [frame, setFrame] = useState(0)
+  const drift = useRef(0)
+  // Nothing animates while the hero is off screen.
+  const [onScreen, setOnScreen] = useState(true)
 
   useEffect(() => {
-    if (reducedMotion) return
+    const el = root.current
+    if (!el) throw new Error('Sphere root missing')
+    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting))
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (reducedMotion || !onScreen) return
     const id = setInterval(() => setFrame((f) => f + 1), SHOT_MS)
     return () => clearInterval(id)
-  }, [])
+  }, [onScreen])
 
   const layout = useMemo(() => {
     let shots = 0
@@ -153,6 +167,7 @@ export function Sphere() {
   }, [])
 
   useEffect(() => {
+    if (!onScreen) return
     const look = { x: 0, y: 0, tx: 0, ty: 0 }
     const onMove = (e: PointerEvent) => {
       look.tx = (e.clientX / window.innerWidth - 0.5) * LOOK_X * 2
@@ -178,20 +193,19 @@ export function Sphere() {
 
     let raf = 0
     let last = performance.now()
-    let drift = 0
     const frame = (now: number) => {
       const dt = Math.min((now - last) / 1000, 0.05)
       last = now
-      if (!reducedMotion) drift += dt * SPEED
+      if (!reducedMotion) drift.current += dt * SPEED
       look.x += (look.tx - look.x) * Math.min(1, dt * 3)
       look.y += (look.ty - look.y) * Math.min(1, dt * 3)
       if (scene.current) {
-        scene.current.style.transform = `translateZ(var(--persp)) rotateX(${look.y}deg) rotateY(${look.x + drift}deg)`
+        scene.current.style.transform = `translateZ(var(--persp)) rotateX(${look.y}deg) rotateY(${look.x + drift.current}deg)`
       }
       layout.forEach((t, i) => {
         const el = tiles.current[i]
         if (!el) return
-        const theta = ((((t.base + drift) % 360) + 540) % 360) - 180
+        const theta = ((((t.base + drift.current) % 360) + 540) % 360) - 180
         el.style.visibility = Math.abs(theta) < visible ? 'visible' : 'hidden'
       })
       raf = requestAnimationFrame(frame)
@@ -202,7 +216,7 @@ export function Sphere() {
       window.removeEventListener('pointermove', onMove)
       ro.disconnect()
     }
-  }, [layout])
+  }, [layout, onScreen])
 
   return (
     <div className="sphere" ref={root} aria-hidden>

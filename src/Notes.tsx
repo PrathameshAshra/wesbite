@@ -53,7 +53,8 @@ export function Notes({ items }: { items: Testimonial[] }) {
                 layout
                 className={`note ${isOpen ? 'open' : ''}`}
                 style={{ borderRadius: 22 }}
-                transition={{ layout: grow }}
+                transition={{ layout: grow, scale: { duration: 0.3, ease } }}
+                whileHover={isOpen ? undefined : { scale: 1.03 }}
                 onClick={() => setOpen(isOpen ? null : i)}
                 aria-expanded={isOpen}
               >

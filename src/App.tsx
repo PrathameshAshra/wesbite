@@ -181,7 +181,7 @@ function WorkRail({ go }: { go: (id: string) => (e: React.MouseEvent) => void })
 
 /* ---------- Testimonials ---------- */
 
-// Client quotes, then an invite card asking other past clients for one.
+// Client quotes, shown to every visitor.
 function Testimonials() {
   return (
     <section className="said" id="testimonials" data-snap>
@@ -190,17 +190,6 @@ function Testimonials() {
       </Reveal>
       <div className="said-col">
         <Notes items={testimonials} />
-        <a className="note invite" href={`mailto:${site.contact.email}?subject=${encodeURIComponent('A few words about working together')}`}>
-          <span className="note-face" aria-hidden>
-            ✍︎
-          </span>
-          <span className="note-body">
-            <span className="note-who">
-              <strong>Worked with me?</strong>
-            </span>
-            <span className="note-quote">Send a line or two about how it went. It’ll show up right here.</span>
-          </span>
-        </a>
       </div>
     </section>
   )

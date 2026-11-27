@@ -180,6 +180,13 @@ export type Testimonial = { name: string; role: string; short: string; quote: st
 // Client quotes, shown by company name to every visitor.
 export const testimonials: Testimonial[] = [
   {
+    name: 'The Data Duck',
+    role: 'Power-trading desk',
+    short: 'Five years of trading tools our desk relies on every day.',
+    quote:
+      'Prathamesh has built and looked after the tools our power-trading desk uses daily for five years. Reliable, quick to pick up new needs, and he understands the business, not just the ticket.',
+  },
+  {
     name: 'Pearbae',
     role: 'iOS social app',
     short: 'Took Pearbae from idea to App Store with trust built in.',
@@ -187,17 +194,10 @@ export const testimonials: Testimonial[] = [
       'Prathamesh built Pearbae end to end: Aadhaar verification, in-app calling and real-time chat. He thought about safety and trust like a product person, not just a developer, and shipped it in a year.',
   },
   {
-    name: 'Travel agency', // TODO: the agency's actual name
+    name: 'J.M. Mehta Travel & Tour Co. Pvt. Ltd.',
     role: '50-year-old travel agency',
     short: 'Took our 50-year-old business fully online.',
     quote:
       'We had run offline for five decades. Over four years Prathamesh rebuilt everything into one online flow, from enquiry to trip, without breaking how our team actually works. Today we are fully online.',
-  },
-  {
-    name: 'The Data Duck',
-    role: 'Power-trading desk',
-    short: 'Five years of trading tools our desk relies on every day.',
-    quote:
-      'Prathamesh has built and looked after the tools our power-trading desk uses daily for five years. Reliable, quick to pick up new needs, and he understands the business, not just the ticket.',
   },
 ]

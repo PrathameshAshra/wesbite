@@ -333,9 +333,6 @@ main, .footer { position: relative; z-index: 1; }
 .said { max-width: 1000px; min-height: 100svh; margin: 0 auto; padding: 8rem var(--gutter); display: grid; grid-template-columns: 1fr 1.3fr; gap: 3rem; align-content: center; align-items: start; }
 .said .headline { text-align: left; font-size: clamp(2.5rem, 4.5vw, 4rem); }
 .said-col { display: flex; flex-direction: column; gap: 10px; }
-.note.invite { border-style: dashed; border-radius: 22px; background: rgba(255, 255, 255, 0.08); }
-.note.invite .note-quote { -webkit-line-clamp: unset; }
-.note.invite .note-face { font-size: var(--fs-lg); }
 .notes { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .notes li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .notes li.up { z-index: 70; } /* the open card rises above the blur */
@@ -367,6 +364,8 @@ main, .footer { position: relative; z-index: 1; }
 .note.open .note-quote { display: block; flex-basis: 100%; margin-top: 10px; line-height: var(--lh-body); }
 .note.open .note-body { display: contents; } /* quote spans the full card width under the name */
 .note-close {
+  /* Out of flow, so mounting/unmounting it never pushes the cards below. */
+  position: absolute; top: calc(100% + 12px);
   display: inline-flex; align-items: center; gap: 12px; padding: 0.9rem 3.5rem; border-radius: 999px; font-size: var(--fs-md); color: #fff;
   background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.35);
   -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);

@@ -778,3 +778,14 @@ main, .footer { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ---------- Line-by-line reveal (Reveal.tsx) ---------- */
+/* Each word or piece wipes over its own width; its delay (set per piece from its line and x)
+   makes every line sweep left → right in turn, and right → left on the way out. */
+.rv-w { display: inline-block; }
+.rv .rv-u {
+  clip-path: inset(-25% 100% -25% 0%); opacity: 0.3; translate: -10px 0;
+  transition: clip-path 0.45s var(--ease), opacity 0.45s var(--ease), translate 0.45s var(--ease);
+  transition-delay: var(--rout, 0s);
+}
+.rv.shown .rv-u { clip-path: inset(-25% 0% -25% 0%); opacity: 1; translate: 0 0; transition-delay: var(--rin, 0s); }

@@ -177,5 +177,31 @@ export const sideQuests: SideQuest[] = [
 // `short` is the one-liner on the collapsed card; `quote` is the full text when it expands.
 export type Testimonial = { name: string; role: string; short: string; quote: string; photo?: string }
 
-// TODO: real quotes only. The section stays hidden while this is empty.
+// Real, approved quotes only. These show to every visitor.
 export const testimonials: Testimonial[] = []
+
+// Drafts waiting for each client's approval. Only visible on /?preview, never to normal visitors.
+// Once a client approves, move their entry into `testimonials` with their real name and role.
+export const draftTestimonials: Testimonial[] = [
+  {
+    name: 'Pearbae founder',
+    role: 'Draft · awaiting approval',
+    short: 'Took Pearbae from idea to App Store with trust built in.',
+    quote:
+      'Prathamesh built Pearbae end to end: Aadhaar verification, in-app calling and real-time chat. He thought about safety and trust like a product person, not just a developer, and shipped it in a year.',
+  },
+  {
+    name: 'Travel agency owner',
+    role: 'Draft · awaiting approval',
+    short: 'Took our 50-year-old business fully online.',
+    quote:
+      'We had run offline for five decades. Over four years Prathamesh rebuilt everything into one online flow, from enquiry to trip, without breaking how our team actually works. Today we are fully online.',
+  },
+  {
+    name: 'The Data Duck',
+    role: 'Draft · awaiting approval',
+    short: 'Five years of trading tools our desk relies on every day.',
+    quote:
+      'Prathamesh has built and looked after the tools our power-trading desk uses daily for five years. Reliable, quick to pick up new needs, and he understands the business, not just the ticket.',
+  },
+]

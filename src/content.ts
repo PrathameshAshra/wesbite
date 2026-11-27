@@ -37,8 +37,8 @@ export const site = {
     call: 'https://meetings-na2.hubspot.com/prathamesh-ashra?uuid=8213bdde-e0dc-404e-80fb-1cb748c9ffbe',
     // TODO: confirm LinkedIn slug; X and YouTube still placeholders
     linkedin: 'https://www.linkedin.com/in/prathamesh-ashra-b2318bab/',
-    x: 'https://x.com/',
-    youtube: 'https://www.youtube.com/',
+    x: '', // TODO: X profile
+    youtube: '', // TODO: channel URL
     // TODO: resume PDF in /public
     resume: '',
   },
@@ -146,6 +146,7 @@ export const work: CaseStudy[] = [
   },
 ]
 
+// The button only shows once `href` is a real link.
 export type SideQuest = { name: string; blurb: string; cta: string; href: string; accent: string }
 
 // TODO: real links
@@ -154,21 +155,21 @@ export const sideQuests: SideQuest[] = [
     name: 'Content-Story',
     blurb: 'Stories, but for every platform at once. Post once, show up everywhere.',
     cta: 'Join the beta',
-    href: '#',
+    href: '', // TODO: beta sign-up link
     accent: '#ff7a59',
   },
   {
     name: 'Quantbook',
     blurb: 'A notebook for backtesting Indian equity strategies, hedged with options.',
     cta: 'Open Quantbook',
-    href: 'https://quant.prathameshashra.com',
+    href: '', // TODO: quant.prathameshashra.com is down since the server wipe
     accent: '#7c5cff',
   },
   {
     name: 'The Channel',
     blurb: 'Long-form talks on building AI products, from an engineer-turned-PM in India.',
     cta: 'Watch on YouTube',
-    href: 'https://www.youtube.com/',
+    href: '', // TODO: channel URL
     accent: '#ff3b3b',
   },
 ]

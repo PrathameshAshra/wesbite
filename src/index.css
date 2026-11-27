@@ -156,7 +156,8 @@ p { text-wrap: pretty; }
   padding: 0.6rem 1rem; border-radius: 999px; font-size: var(--fs-sm); font-weight: 500; line-height: 1.25; white-space: nowrap;
   transition: background-color 0.2s var(--ease);
 }
-.pill a:hover, .pill a.on { background: rgba(255, 255, 255, 0.16); }
+.pill a:hover { background: rgba(255, 255, 255, 0.14); }
+.pill a.on { background: rgba(255, 255, 255, 0.24); font-weight: 600; }
 .pill a.cta { background: #fff; color: #000; }
 
 /* ---------- Splash ---------- */
@@ -371,7 +372,7 @@ main, .footer { position: relative; z-index: 1; }
 /* ---------- What I build ---------- */
 .build { position: relative; }
 .build-pin { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.1em; padding: 6rem var(--gutter); }
-.build-item { opacity: 0.25; transition: opacity 0.4s var(--ease), transform 0.4s var(--ease); transform: scale(0.97); }
+.build-item { opacity: 0.35; transition: opacity 0.4s var(--ease), transform 0.4s var(--ease); transform: scale(0.97); }
 .build-item.on { opacity: 1; transform: none; }
 
 /* ---------- Contact ---------- */
@@ -413,12 +414,16 @@ main, .footer { position: relative; z-index: 1; }
 }
 .footer-links {
   position: absolute; left: 0; right: 0; bottom: calc(96px + env(safe-area-inset-bottom)); z-index: 3;
-  display: flex; flex-direction: column; align-items: center; gap: 0.6rem; text-align: center;
-  text-shadow: 0 1px 10px rgba(16, 40, 12, 0.8);
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem; text-align: center;
+  width: max-content; max-width: calc(100% - 2rem); margin: 0 auto; padding: 0.75rem 1.5rem; border-radius: 22px;
+  background: rgba(16, 40, 12, 0.42); border: 1px solid rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
 }
 .footer-links nav { display: flex; justify-content: center; gap: 1.75rem; flex-wrap: wrap; font-size: var(--fs-sm); font-weight: 500; }
 .footer-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.footer-links p { font-size: var(--fs-xs); }
+.footer-links p { font-size: var(--fs-xs); color: rgba(255, 255, 255, 0.85); }
+/* Night sky gets a moonlit hill, not a sunny one. */
+[data-theme='dark'] .hill { filter: brightness(0.55) saturate(0.8); }
 
 /* ---------- Custom cursor ---------- */
 .custom-cursor, .custom-cursor * { cursor: none !important; }
@@ -627,9 +632,7 @@ main, .footer { position: relative; z-index: 1; }
   .tz-metrics { left: 4%; top: 4%; gap: 6px; }
   .tz-metric { padding: 6px 10px; }
   .tz-metric strong { font-size: var(--fs-md); }
-  .work-rail { right: 8px; }
-  .rail-count { display: none; }
-  .rail-label { display: none; }
+  .work-rail { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

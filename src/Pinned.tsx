@@ -71,9 +71,11 @@ export function SideQuests() {
             </div>
             <div className="quest-copy">
               <p>{q.blurb}</p>
-              <a className="chip" href={q.href} target="_blank" rel="noreferrer">
-                {q.cta} <span aria-hidden>↗</span>
-              </a>
+              {q.href && (
+                <a className="chip" href={q.href} target="_blank" rel="noreferrer">
+                  {q.cta} <span aria-hidden>↗</span>
+                </a>
+              )}
             </div>
           </motion.div>
         ))}

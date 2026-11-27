@@ -87,8 +87,8 @@ export function FooterScene() {
         <nav aria-label="Elsewhere">
           <a href={`mailto:${c.email}`}>Email</a>
           <a href={c.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-          <a href={c.x} target="_blank" rel="noreferrer">X</a>
-          <a href={c.youtube} target="_blank" rel="noreferrer">YouTube</a>
+          {c.x && <a href={c.x} target="_blank" rel="noreferrer">X</a>}
+          {c.youtube && <a href={c.youtube} target="_blank" rel="noreferrer">YouTube</a>}
           {c.resume && <a href={c.resume} target="_blank" rel="noreferrer">Resume</a>}
           <a href="/branding" onClick={linkTo('/branding')}>Brand kit</a>
         </nav>

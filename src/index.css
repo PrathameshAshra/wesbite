@@ -136,7 +136,7 @@ p { text-wrap: pretty; }
   position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 40;
   color: #fff; display: block; line-height: 0; transition: opacity 0.2s var(--ease);
 }
-.logo-sig { width: 140px; height: auto; display: block; }
+.logo-sig { width: 140px; height: auto; display: block; filter: drop-shadow(0 1px 8px rgba(4, 10, 26, 0.6)); }
 [data-splash] .logo { opacity: 0; }
 [data-splash] body { overflow: hidden; }
 .theme {
@@ -165,9 +165,15 @@ p { text-wrap: pretty; }
 .splash .stars, .hero .stars { opacity: 1; }
 .splash-sig-wrap { width: 820px; max-width: 84vw; transform-origin: 50% 50%; }
 .splash-sig { width: 100%; height: auto; color: #fff; position: relative; display: block; }
-.sig-draw { fill-opacity: 0; stroke-dasharray: 1; stroke-dashoffset: 1; animation-name: draw, fill-in; animation-timing-function: linear, ease-out; animation-fill-mode: forwards; }
-@keyframes draw { to { stroke-dashoffset: 0; } }
-@keyframes fill-in { to { fill-opacity: 1; } }
+/* The signature writes itself: a soft-edged mask sweeps left to right, like ink following a pen. */
+.splash-sig {
+  -webkit-mask-image: linear-gradient(90deg, #000 44%, transparent 56%); mask-image: linear-gradient(90deg, #000 44%, transparent 56%);
+  -webkit-mask-size: 260% 100%; mask-size: 260% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: 100% 0; mask-position: 100% 0;
+  animation: write 1.9s cubic-bezier(0.45, 0.1, 0.3, 1) 0.2s forwards;
+  filter: drop-shadow(0 0 18px rgba(120, 170, 255, 0.35));
+}
+@keyframes write { to { -webkit-mask-position: 0 0; mask-position: 0 0; } }
 
 /* ---------- Hero: inside a sphere of tiles ---------- */
 .hero { background: linear-gradient(#04060e, #0e2d5c); position: relative; z-index: 1; height: 100svh; min-height: 620px; overflow: hidden; }

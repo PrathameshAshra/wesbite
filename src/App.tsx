@@ -369,11 +369,6 @@ export default function App() {
     document.title = page ? `${page.study.name} · ${site.name}` : `${site.name} · Engineer turned Product Manager`
   }, [page])
 
-  // The splash signature flies into the logo spot; keep the real logo hidden until it lands.
-  useEffect(() => {
-    document.documentElement.toggleAttribute('data-splash', !ready)
-  }, [ready])
-
   useEffect(() => {
     const l = startScroll()
     setLenis(l)
@@ -395,7 +390,7 @@ export default function App() {
 
   return (
     <>
-      <Splash onDone={onSplashDone} />
+      <Splash onReveal={onSplashDone} />
       <Cursor />
       <Backdrop />
       <Chrome home={home} lenis={lenis} theme={theme} onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />

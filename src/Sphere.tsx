@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { work, bannerProjects, type BannerProject, type CaseStudy } from './content'
+import { work, bannerProjects, type BannerProject } from './content'
 import { reducedMotion } from './scroll'
+import { ImpactCard, impactIsPhone } from './Impact'
 
 // A wall of work tiles wrapped around the viewer, like standing inside a sphere.
 // Pure CSS 3D: the scene sits at the camera, tiles are pushed out to radius R.
@@ -25,8 +26,6 @@ const STRIPS = window.matchMedia('(max-width: 820px)').matches ? 2 : 8
 const STRIP_W = W / STRIPS
 const STRIP_DEG = (W / R / STRIPS) * (180 / Math.PI)
 
-type Kind = 'dashboard' | 'phone' | 'metric' | 'list'
-const KINDS: Kind[] = ['dashboard', 'phone', 'metric', 'list']
 
 // Every 4th tile (staggered by row) is a real project, cycling through its own screenshots.
 const isShotTile = (c: number, r: number) => (c + r * 2) % 4 === 0
@@ -90,56 +89,6 @@ function Tacks({ n }: { n: number }) {
   )
 }
 
-function TileBody({ study, kind, n }: { study: CaseStudy; kind: Kind; n: number }) {
-  const m = study.metrics[n % study.metrics.length]
-  switch (kind) {
-    case 'dashboard':
-      return (
-        <div className="t-dash">
-          <aside>
-            <i /><i /><i /><i />
-          </aside>
-          <div>
-            <b className="t-title">{study.name}</b>
-            <div className="t-bars">
-              {[48, 72, 36, 88, 60, 95, 70].map((h, i) => (
-                <span key={i} style={{ height: `${h}%` }} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )
-    case 'phone':
-      return (
-        <div className="t-phone-wrap">
-          <div className="t-phone">
-            <span className="t-notch" />
-            <b>{m.value}</b>
-            <i /><i /><i />
-          </div>
-        </div>
-      )
-    case 'metric':
-      return (
-        <div className="t-metric">
-          <small>{study.eyebrow}</small>
-          <strong>{m.value}</strong>
-          <span>{m.label}</span>
-        </div>
-      )
-    case 'list':
-      return (
-        <div className="t-list">
-          <b className="t-title">{study.name}</b>
-          {study.built.slice(0, 3).map((b) => (
-            <p key={b}>
-              <i /> {b}
-            </p>
-          ))}
-        </div>
-      )
-  }
-}
 
 export function Sphere() {
   const root = useRef<HTMLDivElement>(null)
@@ -171,7 +120,6 @@ export function Sphere() {
           phi,
           base: c * (360 / COLS),
           study: work[(c + r * 3) % work.length],
-          kind: KINDS[(c * 3 + r) % KINDS.length],
           n: c + r,
           // Handed out in order, so neighbouring shot tiles show different projects.
           project: isShotTile(c, r) ? bannerProjects[shots++ % bannerProjects.length] : null,
@@ -232,7 +180,7 @@ export function Sphere() {
   }, [layout, onScreen])
 
   return (
-    <div className="sphere" ref={root} aria-hidden>
+    <div className={`sphere${onScreen ? '' : ' paused'}`} ref={root} aria-hidden>
       <div className="sphere-scene" ref={scene}>
         {layout.map((t, i) => (
           <div
@@ -262,10 +210,10 @@ export function Sphere() {
                     <ShotTile project={t.project} frame={frame + t.n} />
                   ) : (
                     <>
-                      <div className={`tile-inner k-${t.kind}`}>
-                        <TileBody study={t.study} kind={t.kind} n={t.n} />
+                      <div className={`tile-inner k-impact${impactIsPhone(t.study) ? ' k-impact-phone' : ''}`}>
+                        <ImpactCard study={t.study} />
                       </div>
-                      {t.kind === 'phone' && <Props />}
+                      {impactIsPhone(t.study) && <Props />}
                     </>
                   )}
                 </div>

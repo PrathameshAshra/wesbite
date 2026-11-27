@@ -231,34 +231,88 @@ p { text-wrap: pretty; }
 .tile-inner.k-shot-app { background: none; box-shadow: none; overflow: visible; }
 .t-shot-app img { left: 50%; top: 0; height: 100%; translate: -50% 0; border-radius: 16px 16px 0 0; box-shadow: 8px 14px 28px rgba(4, 16, 42, 0.38); }
 @keyframes shot-in { from { opacity: 0; } to { opacity: 1; } }
-.tile-inner.k-phone { background: none; box-shadow: none; overflow: visible; }
-.t-title { font-size: var(--fs-lg); font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; }
-.k-dashboard { background: #f7f7f5; color: #0b1626; }
-.t-dash { display: grid; grid-template-columns: 74px 1fr; height: 100%; }
-.t-dash aside { background: #fff; border-right: 1px solid #e8e8e4; padding: 18px 14px; display: flex; flex-direction: column; gap: 10px; }
-.t-dash aside i { height: 8px; border-radius: 4px; background: #e2e4e8; }
-.t-dash aside i:first-child { background: var(--accent); width: 60%; }
-.t-dash > div { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-.t-bars { flex: 1; display: flex; align-items: flex-end; gap: 10px; padding-top: 6px; border-bottom: 1px solid #e2e4e8; }
-.t-bars span { flex: 1; border-radius: 6px 6px 0 0; background: color-mix(in srgb, var(--accent) 75%, #fff); }
-.t-bars span:nth-child(odd) { background: var(--accent); }
-.t-phone-wrap { height: 100%; display: grid; place-items: start center; padding-top: 4px; }
 .t-phone {
   width: 150px; height: 310px; border-radius: 28px; background: #0b1626; padding: 46px 14px 14px; position: relative;
   display: flex; flex-direction: column; gap: 10px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); color: #fff;
 }
 .t-notch { position: absolute; top: 10px; left: 50%; translate: -50% 0; width: 54px; height: 16px; border-radius: 10px; background: #000; }
-.t-phone b { font-size: var(--fs-lg); font-weight: 800; color: var(--accent); line-height: 1; font-variant-numeric: tabular-nums; }
-.t-phone i { height: 40px; border-radius: 10px; background: rgba(255, 255, 255, 0.08); }
-.k-metric { background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--accent) 55%, transparent), transparent 60%), #0b1626; }
-.t-metric { height: 100%; padding: 24px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; color: #fff; }
-.t-metric small { color: var(--accent); text-transform: uppercase; letter-spacing: var(--track-caps); font-size: var(--fs-xs); font-weight: 600; margin-bottom: auto; }
-.t-metric strong { font-size: 4rem; font-weight: 800; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-.t-metric span { color: rgba(255, 255, 255, 0.75); font-size: var(--fs-xs); }
-.k-list { background: color-mix(in srgb, var(--accent) 16%, #fff); color: #0b1626; }
-.t-list { height: 100%; padding: 24px; display: flex; flex-direction: column; gap: 12px; }
-.t-list p { display: flex; gap: 10px; align-items: flex-start; font-size: var(--fs-xs); line-height: var(--lh-snug); background: #fff; border-radius: 12px; padding: 10px 12px; }
-.t-list p i { flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); margin-top: 4px; }
+
+/* ---------- Impact cards (work sphere) ---------- */
+/* Each loops on its own clock; everything pauses with the sphere when the hero is off screen. */
+.sphere.paused * { animation-play-state: paused !important; }
+.tile-inner.k-impact { background: #0b1626; color: #fff; }
+.tile-inner.k-impact-phone { background: none; box-shadow: none; overflow: visible; }
+.im { height: 100%; padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
+.im small { font-size: 11px; font-weight: 600; letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--accent); }
+
+/* Events: views count up to 1M+, the growth line draws, cities light up one by one. */
+@property --views { syntax: '<integer>'; inherits: false; initial-value: 0; }
+.im-events { background: radial-gradient(90% 80% at 100% 0%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 60%), #0b1626; }
+.im-views { position: relative; display: flex; align-items: baseline; gap: 10px; height: 64px; }
+.im-views b { font-size: 3.6rem; font-weight: 800; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.im-views span { color: rgba(255, 255, 255, 0.7); font-size: var(--fs-sm); }
+.im-count { counter-reset: v var(--views); animation: im-count 6s var(--ease) infinite; }
+.im-count::after { content: counter(v) 'K'; }
+.im-million { position: absolute; left: 0; top: 0; opacity: 0; color: var(--accent); animation: im-million 6s linear infinite; }
+.im-million + span { margin-left: auto; }
+@keyframes im-count { 0% { --views: 0; opacity: 1; } 40% { --views: 999; opacity: 1; } 42%, 100% { --views: 999; opacity: 0; } }
+@keyframes im-million { 0%, 41% { opacity: 0; transform: scale(0.9); } 44%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+.im-spark { flex: 1; width: 100%; min-height: 0; }
+.im-spark path { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; animation: im-draw 6s var(--ease) infinite; filter: drop-shadow(0 0 6px var(--accent)); }
+@keyframes im-draw { 0% { stroke-dashoffset: 1; opacity: 1; } 45%, 92% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+.im-cities { display: flex; flex-wrap: wrap; gap: 6px; }
+.im-cities i, .im-stages i {
+  font-style: normal; font-size: 11px; font-weight: 600; padding: 4px 9px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.45); animation: im-light 6s var(--ease) infinite;
+}
+@keyframes im-light { 0%, 8% { background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.45); } 14%, 88% { background: var(--accent); color: #0b1626; } 100% { background: rgba(255, 255, 255, 0.08); color: rgba(255, 255, 255, 0.45); } }
+
+/* Pearbae: a phone verifies an ID, then places a call without showing the number. */
+.im-phone-wrap { height: 100%; display: grid; place-items: start center; padding-top: 4px; }
+.im-pearbae { align-items: center; box-shadow: 8px 14px 28px rgba(4, 16, 42, 0.38); }
+.im-avatar { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; font-size: 30px; background: color-mix(in srgb, var(--accent) 30%, #10203a); box-shadow: 0 0 0 3px var(--accent); animation: im-ring 6s var(--ease) infinite; }
+@keyframes im-ring { 0%, 30% { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2); } 36%, 100% { box-shadow: 0 0 0 3px #36d399; } }
+.im-steps { position: relative; width: 100%; height: 70px; margin-top: 8px; }
+.im-steps p { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; text-align: center; opacity: 0; }
+.im-steps small { font-size: 10px; font-weight: 500; color: rgba(255, 255, 255, 0.6); letter-spacing: 0.04em; }
+.im-s1 { animation: im-step1 6s linear infinite; }
+.im-s2 { color: #36d399; animation: im-step2 6s linear infinite; }
+.im-s3 { animation: im-step3 6s linear infinite; }
+@keyframes im-step1 { 0%, 30% { opacity: 1; } 34%, 100% { opacity: 0; } }
+@keyframes im-step2 { 0%, 32% { opacity: 0; } 36%, 62% { opacity: 1; } 66%, 100% { opacity: 0; } }
+@keyframes im-step3 { 0%, 64% { opacity: 0; } 68%, 96% { opacity: 1; } 100% { opacity: 0; } }
+.im-spin { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.2); border-top-color: var(--accent); animation: im-spin 0.8s linear infinite; }
+@keyframes im-spin { to { rotate: 1turn; } }
+
+/* Power desk: prices tick between two values across European and Asian markets, tape scrolls. */
+.im-energy { background: linear-gradient(#07111f, #0b1626); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.im-rows { display: flex; flex-direction: column; gap: 6px; }
+.im-rows p { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: 8px; background: rgba(255, 255, 255, 0.05); font-size: 13px; }
+.im-rows span { color: rgba(255, 255, 255, 0.6); font-weight: 700; }
+.im-rows b::after { content: attr(data-a) ' ▲'; color: #36d399; animation: im-tick 3.2s steps(1) infinite; animation-delay: inherit; }
+@keyframes im-tick { 0% { content: attr(data-a) ' ▲'; color: #36d399; } 50% { content: attr(data-b) ' ▼'; color: #ff6b6b; } }
+.im-tape { margin-top: auto; overflow: hidden; white-space: nowrap; font-size: 11px; color: var(--accent); border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 8px; }
+.im-tape span { display: inline-block; animation: im-tape 14s linear infinite; }
+@keyframes im-tape { to { transform: translateX(-50%); } }
+
+/* Travel: paper ledger to 100% online, the booking flow lights up stage by stage. */
+@property --pct { syntax: '<integer>'; inherits: false; initial-value: 0; }
+.im-travel { background: #fbf6ea; color: #0b1626; }
+.im-travel small { color: color-mix(in srgb, var(--accent) 70%, #0b1626); }
+.im-from-to { display: flex; align-items: center; gap: 14px; }
+.im-ledger { width: 54px; height: 64px; border-radius: 4px; background: #fff; box-shadow: 3px 5px 0 #e6dcc6; padding: 10px 8px; display: flex; flex-direction: column; gap: 8px; rotate: -4deg; }
+.im-ledger i { height: 2px; background: #c9bda3; }
+.im-arrow { font-size: 26px; color: #b0a48a; }
+.im-pct { font-size: 3.2rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; counter-reset: p var(--pct); animation: im-pct 6s var(--ease) infinite; }
+.im-pct::after { content: counter(p) '%'; }
+@keyframes im-pct { 0% { --pct: 0; } 55%, 92% { --pct: 100; } 100% { --pct: 100; } }
+.im-bar { height: 8px; border-radius: 4px; background: #ece3cf; overflow: hidden; }
+.im-bar i { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; animation: im-bar 6s var(--ease) infinite; }
+@keyframes im-bar { 0% { transform: scaleX(0); } 55%, 100% { transform: scaleX(1); } }
+.im-stages { display: flex; gap: 6px; }
+.im-travel .im-stages i { background: #ece3cf; color: #9a8f78; animation-name: im-light-paper; }
+@keyframes im-light-paper { 0%, 8% { background: #ece3cf; color: #9a8f78; } 14%, 88% { background: var(--accent); color: #0b1626; } 100% { background: #ece3cf; color: #9a8f78; } }
+.im-foot { margin-top: auto; font-size: 12px; color: #6b6352; }
 .sphere-vignette {
   position: absolute; inset: 0; pointer-events: none;
   background:

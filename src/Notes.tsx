@@ -58,7 +58,7 @@ export function Notes({ items }: { items: Testimonial[] }) {
                 aria-expanded={isOpen}
               >
                 <motion.span layout="position" className="note-face" transition={{ layout: grow }}>
-                  {t.photo ? <img src={t.photo} alt="" width={44} height={44} loading="lazy" /> : <span className="note-initials">{initials(t.name)}</span>}
+                  {t.logo ? <img src={t.logo} alt="" width={44} height={44} loading="lazy" /> : <span className="note-initials">{initials(t.name)}</span>}
                 </motion.span>
                 <span className="note-body">
                   <span className="note-who">

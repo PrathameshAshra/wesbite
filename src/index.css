@@ -188,6 +188,9 @@ p { text-wrap: pretty; }
   background: linear-gradient(140deg, var(--g1), var(--g2));
 }
 .tile-inner { height: 100%; border-radius: 10px 10px 0 0; overflow: hidden; box-shadow: 0 12px 30px rgba(8, 28, 64, 0.28); }
+.k-client { background: #fff; }
+.t-client { height: 100%; display: grid; place-items: center; padding: 36px 40px; }
+.t-client img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
 .tile-inner.k-phone { background: none; box-shadow: none; overflow: visible; }
 .t-title { font-size: var(--fs-lg); font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; }
 .k-dashboard { background: #f7f7f5; color: #0b1626; }

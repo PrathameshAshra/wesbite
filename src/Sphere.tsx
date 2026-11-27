@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { work, type CaseStudy } from './content'
+import { work, clients, type CaseStudy, type Client } from './content'
 import { reducedMotion } from './scroll'
 
 // A wall of work tiles wrapped around the viewer, like standing inside a sphere.
@@ -34,6 +34,17 @@ const BACKDROPS = [
   ['#1d55a0', '#7b5cff'],
   ['#ffd25e', '#ff5d8f'],
 ]
+
+// Every 4th tile (staggered by row) is a real client logo instead of a mock screen.
+const isClientTile = (c: number, r: number) => (c + r * 2) % 4 === 0
+
+function ClientTile({ client }: { client: Client }) {
+  return (
+    <div className="t-client">
+      <img src={client.logo} alt="" loading="lazy" />
+    </div>
+  )
+}
 
 function TileBody({ study, kind, n }: { study: CaseStudy; kind: Kind; n: number }) {
   const m = study.metrics[n % study.metrics.length]
@@ -101,6 +112,7 @@ export function Sphere() {
           kind: KINDS[(c * 3 + r) % KINDS.length],
           backdrop: BACKDROPS[(c * 2 + r * 3) % BACKDROPS.length],
           n: c + r,
+          client: isClientTile(c, r) ? clients[(c + r) % clients.length] : null,
         })),
       ),
     [],
@@ -184,9 +196,15 @@ export function Sphere() {
                   className="tile-face"
                   style={{ left: -s * STRIP_W, '--accent': t.study.accent, '--g1': t.backdrop[0], '--g2': t.backdrop[1] } as React.CSSProperties}
                 >
-                  <div className={`tile-inner k-${t.kind}`}>
-                    <TileBody study={t.study} kind={t.kind} n={t.n} />
-                  </div>
+                  {t.client ? (
+                    <div className="tile-inner k-client">
+                      <ClientTile client={t.client} />
+                    </div>
+                  ) : (
+                    <div className={`tile-inner k-${t.kind}`}>
+                      <TileBody study={t.study} kind={t.kind} n={t.n} />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

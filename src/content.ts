@@ -175,13 +175,14 @@ export const sideQuests: SideQuest[] = [
 ]
 
 // `short` is the one-liner on the collapsed card; `quote` is the full text when it expands.
-export type Testimonial = { name: string; role: string; short: string; quote: string; photo?: string }
+export type Testimonial = { name: string; role: string; short: string; quote: string; logo?: string }
 
 // Client quotes, shown by company name to every visitor.
 export const testimonials: Testimonial[] = [
   {
     name: 'The Data Duck',
     role: 'Power-trading desk',
+    logo: '/logos/thedataduck.png',
     short: 'Five years of trading tools our desk relies on every day.',
     quote:
       'Prathamesh has built and looked after the tools our power-trading desk uses daily for five years. Reliable, quick to pick up new needs, and he understands the business, not just the ticket.',
@@ -189,6 +190,7 @@ export const testimonials: Testimonial[] = [
   {
     name: 'Pearbae',
     role: 'iOS social app',
+    logo: '/logos/pearbae.png',
     short: 'Took Pearbae from idea to App Store with trust built in.',
     quote:
       'Prathamesh built Pearbae end to end: Aadhaar verification, in-app calling and real-time chat. He thought about safety and trust like a product person, not just a developer, and shipped it in a year.',
@@ -200,4 +202,11 @@ export const testimonials: Testimonial[] = [
     quote:
       'We had run offline for five decades. Over four years Prathamesh rebuilt everything into one online flow, from enquiry to trip, without breaking how our team actually works. Today we are fully online.',
   },
+]
+
+// Brands we've built for, shown as real tiles in the hero sphere. Logos are trimmed, on white.
+export type Client = { name: string; logo: string }
+export const clients: Client[] = [
+  { name: 'Chandan Mukhwas', logo: '/clients/chandan.png' },
+  { name: 'Sva Life', logo: '/clients/svalife.png' },
 ]

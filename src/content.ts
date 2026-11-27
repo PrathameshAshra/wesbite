@@ -204,9 +204,20 @@ export const testimonials: Testimonial[] = [
   },
 ]
 
-// Brands we've built for, shown as real tiles in the hero sphere. Logos are trimmed, on white.
-export type Client = { name: string; logo: string }
-export const clients: Client[] = [
-  { name: 'Chandan Mukhwas', logo: '/clients/chandan.png' },
-  { name: 'Sva Life', logo: '/clients/svalife.png' },
-]
+// Real screenshots for the hero sphere. Each shot tile cycles through its list like a GIF.
+export const bannerShots = {
+  web: ['/shots/spontaa-web.jpg', '/shots/pearbae-web.jpg', '/shots/tdd-web.jpg', '/shots/chandan-web.jpg', '/shots/svalife-web.jpg'],
+  app: [
+    '/shots/spontaa-app-1.jpg',
+    '/shots/pearbae-app-1.jpg',
+    '/shots/spontaa-app-2.jpg',
+    '/shots/pearbae-app-2.jpg',
+    '/shots/spontaa-app-3.jpg',
+    '/shots/pearbae-app-3.jpg',
+    '/shots/spontaa-app-4.jpg',
+    '/shots/pearbae-app-4.jpg',
+    '/shots/spontaa-app-5.jpg',
+    '/shots/pearbae-app-5.jpg',
+    '/shots/spontaa-app-6.jpg',
+  ],
+}

@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef } from 'react'
-import { work, clients, type CaseStudy, type Client } from './content'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { work, bannerShots, type CaseStudy } from './content'
 import { reducedMotion } from './scroll'
 
 // A wall of work tiles wrapped around the viewer, like standing inside a sphere.
@@ -35,13 +35,19 @@ const BACKDROPS = [
   ['#ffd25e', '#ff5d8f'],
 ]
 
-// Every 4th tile (staggered by row) is a real client logo instead of a mock screen.
-const isClientTile = (c: number, r: number) => (c + r * 2) % 4 === 0
+// Every 4th tile (staggered by row) is a real screenshot instead of a mock screen,
+// alternating between website shots and app-store shots.
+type ShotKind = keyof typeof bannerShots
+const shotKind = (c: number, r: number): ShotKind | null => ((c + r * 2) % 4 === 0 ? ((Math.floor(c / 4) + r) % 2 === 0 ? 'web' : 'app') : null)
+const SHOT_MS = 2400
 
-function ClientTile({ client }: { client: Client }) {
+// The current frame of a tile's slideshow; keyed by src so each new frame fades in.
+function ShotTile({ kind, frame }: { kind: ShotKind; frame: number }) {
+  const list = bannerShots[kind]
+  const src = list[frame % list.length]
   return (
-    <div className="t-client">
-      <img src={client.logo} alt="" loading="lazy" />
+    <div className={`t-shot t-shot-${kind}`}>
+      <img key={src} src={src} alt="" />
     </div>
   )
 }
@@ -101,6 +107,13 @@ export function Sphere() {
   const root = useRef<HTMLDivElement>(null)
   const scene = useRef<HTMLDivElement>(null)
   const tiles = useRef<(HTMLDivElement | null)[]>([])
+  const [frame, setFrame] = useState(0)
+
+  useEffect(() => {
+    if (reducedMotion) return
+    const id = setInterval(() => setFrame((f) => f + 1), SHOT_MS)
+    return () => clearInterval(id)
+  }, [])
 
   const layout = useMemo(
     () =>
@@ -112,7 +125,7 @@ export function Sphere() {
           kind: KINDS[(c * 3 + r) % KINDS.length],
           backdrop: BACKDROPS[(c * 2 + r * 3) % BACKDROPS.length],
           n: c + r,
-          client: isClientTile(c, r) ? clients[(c + r) % clients.length] : null,
+          shot: shotKind(c, r),
         })),
       ),
     [],
@@ -196,9 +209,9 @@ export function Sphere() {
                   className="tile-face"
                   style={{ left: -s * STRIP_W, '--accent': t.study.accent, '--g1': t.backdrop[0], '--g2': t.backdrop[1] } as React.CSSProperties}
                 >
-                  {t.client ? (
-                    <div className="tile-inner k-client">
-                      <ClientTile client={t.client} />
+                  {t.shot ? (
+                    <div className={`tile-inner k-shot k-shot-${t.shot}`}>
+                      <ShotTile kind={t.shot} frame={frame + t.n} />
                     </div>
                   ) : (
                     <div className={`tile-inner k-${t.kind}`}>

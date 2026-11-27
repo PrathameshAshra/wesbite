@@ -166,8 +166,6 @@ export function Sphere() {
             }}
             className="tile"
             style={{ transform: `rotateY(${t.base}deg)` }}
-            // Rows below the horizon sit faded behind the headline; only the clear rows are selectable.
-            data-select={t.phi <= 0 ? t.study.name : undefined}
           >
             {Array.from({ length: STRIPS }, (_, s) => (
               <div

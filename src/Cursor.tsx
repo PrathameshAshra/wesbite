@@ -4,7 +4,7 @@ import { reducedMotion } from './scroll'
 // Custom pointer, three states:
 // - free: a soft translucent circle that follows the mouse (iPad-style, like the reference)
 // - block: over a link or button it morphs into a highlight around it
-// - select: over a product surface ([data-select]: work tiles, project cards) it snaps into a
+// - select: over a product surface ([data-select]: the project cards) it snaps into a
 //   Figma-style selection frame with handles, name label and size badge
 // Once snapped, it holds still: small mouse movements inside the target (plus a margin) are
 // ignored, and it only lets go when the pointer clearly leaves. Desktop mice only.
@@ -18,38 +18,10 @@ const BLOCK = 'a, button, [role="button"]'
 
 type Mode = 'free' | 'block' | 'select'
 
-// A sphere card is a zero-size wrapper around its 3D strips: measure the strips instead.
-const rectOf = (el: HTMLElement) => {
-  const r = el.getBoundingClientRect()
-  if (r.width > 0 || el.children.length === 0) return r
-  const rs = [...el.children].map((c) => c.getBoundingClientRect())
-  const left = Math.min(...rs.map((q) => q.left))
-  const top = Math.min(...rs.map((q) => q.top))
-  return new DOMRect(left, top, Math.max(...rs.map((q) => q.right)) - left, Math.max(...rs.map((q) => q.bottom)) - top)
-}
-
 const inside = (r: DOMRect, x: number, y: number, m: number) => x > r.left - m && x < r.right + m && y > r.top - m && y < r.bottom + m
 
-// 3D-transformed children (the work sphere) aren't reported by the browser's hit-testing, which
-// returns their container instead; find the selectable child under the point from its box.
-const under = (el: Element, x: number, y: number) => {
-  let best: HTMLElement | null = null
-  let bestDist = Infinity
-  for (const c of el.querySelectorAll<HTMLElement>(SELECT)) {
-    if (c.style.visibility === 'hidden') continue
-    const r = rectOf(c)
-    if (!inside(r, x, y, 0)) continue
-    const dist = Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2))
-    if (dist < bestDist) {
-      best = c
-      bestDist = dist
-    }
-  }
-  return best
-}
-
-const pick = (el: Element | null, x: number, y: number): { el: HTMLElement; mode: Mode } | null => {
-  const sel = el?.closest<HTMLElement>(SELECT) ?? (el ? under(el, x, y) : null)
+const pick = (el: Element | null): { el: HTMLElement; mode: Mode } | null => {
+  const sel = el?.closest<HTMLElement>(SELECT)
   if (sel) return { el: sel, mode: 'select' }
   const block = el?.closest<HTMLElement>(BLOCK)
   return block ? { el: block, mode: 'block' } : null
@@ -87,13 +59,13 @@ export function Cursor() {
 
     // Keep the current target while the mouse is still on it (or within the release margin).
     const update = (hit: Element | null) => {
-      if (target && target.el.isConnected && inside(rectOf(target.el), mouse.x, mouse.y, target.mode === 'select' ? RELEASE : 0)) {
-        const next = pick(hit, mouse.x, mouse.y)
+      if (target && target.el.isConnected && inside(target.el.getBoundingClientRect(), mouse.x, mouse.y, target.mode === 'select' ? RELEASE : 0)) {
+        const next = pick(hit)
         // A button inside a selected surface still takes over.
         if (next?.mode === 'block' && target.mode === 'select' && target.el.contains(next.el)) setTarget(next)
         return
       }
-      setTarget(pick(hit, mouse.x, mouse.y))
+      setTarget(pick(hit))
     }
 
     const onMove = (e: PointerEvent) => {
@@ -108,13 +80,13 @@ export function Cursor() {
     }
 
     const frame = () => {
-      // Work tiles drift under a still mouse: re-check what's underneath when we've slid off.
-      if (target && !inside(rectOf(target.el), mouse.x, mouse.y, target.mode === 'select' ? RELEASE : 0)) {
+      // Page scrolls under a still mouse: re-check what's underneath when we've slid off.
+      if (target && !inside(target.el.getBoundingClientRect(), mouse.x, mouse.y, target.mode === 'select' ? RELEASE : 0)) {
         update(document.elementFromPoint(mouse.x, mouse.y))
       }
       let goal = { x: mouse.x - DOT / 2, y: mouse.y - DOT / 2, w: DOT, h: DOT, r: DOT / 2 }
       if (target) {
-        const b = rectOf(target.el)
+        const b = target.el.getBoundingClientRect()
         if (target.mode === 'select') {
           goal = { x: b.left, y: b.top, w: b.width, h: b.height, r: 0 }
           sizeEl.textContent = `${Math.round(b.width)} × ${Math.round(b.height)}`

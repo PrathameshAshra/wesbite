@@ -578,6 +578,19 @@ main, .footer { position: relative; z-index: 1; }
 .bk-metrics { width: min(260px, 100%); }
 .bk-stars { position: absolute; inset: 0; }
 .bk-notes { width: min(460px, 100%); }
+.bk-wide { display: flex; flex-direction: column; gap: 14px; margin-bottom: 14px; }
+.bk-wide .bk-stage { padding: 0; }
+.bk-sphere { position: relative; width: 100%; height: min(560px, 70svh); background: linear-gradient(#04060e, #0e2d5c); }
+.bk-select { display: flex; flex-wrap: wrap; justify-content: center; gap: 48px; padding: 64px 32px; }
+.bk-select-card {
+  position: relative; width: 240px; height: 160px; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px;
+  background: linear-gradient(140deg, #7b5cff, #53a4ff); box-shadow: 0 12px 30px rgba(8, 28, 64, 0.35);
+}
+.bk-select-card:nth-child(2) { background: linear-gradient(140deg, #ff8a3d, #ffd25e); }
+.bk-select-card.shown { background: linear-gradient(140deg, #2ec4a6, #c6ff7a); color: #0b1626; }
+.bk-select-card > strong { font-size: var(--fs-lg); }
+.bk-select-card > span { font-size: var(--fs-xs); opacity: 0.85; }
+.ipad-pointer.bk-static-ptr { position: absolute; inset: 0; width: auto; height: auto; opacity: 1; border-radius: 0; z-index: 1; }
 .bk-spec:has(.notes li.up) { overflow: visible; }
 .bk-stage:has(.notes li.up) { overflow: visible; z-index: 70; }
 .bk-stars .stars { opacity: 1; }

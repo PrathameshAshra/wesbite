@@ -118,14 +118,17 @@ export function Sphere() {
     // Tiles are only drawn inside the field of view; ones near 90° sit beside the camera and
     // CSS perspective blows them up into huge overlapping shapes.
     let visible = 0
+    const el = root.current
+    if (!el) throw new Error('Sphere root missing')
+    // Sized to its own box (not the window), so it also works as a small preview in the brand kit.
     const fit = () => {
-      const half = window.innerWidth / 2
+      const half = el.clientWidth / 2
       const persp = Math.max(half / Math.tan((HALF_FOV * Math.PI) / 180), MIN_PERSP)
-      root.current?.style.setProperty('--persp', `${persp}px`)
+      el.style.setProperty('--persp', `${persp}px`)
       visible = (Math.atan(half / persp) * 180) / Math.PI + TILE_HALF + LOOK_X
     }
-    fit()
-    window.addEventListener('resize', fit)
+    const ro = new ResizeObserver(fit)
+    ro.observe(el)
 
     let raf = 0
     let last = performance.now()
@@ -151,7 +154,7 @@ export function Sphere() {
     return () => {
       cancelAnimationFrame(raf)
       window.removeEventListener('pointermove', onMove)
-      window.removeEventListener('resize', fit)
+      ro.disconnect()
     }
   }, [layout])
 

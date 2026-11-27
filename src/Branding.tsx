@@ -4,6 +4,7 @@ import { Signature } from './Signature'
 import { Stars } from './Stars'
 import { work, type Testimonial } from './content'
 import { Notes } from './Notes'
+import { Sphere } from './Sphere'
 
 // /branding: the site's brand kit and component kitchen sink. Every "Copy" grabs the live markup
 // and the matching CSS rules straight from the site's stylesheet, so copies never drift from the site.
@@ -272,6 +273,37 @@ export function Branding() {
       <section className="bk-sec" id="components">
         <h2 className="headline">Components</h2>
         <p className="bk-note">Live components from the site. Copy the HTML, the CSS (pulled from the live stylesheet), or both. They need the tokens at the bottom of the page.</p>
+        <div className="bk-wide">
+          <Specimen name="Work sphere (landing hero)" note="Cards curve like stickers on the inside of a sphere; drifts and follows the mouse. Needs Sphere.tsx" css={['.sphere', '.sphere-scene', '.tile', '.tile-strip', '.tile-face', '.tile-inner', '.sphere-vignette']}>
+            <div className="bk-sphere">
+              <Sphere />
+            </div>
+          </Specimen>
+          <Specimen name="Figma selection pointer" note="Hover a card with a mouse: the pointer snaps into a selection frame and holds through small movements" css={['.ipad-pointer', '.ptr-h', '.ptr-label', '.ptr-size', '.ptr-dot']}>
+            <div className="bk-select">
+              <div className="bk-select-card" data-select="Pearbae">
+                <strong>Pearbae</strong>
+                <span>Hover me</span>
+              </div>
+              <div className="bk-select-card" data-select="Power trading">
+                <strong>Power trading</strong>
+                <span>Then me</span>
+              </div>
+              <div className="bk-select-card shown">
+                <strong>Static preview</strong>
+                <span>How the frame looks</span>
+                <div className="ipad-pointer is-select bk-static-ptr" aria-hidden>
+                  <i className="ptr-h tl" />
+                  <i className="ptr-h tr" />
+                  <i className="ptr-h bl" />
+                  <i className="ptr-h br" />
+                  <span className="ptr-label">Static preview</span>
+                  <span className="ptr-size">240 × 160</span>
+                </div>
+              </div>
+            </div>
+          </Specimen>
+        </div>
         <div className="bk-grid two">
           <Specimen name="Chip button" note="Primary and ghost" css={['.chip']}>
             <div className="bk-row">

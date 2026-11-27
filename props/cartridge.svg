@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140">
+  <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#9aa1ad"/><stop offset=".5" stop-color="#c9ced8"/><stop offset="1" stop-color="#8a909c"/></linearGradient></defs>
+  <path d="M8 6 h88 l16 16 v112 h-104z" fill="url(#g)"/>
+  <rect x="8" y="118" width="104" height="16" fill="#7a808c"/>
+  <g fill="#5c6370"><rect x="18" y="122" width="6" height="12"/><rect x="30" y="122" width="6" height="12"/><rect x="42" y="122" width="6" height="12"/><rect x="54" y="122" width="6" height="12"/><rect x="66" y="122" width="6" height="12"/><rect x="78" y="122" width="6" height="12"/><rect x="90" y="122" width="6" height="12"/></g>
+  <rect x="20" y="22" width="80" height="84" rx="6" fill="#ff5d8f"/>
+  <rect x="20" y="22" width="80" height="22" rx="6" fill="#ffd25e"/>
+  <text x="60" y="80" text-anchor="middle" font-family="Impact, 'Arial Narrow', sans-serif" font-size="22" fill="#fff">SHIP IT</text>
+  <g fill="#fff"><rect x="28" y="30" width="8" height="6"/><rect x="40" y="30" width="8" height="6"/><rect x="52" y="30" width="8" height="6"/></g>
+</svg>

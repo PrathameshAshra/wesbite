@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import type Lenis from 'lenis'
 import { site, work, testimonials } from './content'
 import { holdScroll, reducedMotion, startScroll, startSnap } from './scroll'
+import { Reveal } from './Reveal'
 import { applyTheme, initialTheme, type Theme } from './theme'
 import { Sphere } from './Sphere'
 import { Stars } from './Stars'
@@ -18,20 +19,6 @@ import { Branding } from './Branding'
 import { linkTo, navigate, usePath } from './router'
 
 const ease = [0.32, 0.72, 0, 1] as const
-
-function Reveal({ children, delay = 0, y = 32, className }: { children: React.ReactNode; delay?: number; y?: number; className?: string }) {
-  return (
-    <motion.div
-      className={className}
-      initial={reducedMotion ? false : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-10% 0px' }}
-      transition={{ duration: 0.9, ease, delay }}
-    >
-      {children}
-    </motion.div>
-  )
-}
 
 /* ---------- Backdrop ---------- */
 

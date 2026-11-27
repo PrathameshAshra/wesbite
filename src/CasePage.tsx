@@ -3,23 +3,10 @@ import { motion } from 'framer-motion'
 import type { CaseStudy } from './content'
 import { reducedMotion } from './scroll'
 import { linkTo } from './router'
+import { Reveal } from './Reveal'
 
 const ease = [0.32, 0.72, 0, 1] as const
 const photo = (id: string, w: number) => `https://images.unsplash.com/photo-${id}?w=${w}&q=75&auto=format&fit=crop`
-
-function Rise({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
-  return (
-    <motion.div
-      className={className}
-      initial={reducedMotion ? false : { opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-8% 0px' }}
-      transition={{ duration: 0.8, ease, delay }}
-    >
-      {children}
-    </motion.div>
-  )
-}
 
 // A full page per case study, like the reference's /work/<name> pages.
 export function CasePage({ study, next }: { study: CaseStudy; next: CaseStudy }) {
@@ -70,7 +57,7 @@ export function CasePage({ study, next }: { study: CaseStudy; next: CaseStudy })
       </header>
 
       <section className="case-body">
-        <Rise className="case-facts">
+        <Reveal className="case-facts">
           <div>
             <span className="eyebrow">Role</span>
             <p>{study.role}</p>
@@ -83,42 +70,42 @@ export function CasePage({ study, next }: { study: CaseStudy; next: CaseStudy })
             <span className="eyebrow">Stack</span>
             <p>{study.stack.join(', ')}</p>
           </div>
-        </Rise>
+        </Reveal>
 
-        <Rise className="case-metrics">
+        <Reveal className="case-metrics">
           {study.metrics.map((m) => (
             <div key={m.label}>
               <strong>{m.value}</strong>
               <span>{m.label}</span>
             </div>
           ))}
-        </Rise>
+        </Reveal>
 
-        <Rise className="case-block">
+        <Reveal className="case-block">
           <h2 className="headline">The problem</h2>
           <p>{study.problem}</p>
-        </Rise>
+        </Reveal>
 
         <div className="case-block">
-          <Rise>
+          <Reveal>
             <h2 className="headline">What I built</h2>
-          </Rise>
+          </Reveal>
           <ol className="case-built">
             {study.built.map((b, i) => (
-              <Rise key={b} delay={i * 0.05}>
+              <Reveal key={b} delay={i * 0.05}>
                 <li>
                   <span className="case-num">{String(i + 1).padStart(2, '0')}</span>
                   <p>{b}</p>
                 </li>
-              </Rise>
+              </Reveal>
             ))}
           </ol>
         </div>
 
-        <Rise className="case-block">
+        <Reveal className="case-block">
           <h2 className="headline">The outcome</h2>
           <p className="case-outcome">{study.outcome}</p>
-        </Rise>
+        </Reveal>
       </section>
 
       <a className="case-next" href={`/work/${next.id}`} onClick={linkTo(`/work/${next.id}`)} style={{ '--accent': next.accent } as React.CSSProperties}>

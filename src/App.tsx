@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import type Lenis from 'lenis'
 import { site, work, testimonials } from './content'
-import { reducedMotion, startScroll, startSnap } from './scroll'
+import { holdScroll, reducedMotion, startScroll, startSnap } from './scroll'
 import { applyTheme, initialTheme, type Theme } from './theme'
 import { Sphere } from './Sphere'
 import { Stars } from './Stars'
@@ -12,6 +12,7 @@ import { SideQuests, Build } from './Pinned'
 import { FooterScene } from './FooterScene'
 import { Cursor } from './Cursor'
 import { WorkVisual } from './WorkVisual'
+import { Notes } from './Notes'
 import { CasePage } from './CasePage'
 import { Branding } from './Branding'
 import { linkTo, navigate, usePath } from './router'
@@ -185,23 +186,9 @@ function Testimonials() {
   return (
     <section className="said" id="testimonials" data-snap>
       <Reveal>
-        <h2 className="headline">That’s what they said</h2>
+        <h2 className="headline">That’s what they said.</h2>
       </Reveal>
-      <div className="said-list">
-        {testimonials.map((t, i) => (
-          <Reveal key={t.name} delay={i * 0.06}>
-            <figure className="quote glass">
-              {t.photo && <img src={t.photo} alt="" width={40} height={40} loading="lazy" />}
-              <div>
-                <figcaption>
-                  <strong>{t.name}</strong> · {t.role}
-                </figcaption>
-                <blockquote>{t.quote}</blockquote>
-              </div>
-            </figure>
-          </Reveal>
-        ))}
-      </div>
+      <Notes items={testimonials} />
     </section>
   )
 }
@@ -241,6 +228,7 @@ function Contact() {
 const NAV = [
   { id: 'work', label: 'Work' },
   { id: 'side-quests', label: 'Side Quests' },
+  ...(testimonials.length > 0 ? [{ id: 'testimonials', label: 'Testimonials' }] : []),
   { id: 'build', label: 'What I build' },
 ]
 
@@ -387,11 +375,7 @@ export default function App() {
     return () => snap?.destroy()
   }, [lenis, home])
 
-  useEffect(() => {
-    if (!lenis) return
-    if (ready) lenis.start()
-    else lenis.stop()
-  }, [ready, lenis])
+  useEffect(() => (ready ? undefined : holdScroll()), [ready])
 
   return (
     <>

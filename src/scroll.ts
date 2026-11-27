@@ -3,6 +3,27 @@ import Lenis from 'lenis'
 export const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const desktop = () => !window.matchMedia('(max-width: 820px)').matches
 
+// Anything that needs the page to stay put (splash, an expanded testimonial) takes a hold;
+// scrolling resumes when every hold is released.
+let current: Lenis | null = null
+let holds = 0
+const sync = () => {
+  if (!current) return
+  if (holds > 0) current.stop()
+  else current.start()
+}
+export function holdScroll() {
+  holds++
+  sync()
+  let released = false
+  return () => {
+    if (released) return
+    released = true
+    holds--
+    sync()
+  }
+}
+
 // Smooth scrolling everywhere except for visitors who asked for reduced motion.
 // On desktop the wheel is handed to startSnap instead, which moves one screen per gesture.
 export function startScroll() {
@@ -16,6 +37,8 @@ export function startScroll() {
     requestAnimationFrame(raf)
   }
   requestAnimationFrame(raf)
+  current = lenis
+  sync()
   return lenis
 }
 

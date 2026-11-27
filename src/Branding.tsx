@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { signature } from './signature'
 import { Signature } from './Signature'
 import { Stars } from './Stars'
-import { work } from './content'
+import { work, type Testimonial } from './content'
+import { Notes } from './Notes'
 
 // /branding: the site's brand kit and component kitchen sink. Every "Copy" grabs the live markup
 // and the matching CSS rules straight from the site's stylesheet, so copies never drift from the site.
@@ -112,6 +113,13 @@ const TYPE = [
   { token: '--fs-md', label: 'Body · Inter', cls: 'bk-t-md', sample: 'Built every surface, then scaled it to live events across the country.' },
   { token: '--fs-sm', label: 'UI · Inter', cls: 'bk-t-sm', sample: 'Buttons, nav, footer links' },
   { token: '--fs-xs', label: 'Eyebrow · Inter caps', cls: 'eyebrow', sample: 'An engineer who thinks like a PM' },
+]
+
+// Template only: placeholder copy, clearly not real quotes.
+const SAMPLE_NOTES: Testimonial[] = [
+  { name: 'Client name', role: 'Founder, Company', short: 'The one-line highlight from their testimonial.', quote: 'The full testimonial opens here, inside the same card. The page blurs behind it, the card grows to fit the whole quote, and a Close pill appears underneath. Esc or a click outside closes it too.' },
+  { name: 'Second client', role: 'Head of Product, Company', short: 'Tap a card: it expands in place, no modal.', quote: 'Each card is a notification until you tap it. Then that same card expands, like opening a notification on your phone.' },
+  { name: 'Third client', role: 'CTO, Company', short: 'Hover lifts the card slightly.', quote: 'Use real quotes only, with permission from the person quoted.' },
 ]
 
 const SECTIONS = [
@@ -319,6 +327,11 @@ export function Branding() {
                 <strong>1M+</strong>
                 <span>views</span>
               </div>
+            </div>
+          </Specimen>
+          <Specimen name="Testimonial notifications" note="Template copy. Tap one: the same card expands in place" css={['.notes', '.notes-blur', '.note', '.note-face', '.note-initials', '.note-body', '.note-who', '.note-quote', '.note-close']}>
+            <div className="bk-notes">
+              <Notes items={SAMPLE_NOTES} />
             </div>
           </Specimen>
           <Specimen name="Twinkling stars" note="Random positions, sizes and timing" css={['.stars', '@keyframes twinkle']}>

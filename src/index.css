@@ -331,12 +331,42 @@ main, .footer { position: relative; z-index: 1; }
 /* ---------- Testimonials ---------- */
 .said { max-width: 1000px; margin: 0 auto; padding: 8rem var(--gutter); display: grid; grid-template-columns: 1fr 1.3fr; gap: 3rem; align-items: start; }
 .said .headline { text-align: left; }
-.said-list { display: flex; flex-direction: column; gap: 10px; }
-.quote { display: flex; gap: 12px; padding: 14px 16px; border-radius: 18px; }
-.quote img { border-radius: 50%; object-fit: cover; }
-.quote figcaption { font-size: var(--fs-xs); color: var(--ink-2); }
-.quote figcaption strong { color: #fff; }
-.quote blockquote { font-size: var(--fs-sm); line-height: var(--lh-snug); margin-top: 2px; }
+.notes { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.notes li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.notes li.up { z-index: 70; } /* the open card rises above the blur */
+.notes-blur {
+  position: fixed; inset: 0; z-index: 65; background: rgba(8, 28, 64, 0.35);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+}
+.note {
+  width: 100%; display: flex; align-items: center; gap: 14px; padding: 16px 18px; text-align: left; color: #fff;
+  background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 10px 30px -12px rgba(8, 28, 64, 0.5);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  transition: scale 0.3s var(--ease), box-shadow 0.3s var(--ease), background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.note:not(.open):hover { scale: 1.03; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 18px 40px -12px rgba(8, 28, 64, 0.6); }
+.note.open { align-items: flex-start; flex-wrap: wrap; background: #fff; color: #0b1626; border-color: transparent; box-shadow: 0 30px 80px -20px rgba(4, 10, 26, 0.6); cursor: default; }
+.note-face { flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: rgba(255, 255, 255, 0.2); }
+.note-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.note-initials { font-size: var(--fs-xs); font-weight: 700; }
+.note.open .note-face { background: #e8edf5; }
+.note-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.note-who { font-size: var(--fs-sm); line-height: var(--lh-snug); }
+.note-who span::before { content: ' · '; }
+.note-who span { color: rgba(255, 255, 255, 0.65); }
+.note.open .note-who { display: flex; flex-direction: column; }
+.note.open .note-who span { color: #4b556a; }
+.note.open .note-who span::before { content: none; }
+.note-quote { font-size: var(--fs-md); line-height: var(--lh-snug); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.note.open .note-quote { display: block; flex-basis: 100%; margin-top: 10px; line-height: var(--lh-body); }
+.note.open .note-body { display: contents; } /* quote spans the full card width under the name */
+.note-close {
+  display: inline-flex; align-items: center; gap: 12px; padding: 0.9rem 3.5rem; border-radius: 999px; font-size: var(--fs-md); color: #fff;
+  background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.35);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+}
+.note-close:hover { background: rgba(255, 255, 255, 0.26); }
 
 /* ---------- What I build ---------- */
 .build { position: relative; }
@@ -477,7 +507,7 @@ main, .footer { position: relative; z-index: 1; }
 .case-next:hover .mega { transform: scale(1.03); }
 
 /* ---------- Brand kit (/branding) ---------- */
-.bk { position: relative; z-index: 1; background: var(--page); padding-bottom: 8rem; }
+.bk { position: relative; background: var(--page); padding-bottom: 8rem; }
 .bk-hero {
   position: relative; overflow: hidden; text-align: center; padding: 150px var(--gutter) 90px;
   background: linear-gradient(#04060e, #0a1c40 70%, var(--page)); display: flex; flex-direction: column; align-items: center; gap: 1rem;
@@ -547,6 +577,9 @@ main, .footer { position: relative; z-index: 1; }
 .bk-card { margin-top: 0; }
 .bk-metrics { width: min(260px, 100%); }
 .bk-stars { position: absolute; inset: 0; }
+.bk-notes { width: min(460px, 100%); }
+.bk-spec:has(.notes li.up) { overflow: visible; }
+.bk-stage:has(.notes li.up) { overflow: visible; z-index: 70; }
 .bk-stars .stars { opacity: 1; }
 
 /* ---------- Mobile ---------- */

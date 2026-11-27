@@ -173,7 +173,8 @@ export const sideQuests: SideQuest[] = [
   },
 ]
 
-export type Testimonial = { name: string; role: string; quote: string; photo?: string }
+// `short` is the one-liner on the collapsed card; `quote` is the full text when it expands.
+export type Testimonial = { name: string; role: string; short: string; quote: string; photo?: string }
 
 // TODO: real quotes only. The section stays hidden while this is empty.
 export const testimonials: Testimonial[] = []

@@ -181,17 +181,17 @@ export type Testimonial = { name: string; role: string; short: string; quote: st
 export const testimonials: Testimonial[] = []
 
 // Drafts waiting for each client's approval. Only visible on /?preview, never to normal visitors.
-// Once a client approves, move their entry into `testimonials` with their real name and role.
+// Shown by company name. Once a company approves, move its entry into `testimonials`.
 export const draftTestimonials: Testimonial[] = [
   {
-    name: 'Pearbae founder',
+    name: 'Pearbae',
     role: 'Draft · awaiting approval',
     short: 'Took Pearbae from idea to App Store with trust built in.',
     quote:
       'Prathamesh built Pearbae end to end: Aadhaar verification, in-app calling and real-time chat. He thought about safety and trust like a product person, not just a developer, and shipped it in a year.',
   },
   {
-    name: 'Travel agency owner',
+    name: 'Travel agency', // TODO: the agency's actual name
     role: 'Draft · awaiting approval',
     short: 'Took our 50-year-old business fully online.',
     quote:

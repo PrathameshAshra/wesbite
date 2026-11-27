@@ -23,8 +23,10 @@ const W = 420
 // hero scrolls off screen, and 640 of them came back as a black flash. The curve barely shows on
 // a narrow screen anyway.
 const STRIPS = window.matchMedia('(max-width: 820px)').matches ? 2 : 8
-const STRIP_W = W / STRIPS
-const STRIP_DEG = (W / R / STRIPS) * (180 / Math.PI)
+const STRIP_RAD = W / R / STRIPS
+const STRIP_DEG = STRIP_RAD * (180 / Math.PI)
+// Each flat strip spans the chord of its arc, so neighbours meet exactly.
+const STRIP_W = 2 * R * Math.sin(STRIP_RAD / 2)
 
 
 // Every 4th tile (staggered by row) is a real project, cycling through its own screenshots.
@@ -198,7 +200,10 @@ export function Sphere() {
                 style={{
                   left: -STRIP_W / 2,
                   width: STRIP_W + 0.6, // a hair of overlap hides the seams between strips
-                  transform: `rotateY(${((STRIPS - 1) / 2 - s) * STRIP_DEG}deg) rotateX(${t.phi}deg) translateZ(${-R}px)`,
+                  // Bend the card sideways first (strips around a vertical axis meet exactly at every
+                  // height), then tilt the whole bent card up/down into its row. Tilting each strip
+                  // before bending made strips overlap or gap away from the horizon, eating letters.
+                  transform: `rotateX(${t.phi}deg) rotateY(${((STRIPS - 1) / 2 - s) * STRIP_DEG}deg) translateZ(${-R}px)`,
                 }}
               >
                 <div

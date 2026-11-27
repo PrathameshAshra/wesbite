@@ -18,6 +18,16 @@ const BLOCK = 'a, button, [role="button"]'
 
 type Mode = 'free' | 'block' | 'select'
 
+// A sphere card is a zero-size wrapper around its 3D strips: measure the strips instead.
+const rectOf = (el: HTMLElement) => {
+  const r = el.getBoundingClientRect()
+  if (r.width > 0 || el.children.length === 0) return r
+  const rs = [...el.children].map((c) => c.getBoundingClientRect())
+  const left = Math.min(...rs.map((q) => q.left))
+  const top = Math.min(...rs.map((q) => q.top))
+  return new DOMRect(left, top, Math.max(...rs.map((q) => q.right)) - left, Math.max(...rs.map((q) => q.bottom)) - top)
+}
+
 const inside = (r: DOMRect, x: number, y: number, m: number) => x > r.left - m && x < r.right + m && y > r.top - m && y < r.bottom + m
 
 // 3D-transformed children (the work sphere) aren't reported by the browser's hit-testing, which
@@ -27,7 +37,7 @@ const under = (el: Element, x: number, y: number) => {
   let bestDist = Infinity
   for (const c of el.querySelectorAll<HTMLElement>(SELECT)) {
     if (c.style.visibility === 'hidden') continue
-    const r = c.getBoundingClientRect()
+    const r = rectOf(c)
     if (!inside(r, x, y, 0)) continue
     const dist = Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2))
     if (dist < bestDist) {
@@ -77,7 +87,7 @@ export function Cursor() {
 
     // Keep the current target while the mouse is still on it (or within the release margin).
     const update = (hit: Element | null) => {
-      if (target && target.el.isConnected && inside(target.el.getBoundingClientRect(), mouse.x, mouse.y, target.mode === 'select' ? RELEASE : 0)) {
+      if (target && target.el.isConnected && inside(rectOf(target.el), mouse.x, mouse.y, target.mode === 'select' ? RELEASE : 0)) {
         const next = pick(hit, mouse.x, mouse.y)
         // A button inside a selected surface still takes over.
         if (next?.mode === 'block' && target.mode === 'select' && target.el.contains(next.el)) setTarget(next)
@@ -99,12 +109,12 @@ export function Cursor() {
 
     const frame = () => {
       // Work tiles drift under a still mouse: re-check what's underneath when we've slid off.
-      if (target && !inside(target.el.getBoundingClientRect(), mouse.x, mouse.y, target.mode === 'select' ? RELEASE : 0)) {
+      if (target && !inside(rectOf(target.el), mouse.x, mouse.y, target.mode === 'select' ? RELEASE : 0)) {
         update(document.elementFromPoint(mouse.x, mouse.y))
       }
       let goal = { x: mouse.x - DOT / 2, y: mouse.y - DOT / 2, w: DOT, h: DOT, r: DOT / 2 }
       if (target) {
-        const b = target.el.getBoundingClientRect()
+        const b = rectOf(target.el)
         if (target.mode === 'select') {
           goal = { x: b.left, y: b.top, w: b.width, h: b.height, r: 0 }
           sizeEl.textContent = `${Math.round(b.width)} × ${Math.round(b.height)}`

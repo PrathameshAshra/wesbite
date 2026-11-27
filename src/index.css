@@ -179,9 +179,11 @@ p { text-wrap: pretty; }
 .hero { background: linear-gradient(#04060e, #0e2d5c); position: relative; z-index: 1; height: 100svh; min-height: 620px; overflow: hidden; }
 .sphere { position: absolute; inset: 0; perspective: var(--persp); overflow: hidden; }
 .sphere-scene { position: absolute; left: 50%; top: 46%; width: 0; height: 0; transform-style: preserve-3d; }
-.tile {
-  position: absolute; left: -210px; top: -150px; width: 420px; height: 300px; border-radius: 14px; overflow: hidden;
-  backface-visibility: hidden; padding: 20px 26px 0;
+.tile { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
+/* One vertical slice of a card, turned to sit on the sphere (left/width set in Sphere.tsx). */
+.tile-strip { position: absolute; top: -150px; height: 300px; overflow: hidden; backface-visibility: hidden; }
+.tile-face {
+  position: absolute; top: 0; width: 420px; height: 300px; border-radius: 14px; overflow: hidden; padding: 20px 26px 0;
   background: linear-gradient(140deg, var(--g1), var(--g2));
 }
 .tile-inner { height: 100%; border-radius: 10px 10px 0 0; overflow: hidden; box-shadow: 0 12px 30px rgba(8, 28, 64, 0.28); }

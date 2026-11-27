@@ -15,6 +15,12 @@ const MIN_PERSP = 560 // phones: keep tiles readable instead of shrinking them t
 const TILE_HALF = 11 // half a tile's width, in degrees
 const LOOK_X = 7 // max sideways mouse-look, in degrees
 const SPEED = 2.2 // degrees per second
+// Each card is a sticker on the inside of the sphere: built from vertical strips, each one
+// turned to sit on the surface, so the card's top and bottom edges follow the curve.
+const W = 420
+const STRIPS = 8
+const STRIP_W = W / STRIPS
+const STRIP_DEG = (W / R / STRIPS) * (180 / Math.PI)
 
 type Kind = 'dashboard' | 'phone' | 'metric' | 'list'
 const KINDS: Kind[] = ['dashboard', 'phone', 'metric', 'list']
@@ -131,15 +137,13 @@ export function Sphere() {
       look.x += (look.tx - look.x) * Math.min(1, dt * 3)
       look.y += (look.ty - look.y) * Math.min(1, dt * 3)
       if (scene.current) {
-        scene.current.style.transform = `translateZ(var(--persp)) rotateX(${look.y}deg) rotateY(${look.x}deg)`
+        scene.current.style.transform = `translateZ(var(--persp)) rotateX(${look.y}deg) rotateY(${look.x + drift}deg)`
       }
       layout.forEach((t, i) => {
         const el = tiles.current[i]
         if (!el) return
         const theta = ((((t.base + drift) % 360) + 540) % 360) - 180
-        const show = Math.abs(theta) < visible
-        el.style.visibility = show ? 'visible' : 'hidden'
-        if (show) el.style.transform = `rotateY(${theta}deg) rotateX(${t.phi}deg) translateZ(${-R}px)`
+        el.style.visibility = Math.abs(theta) < visible ? 'visible' : 'hidden'
       })
       raf = requestAnimationFrame(frame)
     }
@@ -161,13 +165,30 @@ export function Sphere() {
               tiles.current[i] = el
             }}
             className="tile"
+            style={{ transform: `rotateY(${t.base}deg)` }}
             // Rows below the horizon sit faded behind the headline; only the clear rows are selectable.
             data-select={t.phi <= 0 ? t.study.name : undefined}
-            style={{ '--accent': t.study.accent, '--g1': t.backdrop[0], '--g2': t.backdrop[1] } as React.CSSProperties}
           >
-            <div className={`tile-inner k-${t.kind}`}>
-              <TileBody study={t.study} kind={t.kind} n={t.n} />
-            </div>
+            {Array.from({ length: STRIPS }, (_, s) => (
+              <div
+                key={s}
+                className="tile-strip"
+                style={{
+                  left: -STRIP_W / 2,
+                  width: STRIP_W + 0.6, // a hair of overlap hides the seams between strips
+                  transform: `rotateY(${((STRIPS - 1) / 2 - s) * STRIP_DEG}deg) rotateX(${t.phi}deg) translateZ(${-R}px)`,
+                }}
+              >
+                <div
+                  className="tile-face"
+                  style={{ left: -s * STRIP_W, '--accent': t.study.accent, '--g1': t.backdrop[0], '--g2': t.backdrop[1] } as React.CSSProperties}
+                >
+                  <div className={`tile-inner k-${t.kind}`}>
+                    <TileBody study={t.study} kind={t.kind} n={t.n} />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         ))}
       </div>

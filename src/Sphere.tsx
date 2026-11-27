@@ -24,30 +24,44 @@ const STRIP_DEG = (W / R / STRIPS) * (180 / Math.PI)
 
 type Kind = 'dashboard' | 'phone' | 'metric' | 'list'
 const KINDS: Kind[] = ['dashboard', 'phone', 'metric', 'list']
-// Bright backdrops behind each "screenshot", like a dribbble shot.
-const BACKDROPS = [
-  ['#7b5cff', '#53a4ff'],
-  ['#ff8a3d', '#ffd25e'],
-  ['#2ec4a6', '#c6ff7a'],
-  ['#ff5d8f', '#a36bff'],
-  ['#53a4ff', '#94fffe'],
-  ['#1d55a0', '#7b5cff'],
-  ['#ffd25e', '#ff5d8f'],
-]
 
 // Every 4th tile (staggered by row) is a real project, cycling through its own screenshots.
 const isShotTile = (c: number, r: number) => (c + r * 2) % 4 === 0
 const SHOT_MS = 2400
 
-// The project's current frame; keyed by src so each new frame fades in.
+const sheetNo = (project: BannerProject) => String(bannerProjects.indexOf(project) + 1).padStart(2, '0')
+
+// The project's current frame; keyed by src so each new frame fades in. A phone shot leaves
+// empty blueprint either side, so drafting props sit on the sheet around it.
 function ShotTile({ project, frame }: { project: BannerProject; frame: number }) {
   const shot = project.shots[frame % project.shots.length]
   return (
-    <div className={`tile-inner k-shot k-shot-${shot.kind}`}>
-      <div className="t-shot">
-        <img key={shot.src} src={shot.src} alt="" />
+    <>
+      <div className={`tile-inner k-shot k-shot-${shot.kind}`}>
+        <div className={`t-shot t-shot-${shot.kind}`}>
+          <img key={shot.src} src={shot.src} alt="" />
+        </div>
       </div>
-    </div>
+      {shot.kind === 'app' && (
+        <div className="props" key={`props-${shot.src}`}>
+          <img className="prop prop-square" src="/props/set-square.svg" alt="" />
+          <img className="prop prop-tape" src="/props/tape.svg" alt="" />
+          <img className="prop prop-pencil" src="/props/pencil.svg" alt="" />
+        </div>
+      )}
+      <span className="sheet-tag">
+        SHEET {sheetNo(project)} · {project.name.toUpperCase()}
+      </span>
+    </>
+  )
+}
+
+function Tacks() {
+  return (
+    <>
+      <img className="tack tack-l" src="/props/pin.svg" alt="" />
+      <img className="tack tack-r" src="/props/pin.svg" alt="" />
+    </>
   )
 }
 
@@ -122,7 +136,6 @@ export function Sphere() {
           base: c * (360 / COLS),
           study: work[(c + r * 3) % work.length],
           kind: KINDS[(c * 3 + r) % KINDS.length],
-          backdrop: BACKDROPS[(c * 2 + r * 3) % BACKDROPS.length],
           n: c + r,
           // Handed out in order, so neighbouring shot tiles show different projects.
           project: isShotTile(c, r) ? bannerProjects[shots++ % bannerProjects.length] : null,
@@ -206,8 +219,9 @@ export function Sphere() {
               >
                 <div
                   className="tile-face"
-                  style={{ left: -s * STRIP_W, '--accent': t.study.accent, '--g1': t.backdrop[0], '--g2': t.backdrop[1] } as React.CSSProperties}
+                  style={{ left: -s * STRIP_W, '--accent': t.study.accent } as React.CSSProperties}
                 >
+                  <Tacks />
                   {t.project ? (
                     <ShotTile project={t.project} frame={frame + t.n} />
                   ) : (

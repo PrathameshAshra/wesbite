@@ -185,13 +185,31 @@ p { text-wrap: pretty; }
 .tile-strip { position: absolute; top: -150px; height: 300px; overflow: hidden; backface-visibility: hidden; }
 .tile-face {
   position: absolute; top: 0; width: 420px; height: 300px; border-radius: 14px; overflow: hidden; padding: 20px 26px 0;
-  /* Gradient with character: film grain, a fine dot grid and a soft light bloom. */
+  /* A blueprint sheet: grain over a white drafting grid on blueprint blue. */
   background:
     url('/grain.png'),
-    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.22) 1px, transparent 1.4px) 0 0 / 14px 14px,
-    radial-gradient(120% 90% at 15% 0%, rgba(255, 255, 255, 0.35), transparent 55%),
-    linear-gradient(140deg, var(--g1), var(--g2));
+    linear-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.22) 1px, transparent 1px) 0 0 / 40px 40px,
+    radial-gradient(120% 100% at 30% 0%, #2a64c2, #163d80);
 }
+/* Drafting marks: dashed sheet border with ruler ticks along the top and left edges. */
+.tile-face::after {
+  content: ''; position: absolute; inset: 8px; border-radius: 8px; pointer-events: none;
+  border: 1px dashed rgba(255, 255, 255, 0.45);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.7) 1px, transparent 1px) 0 0 / 10px 6px repeat-x,
+    linear-gradient(rgba(255, 255, 255, 0.7) 1px, transparent 1px) 0 0 / 6px 10px repeat-y;
+}
+.tile-inner { position: relative; z-index: 1; }
+.tack { position: absolute; top: 6px; width: 26px; z-index: 3; filter: drop-shadow(0 3px 3px rgba(4, 16, 42, 0.35)); }
+.tack-l { left: 10px; }
+.tack-r { right: 10px; transform: scaleX(-1); }
+.sheet-tag { position: absolute; left: 50%; top: 5px; translate: -50% 0; white-space: nowrap; z-index: 3; font: 600 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.12em; color: #fff; padding: 3px 7px; border-radius: 3px; background: #1f4f9f; }
+.props { position: absolute; inset: 0; z-index: 2; pointer-events: none; animation: shot-in 0.6s var(--ease) both; }
+.prop { position: absolute; filter: drop-shadow(0 8px 6px rgba(4, 16, 42, 0.45)); }
+.prop-square { left: 22px; bottom: 26px; width: 104px; transform: rotate(-10deg); }
+.prop-tape { right: 30px; bottom: 30px; width: 108px; transform: rotate(8deg); }
+.prop-pencil { right: 70px; top: 40px; height: 150px; transform: rotate(38deg); }
 .tile-inner { height: 100%; border-radius: 10px 10px 0 0; overflow: hidden; box-shadow: 0 12px 30px rgba(8, 28, 64, 0.28); }
 .t-shot { position: relative; height: 100%; }
 .t-shot img { position: absolute; display: block; animation: shot-in 0.6s var(--ease) both; }

@@ -178,8 +178,14 @@ p { text-wrap: pretty; }
 @keyframes write { to { -webkit-mask-position: 0 0; mask-position: 0 0; } }
 
 /* ---------- Hero: inside a sphere of tiles ---------- */
-.hero { background: linear-gradient(#04060e, #0e2d5c); position: relative; z-index: 1; height: 100svh; min-height: 620px; overflow: hidden; }
-.sphere { position: absolute; inset: 0; perspective: var(--persp); overflow: hidden; }
+/* No block colour of its own: the sky backdrop shows through, so the hero melts into the next section. */
+.hero { position: relative; z-index: 1; height: 100svh; min-height: 620px; overflow: hidden; }
+.sphere {
+  position: absolute; inset: 0; perspective: var(--persp); overflow: hidden;
+  /* The wall of tiles dissolves over the bottom of the hero instead of ending in a hard edge. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+}
 .sphere-scene { position: absolute; left: 50%; top: 46%; width: 0; height: 0; transform-style: preserve-3d; }
 .tile { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
 /* One vertical slice of a card, turned to sit on the sphere (left/width set in Sphere.tsx). */

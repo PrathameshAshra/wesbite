@@ -57,9 +57,15 @@ function ShotTile({ project, frame }: { project: BannerProject; frame: number })
 function Props() {
   return (
     <div className="props">
-      <img className="prop prop-square" src="/props/set-square.svg" alt="" />
-      <img className="prop prop-tape" src="/props/tape.svg" alt="" />
-      <img className="prop prop-pencil" src="/props/pencil.svg" alt="" />
+      <span className="prop prop-square">
+        <img src="/props/set-square.svg" alt="" />
+      </span>
+      <span className="prop prop-tape">
+        <img src="/props/tape.svg" alt="" />
+      </span>
+      <span className="prop prop-pencil">
+        <img src="/props/pencil.svg" alt="" />
+      </span>
     </div>
   )
 }
@@ -68,11 +74,18 @@ function Props() {
 const PIN_COLOURS = ['red', 'yellow', 'green']
 const pin = (k: number) => `/props/pin-${PIN_COLOURS[k % PIN_COLOURS.length]}.svg`
 
+// Every object sits under one light (top-left), so the shadow lives on an unrotated wrapper
+// and only the object inside turns: shadows all fall down-right whatever the object's angle.
+// Seen from one camera, the pins all lean the same way.
 function Tacks({ n }: { n: number }) {
   return (
     <>
-      <img className="tack tack-l" src={pin(n)} alt="" />
-      <img className="tack tack-r" src={pin(n + 1)} alt="" />
+      <span className="tack tack-l">
+        <img src={pin(n)} alt="" />
+      </span>
+      <span className="tack tack-r">
+        <img src={pin(n + 1)} alt="" />
+      </span>
     </>
   )
 }

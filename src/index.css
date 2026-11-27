@@ -181,6 +181,8 @@ p { text-wrap: pretty; }
 /* No block colour of its own: the sky backdrop shows through, so the hero melts into the next section. */
 .hero { position: relative; z-index: 1; height: 100svh; min-height: 620px; overflow: hidden; }
 .sphere {
+  /* One light for the whole wall, top-left: every shadow falls down and to the right. */
+  --cast: 5px 7px; --cast-ink: rgba(4, 16, 42, 0.45);
   position: absolute; inset: 0; perspective: var(--persp); overflow: hidden;
   /* The wall of tiles dissolves over the bottom of the hero instead of ending in a hard edge. */
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
@@ -208,21 +210,26 @@ p { text-wrap: pretty; }
     linear-gradient(rgba(255, 255, 255, 0.7) 1px, transparent 1px) 0 0 / 6px 10px repeat-y;
 }
 .tile-inner { position: relative; z-index: 1; }
-.tack { position: absolute; top: -4px; width: 24px; z-index: 3; transform-origin: 50% 100%; filter: drop-shadow(3px 4px 2px rgba(4, 16, 42, 0.45)); }
-.tack-l { left: 14px; rotate: -32deg; } /* leans out towards its corner, needle in the sheet */
-.tack-r { right: 14px; rotate: 32deg; }
+.tack { position: absolute; top: 0; width: 22px; z-index: 3; filter: drop-shadow(var(--cast) 2px var(--cast-ink)); }
+.tack img { display: block; width: 100%; transform-origin: 50% 100%; rotate: -18deg; }
+.tack-l { left: 30px; }
+.tack-r { right: 30px; }
 .sheet-tag { position: absolute; left: 50%; top: 5px; translate: -50% 0; white-space: nowrap; z-index: 3; font: 600 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.12em; color: #fff; padding: 3px 7px; border-radius: 3px; background: #1f4f9f; }
 .props { position: absolute; inset: 0; z-index: 2; pointer-events: none; animation: shot-in 0.6s var(--ease) both; }
-.prop { position: absolute; filter: drop-shadow(0 8px 6px rgba(4, 16, 42, 0.45)); }
-.prop-square { left: 22px; bottom: 26px; width: 104px; transform: rotate(-10deg); }
-.prop-tape { right: 30px; bottom: 30px; width: 108px; transform: rotate(8deg); }
-.prop-pencil { right: 70px; top: 40px; height: 150px; transform: rotate(38deg); }
-.tile-inner { height: 100%; border-radius: 10px 10px 0 0; overflow: hidden; box-shadow: 0 12px 30px rgba(8, 28, 64, 0.28); }
+.prop { position: absolute; filter: drop-shadow(var(--cast) 5px var(--cast-ink)); }
+.prop img { display: block; width: 100%; height: 100%; }
+.prop-square { left: 22px; bottom: 26px; width: 104px; }
+.prop-square img { rotate: -10deg; }
+.prop-tape { right: 30px; bottom: 30px; width: 108px; }
+.prop-tape img { rotate: 8deg; }
+.prop-pencil { right: 90px; top: 40px; width: 24px; height: 152px; }
+.prop-pencil img { rotate: 38deg; }
+.tile-inner { height: 100%; border-radius: 10px 10px 0 0; overflow: hidden; box-shadow: 8px 14px 28px rgba(4, 16, 42, 0.32); }
 .t-shot { position: relative; height: 100%; }
 .t-shot img { position: absolute; display: block; animation: shot-in 0.6s var(--ease) both; }
 .t-shot-web img { inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .tile-inner.k-shot-app { background: none; box-shadow: none; overflow: visible; }
-.t-shot-app img { left: 50%; top: 0; height: 100%; translate: -50% 0; border-radius: 16px 16px 0 0; box-shadow: 0 12px 30px rgba(8, 28, 64, 0.35); }
+.t-shot-app img { left: 50%; top: 0; height: 100%; translate: -50% 0; border-radius: 16px 16px 0 0; box-shadow: 8px 14px 28px rgba(4, 16, 42, 0.38); }
 @keyframes shot-in { from { opacity: 0; } to { opacity: 1; } }
 .tile-inner.k-phone { background: none; box-shadow: none; overflow: visible; }
 .t-title { font-size: var(--fs-lg); font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; }

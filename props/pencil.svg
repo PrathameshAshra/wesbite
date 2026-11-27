@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 190">
+  <defs>
+    <linearGradient id="b" x1="0" x2="1"><stop offset="0" stop-color="#c98a0e"/><stop offset=".33" stop-color="#f5bd2e"/><stop offset=".34" stop-color="#ffd866"/><stop offset=".66" stop-color="#ffe08a"/><stop offset=".67" stop-color="#eaa91c"/><stop offset="1" stop-color="#b9780a"/></linearGradient>
+    <linearGradient id="m" x1="0" x2="1"><stop offset="0" stop-color="#7d8594"/><stop offset=".4" stop-color="#eef1f6"/><stop offset="1" stop-color="#6b7280"/></linearGradient>
+    <linearGradient id="e" x1="0" x2="1"><stop offset="0" stop-color="#d9607a"/><stop offset=".45" stop-color="#ff9fb1"/><stop offset="1" stop-color="#b8435d"/></linearGradient>
+    <linearGradient id="w" x1="0" x2="1"><stop offset="0" stop-color="#c79a6b"/><stop offset=".5" stop-color="#f1d2a8"/><stop offset="1" stop-color="#b08455"/></linearGradient>
+  </defs>
+  <rect x="3" y="4" width="24" height="22" rx="7" fill="url(#e)"/>
+  <rect x="3" y="22" width="24" height="18" fill="url(#m)"/>
+  <rect x="3" y="27" width="24" height="2" fill="#5c6370" opacity=".5"/><rect x="3" y="33" width="24" height="2" fill="#5c6370" opacity=".5"/>
+  <rect x="3" y="40" width="24" height="112" fill="url(#b)"/>
+  <path d="M3 152 L15 186 L27 152 Z" fill="url(#w)"/>
+  <path d="M10.6 174 L15 186 L19.4 174 Z" fill="#2b2f36"/>
+</svg>

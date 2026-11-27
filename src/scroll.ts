@@ -7,7 +7,9 @@ const desktop = () => !window.matchMedia('(max-width: 820px)').matches
 // scrolling resumes when every hold is released.
 let current: Lenis | null = null
 let holds = 0
+// The lock is a class on <html>; on desktop Lenis is stopped too so its smoothing pauses.
 const sync = () => {
+  document.documentElement.classList.toggle('scroll-held', holds > 0)
   if (!current) return
   if (holds > 0) current.stop()
   else current.start()
@@ -24,13 +26,14 @@ export function holdScroll() {
   }
 }
 
-// Smooth scrolling everywhere except for visitors who asked for reduced motion.
+// Smooth scrolling on desktop only. Phones keep plain native scrolling, which is the only
+// thing iOS Safari's CSS scroll-snap cooperates with reliably. Off for reduced motion too.
 // On desktop the wheel is handed to startSnap instead, which moves one screen per gesture.
 export function startScroll() {
-  if (reducedMotion) return null
+  if (reducedMotion || !desktop()) return null
   const lenis = new Lenis({
     lerp: 0.1,
-    virtualScroll: (e) => !(desktop() && e.event.type === 'wheel'),
+    virtualScroll: (e) => e.event.type !== 'wheel',
   })
   const raf = (t: number) => {
     lenis.raf(t)

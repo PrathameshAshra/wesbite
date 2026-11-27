@@ -61,11 +61,15 @@ function Props() {
   )
 }
 
-function Tacks() {
+// Push pins in a mix of colours (no blue: the sheet already is). Each tile gets a different pair.
+const PIN_COLOURS = ['red', 'yellow', 'green']
+const pin = (k: number) => `/props/pin-${PIN_COLOURS[k % PIN_COLOURS.length]}.svg`
+
+function Tacks({ n }: { n: number }) {
   return (
     <>
-      <img className="tack tack-l" src="/props/pin.svg" alt="" />
-      <img className="tack tack-r" src="/props/pin.svg" alt="" />
+      <img className="tack tack-l" src={pin(n)} alt="" />
+      <img className="tack tack-r" src={pin(n + 1)} alt="" />
     </>
   )
 }
@@ -226,7 +230,7 @@ export function Sphere() {
                   className="tile-face"
                   style={{ left: -s * STRIP_W, '--accent': t.study.accent } as React.CSSProperties}
                 >
-                  <Tacks />
+                  <Tacks n={i} />
                   {t.project ? (
                     <ShotTile project={t.project} frame={frame + t.n} />
                   ) : (

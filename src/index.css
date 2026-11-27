@@ -201,9 +201,9 @@ p { text-wrap: pretty; }
     linear-gradient(rgba(255, 255, 255, 0.7) 1px, transparent 1px) 0 0 / 6px 10px repeat-y;
 }
 .tile-inner { position: relative; z-index: 1; }
-.tack { position: absolute; top: 6px; width: 26px; z-index: 3; filter: drop-shadow(0 3px 3px rgba(4, 16, 42, 0.35)); }
-.tack-l { left: 10px; }
-.tack-r { right: 10px; transform: scaleX(-1); }
+.tack { position: absolute; top: -4px; width: 24px; z-index: 3; transform-origin: 50% 100%; filter: drop-shadow(3px 4px 2px rgba(4, 16, 42, 0.45)); }
+.tack-l { left: 14px; rotate: -32deg; } /* leans out towards its corner, needle in the sheet */
+.tack-r { right: 14px; rotate: 32deg; }
 .sheet-tag { position: absolute; left: 50%; top: 5px; translate: -50% 0; white-space: nowrap; z-index: 3; font: 600 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.12em; color: #fff; padding: 3px 7px; border-radius: 3px; background: #1f4f9f; }
 .props { position: absolute; inset: 0; z-index: 2; pointer-events: none; animation: shot-in 0.6s var(--ease) both; }
 .prop { position: absolute; filter: drop-shadow(0 8px 6px rgba(4, 16, 42, 0.45)); }

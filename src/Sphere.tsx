@@ -42,17 +42,22 @@ function ShotTile({ project, frame }: { project: BannerProject; frame: number })
           <img key={shot.src} src={shot.src} alt="" />
         </div>
       </div>
-      {shot.kind === 'app' && (
-        <div className="props" key={`props-${shot.src}`}>
-          <img className="prop prop-square" src="/props/set-square.svg" alt="" />
-          <img className="prop prop-tape" src="/props/tape.svg" alt="" />
-          <img className="prop prop-pencil" src="/props/pencil.svg" alt="" />
-        </div>
-      )}
+      {shot.kind === 'app' && <Props key={`props-${shot.src}`} />}
       <span className="sheet-tag">
         SHEET {sheetNo(project)} · {project.name.toUpperCase()}
       </span>
     </>
+  )
+}
+
+// Drafting tools that fill the empty blueprint either side of a phone.
+function Props() {
+  return (
+    <div className="props">
+      <img className="prop prop-square" src="/props/set-square.svg" alt="" />
+      <img className="prop prop-tape" src="/props/tape.svg" alt="" />
+      <img className="prop prop-pencil" src="/props/pencil.svg" alt="" />
+    </div>
   )
 }
 
@@ -225,9 +230,12 @@ export function Sphere() {
                   {t.project ? (
                     <ShotTile project={t.project} frame={frame + t.n} />
                   ) : (
-                    <div className={`tile-inner k-${t.kind}`}>
-                      <TileBody study={t.study} kind={t.kind} n={t.n} />
-                    </div>
+                    <>
+                      <div className={`tile-inner k-${t.kind}`}>
+                        <TileBody study={t.study} kind={t.kind} n={t.n} />
+                      </div>
+                      {t.kind === 'phone' && <Props />}
+                    </>
                   )}
                 </div>
               </div>

@@ -80,9 +80,38 @@ function Hero({ ready }: { ready: boolean }) {
 
 /* ---------- Statement ---------- */
 
+// Original geek-culture toys floating around the statement: they pop in when the section
+// arrives and bob gently. Shadows sit on the wrapper so they all fall the same way.
+const TOYS = [
+  { src: '/props/gamepad.svg', className: 'toy toy-pad' },
+  { src: '/props/cartridge.svg', className: 'toy toy-cart' },
+  { src: '/props/coin.svg', className: 'toy toy-coin' },
+  { src: '/props/heart.svg', className: 'toy toy-heart' },
+]
+
+function Toys() {
+  return (
+    <div className="toys" aria-hidden>
+      {TOYS.map((t, i) => (
+        <motion.span
+          key={t.src}
+          className={t.className}
+          initial={reducedMotion ? false : { opacity: 0, scale: 0.4 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false, margin: '-10% 0px' }}
+          transition={{ type: 'spring', stiffness: 160, damping: 12, delay: 0.15 + i * 0.12 }}
+        >
+          <img src={t.src} alt="" />
+        </motion.span>
+      ))}
+    </div>
+  )
+}
+
 function Statement() {
   return (
     <section className="statement" data-snap>
+      <Toys />
       {site.statement.map((line, i) => (
         <Reveal key={line} delay={i * 0.08}>
           <p className="headline">{line}</p>

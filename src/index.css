@@ -129,11 +129,10 @@ p { text-wrap: pretty; }
   animation: drift 60s linear infinite alternate;
 }
 .cloud::after { content: ''; position: absolute; inset: -30% 20% 30% -20%; border-radius: 50%; background: inherit; }
-.c0 { width: 300px; height: 130px; top: 10%; left: -190px; }
-.c1 { width: 360px; height: 150px; top: 30%; right: -230px; animation-duration: 75s; }
-.c2 { width: 280px; height: 120px; top: 60%; left: -180px; animation-duration: 68s; }
-.c3 { width: 340px; height: 140px; top: 82%; right: -210px; animation-duration: 82s; }
-.c4, .c5 { display: none; }
+.c0 { width: 300px; height: 130px; top: 0; left: -190px; }
+.c1 { width: 360px; height: 150px; top: 0; right: -230px; animation-duration: 75s; }
+.c2 { width: 280px; height: 120px; top: 0; left: -180px; animation-duration: 68s; }
+.c3 { width: 340px; height: 140px; top: 0; right: -210px; animation-duration: 82s; }
 @keyframes drift { from { transform: translateX(-30px); } to { transform: translateX(40px); } }
 
 /* ---------- Chrome ---------- */

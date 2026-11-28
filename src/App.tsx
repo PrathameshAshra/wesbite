@@ -24,24 +24,44 @@ const ease = [0.32, 0.72, 0, 1] as const
 
 /* ---------- Backdrop ---------- */
 
+// Each cloud scrolls at its own speed (parallax) and wraps around the viewport.
+const CLOUDS = [
+  { top: 0.1, speed: 0.35 },
+  { top: 0.3, speed: 0.55 },
+  { top: 0.6, speed: 0.25 },
+  { top: 0.82, speed: 0.45 },
+]
+const CLOUD_PAD = 200
+
 function Backdrop() {
   const clouds = useRef<HTMLDivElement>(null)
-  // Clouds only belong in the blue part of the sky: fade them in once the navy top has scrolled past.
   useEffect(() => {
     const update = () => {
       if (!clouds.current) return
       const vh = window.innerHeight
-      clouds.current.style.opacity = String(Math.min(1, Math.max(0, (window.scrollY - vh * 1.1) / vh)))
+      const y = window.scrollY
+      // Clouds only belong in the blue part of the sky: fade them in once the navy top has scrolled past.
+      clouds.current.style.opacity = String(Math.min(1, Math.max(0, (y - vh * 1.1) / vh)))
+      const span = vh + CLOUD_PAD * 2
+      Array.from(clouds.current.children as HTMLCollectionOf<HTMLElement>).forEach((el, i) => {
+        const c = CLOUDS[i]
+        const pos = (((c.top * vh - y * c.speed) % span) + span) % span - CLOUD_PAD
+        el.style.translate = `0 ${pos}px`
+      })
     }
     update()
     window.addEventListener('scroll', update, { passive: true })
-    return () => window.removeEventListener('scroll', update)
+    window.addEventListener('resize', update)
+    return () => {
+      window.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+    }
   }, [])
   return (
     <div className="backdrop" aria-hidden>
       <Stars count={220} />
       <div ref={clouds} className="clouds">
-        {[0, 1, 2, 3, 4, 5].map((i) => (
+        {CLOUDS.map((_, i) => (
           <span key={i} className={`cloud c${i}`} />
         ))}
       </div>

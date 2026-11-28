@@ -2,7 +2,7 @@
 {
 	# Registers the HTTPS certificate account. With an email set, Caddy can also use ZeroSSL
 	# when Let's Encrypt refuses (e.g. its weekly limit per domain).
-	email prathameshedu@gmail.com
+	email iamprathameshashra@gmail.com
 }
 
 www.prathameshashra.com {

@@ -66,7 +66,7 @@ export const work: CaseStudy[] = [
       { value: '2 yrs', label: 'zero to pan-India launch' },
     ],
     problem:
-      'Spontaa wanted people to find real plans in their city and actually show up. When I joined there was nothing yet. No app, no team, no servers.',
+      'Spontaa wanted people to find real plans in their city and actually show up. When I joined there was no app, no team and no servers yet.',
     built: [
       'Web, Android and iOS apps end to end, as the first engineer on the founding team',
       'AI that picks places and plans from maps and live data, and knows where one city ends and the next starts',
@@ -193,29 +193,29 @@ export const sideQuests: SideQuest[] = [
   {
     id: 'payment-collect',
     name: 'Payment Collect',
-    blurb: 'My take on payment follow-ups for manufacturers: read overdue bills straight from Tally and chase them on WhatsApp with a payment link.',
+    blurb: 'An idea for manufacturers: pull overdue bills from Tally and send the reminders on WhatsApp, with a payment link.',
     cta: 'Talk to me about it',
     href: site.contact.call,
     accent: '#25d366',
     screen: 'chat',
     status: 'Idea + POC',
-    hook: 'What if overdue payments chased themselves?',
+    hook: 'Most manufacturers still chase payments over the phone.',
     itch:
-      'Indian MSMEs wait 73 days on average to get an invoice paid (Recordent, 2026), and ₹7.34 lakh crore sits stuck in delayed payments (GAME, FISME and C2FO, 2024). At most manufacturers I know, following up is still one person with Tally on one screen and a phone in hand. That’s the problem I want to solve.',
+      'Indian MSMEs wait 73 days on average to get an invoice paid (Recordent, 2026), and ₹7.34 lakh crore sits stuck in delayed payments (GAME, FISME and C2FO, 2024). In most factories I know, one person in accounts keeps Tally open and spends the day calling parties. I think most of that can run on its own.',
     before: {
       label: 'Today: phone and Tally',
       points: ['Someone checks Tally for who owes what', 'Calls each party, one by one', 'Ledgers sent by hand', 'The owner hears about it when cash gets tight'],
     },
     after: {
-      label: 'What it could be',
+      label: 'How I’d fix it',
       points: ['Overdue bills read straight from Tally', 'A WhatsApp reminder with the ledger and a payment link', 'Firmer reminders on a schedule, calls only when needed', 'Paid invoices mark themselves'],
     },
     inside: {
       title: 'payment-collect / overdue',
       spots: [
-        { x: 6, y: 30, title: 'Ledger and pay link in one message', text: 'The party would get their ledger PDF and a one-tap payment link on WhatsApp. No “please send the details” back and forth.' },
+        { x: 6, y: 30, title: 'Ledger and pay link in one message', text: 'The party would get their ledger PDF and a one-tap payment link on WhatsApp. So nobody has to reply asking for the details.' },
         { x: 6, y: 66, title: 'Firmer, on a schedule', text: 'Polite on the due date, firmer at day 7. VIP parties never get the firm one.' },
-        { x: 63, y: 55, title: 'A person makes the hard call', text: 'At day 15 the party gets flagged for a call, and at day 30 the owner gets an alert. Automation handles the routine chasing, people handle the relationship.' },
+        { x: 63, y: 55, title: 'A person makes the hard call', text: 'At day 15 someone from accounts calls the party. At day 30 the owner gets an alert.' },
         { x: 63, y: 83, title: 'Paid marks itself', text: 'Money that comes in through the link would mark the invoice paid. Tally catches up when the receipt is entered.' },
       ],
     },
@@ -227,11 +227,11 @@ export const sideQuests: SideQuest[] = [
     ],
     calls: [
       { call: 'Tally stays', why: 'Manufacturers here run on Tally, and asking them to switch kills the deal. Payment Collect would read Tally and leave it as the source of truth.' },
-      { call: 'WhatsApp, not email', why: 'Industry benchmarks put WhatsApp open rates near 98%, against roughly 21% for email. A reminder nobody opens isn’t a reminder.' },
+      { call: 'WhatsApp over email', why: 'Industry numbers put WhatsApp open rates near 98% and email around 21%, so email was never really an option.' },
       { call: 'Meta’s API directly, no reseller', why: 'WhatsApp resellers add a markup on every message. Going direct would keep each reminder at a few paise.' },
-      { call: 'A payment link in every message', why: '“Please pay” with no easy way to pay is just noise. The link also confirms the payment without anyone checking the bank.' },
-      { call: 'A person makes the day-15 call', why: 'In Indian B2B the relationship is the collateral. A bot calling a ten-year customer about money does more damage than the delay.' },
-      { call: 'VIP parties skip the firm reminder', why: 'Some customers you never send a stern message to. The owner marks them once.' },
+      { call: 'A payment link in every message', why: 'If paying means hunting for bank details, people put it off. The link also tells us when they’ve paid, so nobody has to check the bank.' },
+      { call: 'A person makes the day-15 call', why: 'A lot of these parties have bought from the same manufacturer for ten years. I wouldn’t want a bot calling them about money.' },
+      { call: 'VIP parties skip the firm reminder', why: 'Some customers you just don’t send a stern message to. The owner tags them once and they never get one.' },
     ],
     stats: [
       { value: '73 days', label: 'average wait to get an MSME invoice paid (Recordent, 2026)' },
@@ -242,7 +242,7 @@ export const sideQuests: SideQuest[] = [
       { when: 'Nov 2026', what: 'Research into how manufacturers chase payments' },
       { when: 'Nov 2026', what: 'A POC on a test Tally company to see how it should feel' },
     ],
-    now: 'This is a vision, not a product yet. I built a quick POC on a test Tally company to get a feel for how the Tally sync, WhatsApp reminders, payment links and the owner’s view should fit together.',
+    now: 'It isn’t a product yet. I built a rough POC on a test Tally company to work out how the Tally sync, WhatsApp reminders, payment links and the owner’s view should fit together.',
     next: ['Talk to manufacturers about how they follow up today', 'Shape a first version from what the POC showed', 'Try it with a first manufacturer'],
     tags: ['Tally', 'WhatsApp', 'Razorpay', 'Manufacturing', 'MSME'],
   },
@@ -255,7 +255,7 @@ export const sideQuests: SideQuest[] = [
     accent: '#ff7a59',
     screen: 'stories',
     status: 'In beta',
-    hook: 'What if you could read a creator’s whole week in one scroll?',
+    hook: 'A creator’s whole week, in one place.',
     itch:
       'Keeping up with one creator meant X for the take, YouTube for the long version and Reddit for the argument. By the time I had pieced it together, I had lost the thread. I wanted something that did the piecing for me.',
     before: { label: 'Six apps', points: ['X for the hot take', 'YouTube for the long version', 'Reddit for the argument', 'Three more apps for the rest'] },
@@ -274,9 +274,9 @@ export const sideQuests: SideQuest[] = [
       { title: 'Read', text: 'You get the story with a source on every line and a verdict for each platform.' },
     ],
     calls: [
-      { call: 'Landing page before the product is done', why: 'Getting people in early beats polishing in private, so the beta page went up first.' },
+      { call: 'Landing page before the product is done', why: 'I wanted people using it early, so the beta page went up before the product was finished.' },
       { call: 'Priced in rupees', why: 'The first users are brands, agencies and newsletter writers here, so the pricing is in rupees.' },
-      { call: 'No final name yet', why: 'The name has to feel like a real object and carry an emotion. Content-Story holds the spot until one does.' },
+      { call: 'No final name yet', why: 'I want a name that feels like a real thing and has some feeling to it. Content-Story is a placeholder till I find one.' },
     ],
     stats: [
       { value: '6', label: 'platforms followed' },
@@ -299,10 +299,10 @@ export const sideQuests: SideQuest[] = [
     accent: '#7c5cff',
     screen: 'chart',
     status: 'Personal tool',
-    hook: 'What if testing a trading idea took one sentence?',
+    hook: 'Testing a trading idea should take one sentence.',
     itch:
-      'Every trading idea I had for Indian markets meant writing another backtest by hand. Most ideas died in the setup, not in the results. I wanted to say the theory and get the answer.',
-    before: { label: 'Notebook', points: ['Write the backtest by hand', 'Wire up data for every idea', 'Most ideas die in the setup'] },
+      'Every trading idea I had for Indian markets meant writing another backtest by hand. Most of them never got tested because the setup took too long. I wanted to just type the idea and see what happens.',
+    before: { label: 'Notebook', points: ['Write the backtest by hand', 'Wire up data for every idea', 'Most ideas never get tested'] },
     after: { label: 'One sentence', points: ['Type the theory in plain English', 'Claude builds and runs the backtest', 'Charts to compare, then decide'] },
     inside: {
       title: 'quantbook / new study',
@@ -320,8 +320,8 @@ export const sideQuests: SideQuest[] = [
     ],
     calls: [
       { call: 'Dropped the notebook', why: 'Writing cells was the slow part. Now I state the theory and the app does the rest.' },
-      { call: 'A phone app, not a ChatGPT plug-in', why: 'An installable app with its own notes stream keeps every study’s context in one place.' },
-      { call: 'Light on data, on purpose', why: 'Kite API calls add up, so it favours index-level strategies over huge stock lists.' },
+      { call: 'Its own app instead of a ChatGPT plug-in', why: 'An installable app with its own notes stream keeps every study’s context in one place.' },
+      { call: 'Kept light on data', why: 'Kite API calls add up, so it favours index-level strategies over huge stock lists.' },
     ],
     stats: [
       { value: '₹0', label: 'real money in the app' },
@@ -333,7 +333,7 @@ export const sideQuests: SideQuest[] = [
       { when: 'Oct 2026', what: 'Paper-trading a weekly Nifty iron condor' },
       { when: 'Now', what: 'Personal tool, stock F&O next' },
     ],
-    now: 'Right now it is paper-trading a weekly Nifty iron condor. It is built for me, not as a product.',
+    now: 'Right now it is paper-trading a weekly Nifty iron condor. I built it for myself, it’s not a product.',
     next: ['Stock options and futures', 'Hedging stocks with their own options', 'Option-chain snapshots'],
     tags: ['NSE', 'F&O', 'Zerodha Kite', 'Claude', 'PWA'],
   },
@@ -346,28 +346,28 @@ export const sideQuests: SideQuest[] = [
     accent: '#ff3b3b',
     screen: 'video',
     status: 'In production',
-    hook: 'What if AI product talk came from someone who has sat on both sides?',
+    hook: 'AI product stuff, from someone who’s been the engineer and the PM.',
     itch:
-      'Most talk about AI products comes from one camp, engineers or product people. I have been both, so the channel sits in the middle: how AI products actually get built, explained for PMs by someone who used to write the code.',
+      'Most of what I watch on AI products is made by engineers or by PMs, rarely by someone who’s done both. I have, so that’s the channel: how AI products actually get built, explained for PMs by someone who used to write the code.',
     before: { label: 'Two camps', points: ['Engineers talk models and metrics', 'PMs talk users and roadmaps', 'Nobody translates'] },
-    after: { label: 'One room', points: ['Engineering ideas, explained for PMs', 'Examples from real product work', 'Long enough to go deep'] },
+    after: { label: 'Both sides', points: ['Engineering ideas, explained for PMs', 'Examples from real product work', 'Long enough to go deep'] },
     inside: {
       title: 'The Channel · Episode 1',
       spots: [
-        { x: 59, y: 11, title: 'Long-form, on purpose', text: 'Episodes run long enough to actually explain things, as video and as a podcast.' },
+        { x: 59, y: 11, title: 'Long-form', text: 'Episodes run long enough to actually explain things, as video and as a podcast.' },
         { x: 30, y: 80, title: 'First up: evals', text: '“Evals explained for PMs by an ex-engineer”, in the works now.' },
         { x: 95, y: 13, title: 'One idea per episode', text: 'Each episode takes one engineering idea PMs keep running into and makes it usable.' },
       ],
     },
     steps: [
       { title: 'Pick one idea', text: 'One engineering idea that PMs keep running into.' },
-      { title: 'Show it', text: 'Explain it through a real example, not a slide of definitions.' },
+      { title: 'Show it', text: 'Explain it with a real example.' },
       { title: 'Ship it', text: 'Out as a long-form video and a podcast episode.' },
     ],
     calls: [
-      { call: 'Long-form, not shorts', why: 'Long video and podcast is the format I can actually keep up every week.' },
-      { call: 'No ads, no sponsors', why: 'The channel is not there to make money. It is there to share what I learn.' },
-      { call: 'The demo has to earn its place', why: 'The first demo for the evals episode got scrapped for not feeling real enough. Still picking the right one.' },
+      { call: 'Long videos over shorts', why: 'Long video and podcast is the format I can actually keep up every week.' },
+      { call: 'No ads, no sponsors', why: 'I’m not doing this for money. I just want to share what I’m learning.' },
+      { call: 'Scrapped the first example', why: 'The first example I built for the evals episode didn’t feel real enough, so I dropped it. Still looking for the right one.' },
     ],
     stats: [
       { value: '1', label: 'episode in the works' },

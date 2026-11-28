@@ -114,13 +114,13 @@ p { text-wrap: pretty; }
 /* ---------- Backdrop ---------- */
 .backdrop { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
 .stars { position: absolute; inset: 0; opacity: var(--stars); transition: opacity 0.6s var(--ease); }
-.stars span {
-  position: absolute; border-radius: 50%; background: #fff; opacity: var(--a);
-  animation: twinkle ease-in-out infinite;
-}
+.star-layer { position: absolute; inset: 0; width: 100%; height: 100%; display: block; animation: twinkle ease-in-out infinite; }
+.sl0 { animation-duration: 3.1s; }
+.sl1 { animation-duration: 4.3s; animation-delay: -1.7s; }
+.sl2 { animation-duration: 5.2s; animation-delay: -3.4s; }
 @keyframes twinkle {
-  0%, 100% { opacity: var(--a); transform: scale(1); }
-  50% { opacity: 0.12; transform: scale(0.65); }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 /* Clouds live in the side gutters only, never behind text. */
 .clouds { position: absolute; inset: 0; opacity: 0; }
@@ -169,7 +169,7 @@ p { text-wrap: pretty; }
 .splash-bg { position: absolute; inset: 0; background: linear-gradient(#04060e, #0a1c40 70%, #0e2d5c); }
 .splash .stars, .hero .stars { opacity: 1; }
 /* The light theme hides the page's background stars; stop their twinkle too so they cost nothing. */
-[data-theme='light'] .backdrop .stars span { animation-play-state: paused; }
+[data-theme='light'] .backdrop .star-layer { animation-play-state: paused; }
 .splash-sig-wrap { width: 820px; max-width: 84vw; transform-origin: 50% 50%; }
 .splash-sig { width: 100%; height: auto; color: #fff; position: relative; display: block; }
 /* The signature writes itself: a soft-edged mask sweeps left to right, like ink following a pen. */
@@ -195,13 +195,13 @@ p { text-wrap: pretty; }
 }
 .sphere-scene { position: absolute; left: 50%; top: 46%; width: 0; height: 0; transform-style: preserve-3d; }
 .tile { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
-/* One vertical slice of a card, turned to sit on the sphere (left/width set in Sphere.tsx). */
-.tile-strip { position: absolute; top: -150px; height: 300px; overflow: hidden; backface-visibility: hidden; }
+/* A card, turned to sit on the inside of the sphere (left/width/transform set in Sphere.tsx). */
+.tile-sheet { position: absolute; top: -150px; height: 300px; overflow: hidden; backface-visibility: hidden; }
 .tile-face {
   position: absolute; top: 0; width: 420px; height: 300px; border-radius: 14px; overflow: hidden; padding: 20px 26px 0;
   /* A blueprint sheet: grain over a white drafting grid on blueprint blue. */
   background:
-    url('/grain.png'),
+    url('/grain.avif'),
     linear-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px) 0 0 / 40px 40px,
     linear-gradient(90deg, rgba(255, 255, 255, 0.22) 1px, transparent 1px) 0 0 / 40px 40px,
     radial-gradient(120% 100% at 30% 0%, #2a64c2, #163d80);
@@ -245,6 +245,9 @@ p { text-wrap: pretty; }
 /* ---------- Impact cards (work sphere) ---------- */
 /* Each loops on its own clock; everything pauses with the sphere when the hero is off screen. */
 .sphere.paused * { animation-play-state: paused !important; }
+/* The sphere shows dozens of these at once, so its copies hold one finished frame (70% into the
+   6s loop: counts done, lights on) instead of animating. The work section's cards still loop. */
+.sphere .k-impact *, .sphere .k-impact *::after { animation-delay: -4.2s !important; animation-play-state: paused !important; }
 .tile-inner.k-impact { background: #0b1626; color: #fff; }
 .tile-inner.k-impact-phone { background: none; box-shadow: none; overflow: visible; }
 .im { height: 100%; padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
@@ -386,7 +389,7 @@ main, .footer { position: relative; z-index: 1; }
   position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: calc(100svh - 500px); overflow: hidden; border-radius: 22px;
   /* The project's own colour, with grain and a soft light, as the stage for the real product. */
   background:
-    url('/grain.png'),
+    url('/grain.avif'),
     radial-gradient(70% 90% at 25% 10%, color-mix(in srgb, var(--accent) 70%, #fff 10%), transparent 70%),
     linear-gradient(135deg, color-mix(in srgb, var(--accent) 55%, #0b1626), color-mix(in srgb, var(--accent) 25%, #0b1626));
   box-shadow: 0 30px 80px rgba(0, 20, 60, 0.3);
@@ -841,7 +844,7 @@ main, .footer { position: relative; z-index: 1; }
   /* White fill plus a dark ring: visible on white surfaces as well as the dark sky. */
   box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.9), 0 0 0 1.5px rgba(8, 28, 64, 0.6), 0 4px 12px -4px rgba(10, 45, 95, 0.55);
   transition: opacity 0.2s var(--ease), background-color 0.18s, box-shadow 0.18s;
-  will-change: transform, width, height;
+  will-change: transform;
 }
 .ipad-pointer.on { opacity: 1; }
 .ipad-pointer.is-block {
@@ -1069,3 +1072,6 @@ main, .footer { position: relative; z-index: 1; }
 .rv-w { display: inline-block; }
 .rv .rv-u { clip-path: inset(-25% 100% -25% 0%); }
 .rv.shown .rv-u { clip-path: inset(-25% 0% -25% 0%); transition: clip-path var(--rin-d, 0.3s) linear var(--rin, 0s); }
+
+/* ---------- 404 ---------- */
+.not-found { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem; text-align: center; padding: 0 1.5rem; }

@@ -4,11 +4,24 @@
 // Also writes sitemap.xml and llms.txt from the same copy in src/content.ts.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { dirname } from 'node:path'
+import { execFileSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { site, work, sideQuests, testimonials } from '../src/content.ts'
 
 const DIST = new URL('../dist/', import.meta.url).pathname
 const template = readFileSync(DIST + 'index.html', 'utf8')
-const today = new Date().toISOString().slice(0, 10)
+// The day the site's copy last changed (git), not the build day: a lastmod that moves on every
+// deploy teaches search engines to ignore it.
+const contentDate = execFileSync('git', ['log', '-1', '--format=%cs', '--', 'src/content.ts'], { encoding: 'utf8' }).trim()
+if (!/^\d{4}-\d{2}-\d{2}$/.test(contentDate)) throw new Error(`prerender: no git date for src/content.ts (got "${contentDate}")`)
+
+// The server's Content-Security-Policy only lets inline scripts run by hash; check every inline
+// script in the page is listed there, so a changed theme script fails here, not silently in the browser.
+const caddyfile = readFileSync(new URL('../server/Caddyfile', import.meta.url), 'utf8')
+for (const [, code] of template.matchAll(/<script>(.*?)<\/script>/gs)) {
+  const hash = `'sha256-${createHash('sha256').update(code).digest('base64')}'`
+  if (!caddyfile.includes(hash)) throw new Error(`prerender: server/Caddyfile CSP is missing ${hash} for an inline script in index.html`)
+}
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 const abs = (path) => site.url + path
@@ -34,11 +47,12 @@ function swap(html, pattern, value) {
   return html.replace(pattern, value)
 }
 
-function page({ path, title, description, jsonLd, body }) {
+function page({ path, title, description, jsonLd, body, noindex = false }) {
   let html = template
   html = swap(html, /<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`)
   html = swap(html, /<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${esc(description)}" />`)
   html = swap(html, /<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${abs(path)}" />`)
+  if (noindex) html = swap(html, /<meta name="description" content="[^"]*" \/>/, (m) => `${m}\n    <meta name="robots" content="noindex" />`)
   html = swap(html, /<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${abs(path)}" />`)
   html = swap(html, /<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${esc(title)}" />`)
   html = swap(html, /<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${esc(description)}" />`)
@@ -64,7 +78,7 @@ page({
   title: `${site.name} · AI Product Manager & Engineer in Mumbai`,
   description: site.metaDescription,
   jsonLd: [
-    { '@type': 'ProfilePage', '@id': abs('/'), url: site.url, name: site.name, dateModified: today, mainEntity: { '@id': person['@id'] } },
+    { '@type': 'ProfilePage', '@id': abs('/'), url: site.url, name: site.name, dateModified: contentDate, mainEntity: { '@id': person['@id'] } },
     person,
   ],
   body: `${nav}
@@ -100,7 +114,7 @@ for (const w of work) {
         description: w.problem,
         author: { '@id': person['@id'] },
         about: w.stack,
-        dateModified: today,
+        dateModified: contentDate,
       },
       { '@type': 'BreadcrumbList', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
@@ -195,13 +209,33 @@ ${list(q.next.map(esc))}
   })
 }
 
+/* ---------- Brand kit (a working page for the site's own design system; kept out of search) ---------- */
+page({
+  path: '/branding',
+  title: `Brand kit · ${site.name}`,
+  description: `Colours, type and components of ${site.name}'s website.`,
+  jsonLd: [person],
+  body: `${nav}\n<h1>Brand kit</h1>\n<p>Colours, type and components of this website.</p>`,
+  noindex: true,
+})
+
+/* ---------- 404 (served with a 404 status by the server for any unknown path) ---------- */
+page({
+  path: '/404',
+  title: `Page not found · ${site.name}`,
+  description: 'This page doesn’t exist.',
+  jsonLd: [person],
+  body: `${nav}\n<h1>This page doesn’t exist.</h1>\n<p><a href="/">Back home</a></p>`,
+  noindex: true,
+})
+
 /* ---------- sitemap.xml ---------- */
 const paths = ['/', ...work.map((w) => `/work/${w.id}`), '/side-quests', ...sideQuests.map((q) => `/side-quests/${q.id}`)]
 writeFileSync(
   DIST + 'sitemap.xml',
   `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${paths.map((p) => `  <url><loc>${abs(p)}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
+${paths.map((p) => `  <url><loc>${abs(p)}</loc><lastmod>${contentDate}</lastmod></url>`).join('\n')}
 </urlset>
 `,
 )
@@ -233,4 +267,4 @@ ${testimonials.map((t) => `- ${t.name} (${t.role}): "${t.quote}"`).join('\n')}
 `,
 )
 
-console.log(`prerender: ${paths.length} pages, sitemap.xml, llms.txt`)
+console.log(`prerender: ${paths.length} indexed pages, brand kit, 404, sitemap.xml, llms.txt`)

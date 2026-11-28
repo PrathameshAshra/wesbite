@@ -16,18 +16,9 @@ const MIN_PERSP = 560 // phones: keep tiles readable instead of shrinking them t
 const TILE_HALF = 11 // half a tile's width, in degrees
 const LOOK_X = 7 // max sideways mouse-look, in degrees
 const SPEED = 2.2 // degrees per second
-// Each card is a sticker on the inside of the sphere: built from vertical strips, each one
-// turned to sit on the surface, so the card's top and bottom edges follow the curve.
+// Each card is one flat sheet on the inside of the sphere. (Bending cards out of vertical strips
+// copied the whole card into every strip: 4x the DOM and long frames on desktop, cracks on iOS.)
 const W = 420
-// Phones get one flat piece per card instead of 8 strips: iOS Safari left a dark crack along
-// every seam, and drops and redraws 3D layers when the hero scrolls off screen (a black flash).
-// The bend barely shows on a narrow screen anyway.
-const STRIPS = window.matchMedia('(max-width: 820px)').matches ? 1 : 8
-const STRIP_RAD = W / R / STRIPS
-const STRIP_DEG = STRIP_RAD * (180 / Math.PI)
-// Each flat strip spans the chord of its arc, so neighbours meet exactly.
-const STRIP_W = 2 * R * Math.sin(STRIP_RAD / 2)
-
 
 // Every 4th tile (staggered by row) is a real project, cycling through its own screenshots.
 const isShotTile = (c: number, r: number) => (c + r * 2) % 4 === 0
@@ -204,37 +195,24 @@ export function Sphere() {
             className="tile"
             style={{ transform: `rotateY(${t.base}deg)` }}
           >
-            {Array.from({ length: STRIPS }, (_, s) => (
-              <div
-                key={s}
-                className="tile-strip"
-                style={{
-                  left: -STRIP_W / 2,
-                  width: STRIP_W + (STRIPS > 1 ? 1.5 : 0), // overlap hides seams; content is offset by the chord, so it lines up
-                  // Bend the card sideways first (strips around a vertical axis meet exactly at every
-                  // height), then tilt the whole bent card up/down into its row. Tilting each strip
-                  // before bending made strips overlap or gap away from the horizon, eating letters.
-                  transform: `rotateX(${t.phi}deg) rotateY(${((STRIPS - 1) / 2 - s) * STRIP_DEG}deg) translateZ(${-R}px)`,
-                }}
-              >
-                <div
-                  className="tile-face"
-                  style={{ left: -s * STRIP_W, '--accent': t.study.accent } as React.CSSProperties}
-                >
-                  <Tacks n={i} />
-                  {t.project ? (
-                    <ShotTile project={t.project} offset={t.n} />
-                  ) : (
-                    <>
-                      <div className={`tile-inner k-impact${impactIsPhone(t.study) ? ' k-impact-phone' : ''}`}>
-                        <ImpactCard study={t.study} />
-                      </div>
-                      {impactIsPhone(t.study) && <Props />}
-                    </>
-                  )}
-                </div>
+            <div
+              className="tile-sheet"
+              style={{ left: -W / 2, width: W, transform: `rotateX(${t.phi}deg) translateZ(${-R}px)` }}
+            >
+              <div className="tile-face" style={{ left: 0, '--accent': t.study.accent } as React.CSSProperties}>
+                <Tacks n={i} />
+                {t.project ? (
+                  <ShotTile project={t.project} offset={t.n} />
+                ) : (
+                  <>
+                    <div className={`tile-inner k-impact${impactIsPhone(t.study) ? ' k-impact-phone' : ''}`}>
+                      <ImpactCard study={t.study} />
+                    </div>
+                    {impactIsPhone(t.study) && <Props />}
+                  </>
+                )}
               </div>
-            ))}
+            </div>
           </div>
       )),
     [layout],

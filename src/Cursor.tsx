@@ -44,6 +44,7 @@ export function Cursor() {
 
     const mouse = { x: -100, y: -100 }
     const cur = { x: -100, y: -100, w: DOT, h: DOT, r: DOT / 2 }
+    const drawn = { w: 0, h: 0, r: 0 }
     let target: { el: HTMLElement; mode: Mode } | null = null
     let raf = 0
 
@@ -89,7 +90,8 @@ export function Cursor() {
         const b = target.el.getBoundingClientRect()
         if (target.mode === 'select') {
           goal = { x: b.left, y: b.top, w: b.width, h: b.height, r: 0 }
-          sizeEl.textContent = `${Math.round(b.width)} × ${Math.round(b.height)}`
+          const label = `${Math.round(b.width)} × ${Math.round(b.height)}`
+          if (sizeEl.textContent !== label) sizeEl.textContent = label
         } else {
           const radius = parseFloat(getComputedStyle(target.el).borderRadius) || 12
           goal = { x: b.left - PAD, y: b.top - PAD, w: b.width + PAD * 2, h: b.height + PAD * 2, r: Math.min(radius + PAD, (b.height + PAD * 2) / 2) }
@@ -102,9 +104,18 @@ export function Cursor() {
       cur.h += (goal.h - cur.h) * k
       cur.r += (goal.r - cur.r) * k
       p.style.transform = `translate(${cur.x}px, ${cur.y}px)`
-      p.style.width = `${cur.w}px`
-      p.style.height = `${cur.h}px`
-      p.style.borderRadius = `${cur.r}px`
+      // Size changes cost a layout, so they're only written while the pointer is still resizing.
+      const w = Math.round(cur.w * 10) / 10
+      const h = Math.round(cur.h * 10) / 10
+      const r = Math.round(cur.r * 10) / 10
+      if (w !== drawn.w || h !== drawn.h || r !== drawn.r) {
+        p.style.width = `${w}px`
+        p.style.height = `${h}px`
+        p.style.borderRadius = `${r}px`
+        drawn.w = w
+        drawn.h = h
+        drawn.r = r
+      }
       d.style.transform = `translate(${mouse.x}px, ${mouse.y}px)`
       raf = requestAnimationFrame(frame)
     }

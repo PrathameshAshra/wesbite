@@ -93,7 +93,9 @@ export function startSnap(lenis: Lenis) {
   const onKey = (e: KeyboardEvent) => {
     if (lenis.isStopped || busy) return
     const target = e.target as HTMLElement
-    if (target.closest('input, textarea, [contenteditable]')) return
+    if (target.closest('input, textarea, select, [contenteditable]')) return
+    // Space on a focused button or link presses it; it must not scroll the page instead.
+    if (e.key === ' ' && target.closest('button, a, summary, [role="button"]')) return
     if (NEXT_KEYS.includes(e.key)) {
       e.preventDefault()
       jump(1)

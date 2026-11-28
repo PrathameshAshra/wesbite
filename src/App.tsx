@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import type Lenis from 'lenis'
 import { site, work, testimonials, sideQuests } from './content'
@@ -15,9 +15,10 @@ import { Cursor } from './Cursor'
 import { WorkVisual } from './WorkVisual'
 import { Notes } from './Notes'
 import { CasePage } from './CasePage'
-import { Branding } from './Branding'
-import { QuestsPage } from './QuestsPage'
-import { QuestPage } from './QuestPage'
+// Pages most visitors never open load on demand, keeping them out of the home page's bundle.
+const Branding = lazy(() => import('./Branding').then((m) => ({ default: m.Branding })))
+const QuestsPage = lazy(() => import('./QuestsPage').then((m) => ({ default: m.QuestsPage })))
+const QuestPage = lazy(() => import('./QuestPage').then((m) => ({ default: m.QuestPage })))
 import { linkTo, navigate, usePath } from './router'
 
 const ease = [0.32, 0.72, 0, 1] as const
@@ -88,8 +89,8 @@ function Hero({ ready }: { ready: boolean }) {
         </motion.p>
         <motion.h1
           className="mega"
-          initial={reducedMotion ? false : { opacity: 0, y: 40, filter: 'blur(10px)' }}
-          animate={shown ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
+          initial={reducedMotion ? false : { opacity: 0, y: 40 }}
+          animate={shown ? { opacity: 1, y: 0 } : undefined}
           transition={{ duration: 1.1, ease, delay: 0.3 }}
         >
           <span className="sr-only">{site.name}, </span>
@@ -377,14 +378,29 @@ function Home({ ready }: { ready: boolean }) {
   )
 }
 
+// Served with a real 404 status by the server (dist/404.html, written by scripts/prerender.mjs).
+function NotFound() {
+  return (
+    <section className="not-found">
+      <p className="eyebrow">404</p>
+      <h1 className="headline">This page doesn’t exist.</h1>
+      <a className="chip" href="/" onClick={linkTo('/')}>
+        Back home <span aria-hidden>→</span>
+      </a>
+    </section>
+  )
+}
+
 type Route =
   | { kind: 'home' }
+  | { kind: 'notfound' }
   | { kind: 'branding' }
   | { kind: 'quests' }
   | { kind: 'quest'; quest: (typeof sideQuests)[number]; next: (typeof sideQuests)[number] }
   | { kind: 'case'; study: (typeof work)[number]; next: (typeof work)[number] }
 
 function route(path: string): Route {
+  if (path === '/') return { kind: 'home' }
   if (/^\/branding\/?$/.test(path)) return { kind: 'branding' }
   if (/^\/side-quests\/?$/.test(path)) return { kind: 'quests' }
   const q = path.match(/^\/side-quests\/([^/]+)\/?$/)
@@ -392,11 +408,11 @@ function route(path: string): Route {
   if (qi >= 0) return { kind: 'quest', quest: sideQuests[qi], next: sideQuests[(qi + 1) % sideQuests.length] }
   const m = path.match(/^\/work\/([^/]+)\/?$/)
   const i = m ? work.findIndex((w) => w.id === m[1]) : -1
-  return i < 0 ? { kind: 'home' } : { kind: 'case', study: work[i], next: work[(i + 1) % work.length] }
+  return i < 0 ? { kind: 'notfound' } : { kind: 'case', study: work[i], next: work[(i + 1) % work.length] }
 }
 
 // Keep in step with the titles scripts/prerender.mjs writes for crawlers.
-const TITLES = { home: `${site.name} · AI Product Manager & Engineer in Mumbai`, branding: `Brand kit · ${site.name}`, quests: `Side quests · ${site.name}` }
+const TITLES = { home: `${site.name} · AI Product Manager & Engineer in Mumbai`, branding: `Brand kit · ${site.name}`, quests: `Side quests · ${site.name}`, notfound: `Page not found · ${site.name}` }
 
 export default function App() {
   const path = usePath()
@@ -410,11 +426,6 @@ export default function App() {
   useEffect(() => {
     applyTheme(theme)
   }, [theme])
-
-  // Unknown paths fall back to the home page.
-  useEffect(() => {
-    if (home && path !== '/') history.replaceState(null, '', '/' + location.hash)
-  }, [home, path])
 
   useEffect(() => {
     document.title =
@@ -446,10 +457,16 @@ export default function App() {
       <Cursor />
       <Backdrop />
       <Chrome home={home} lenis={lenis} theme={theme} onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
+      <Suspense>
       <motion.div key={path} initial={reducedMotion ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, ease }}>
         {page.kind === 'case' && (
           <main>
             <CasePage study={page.study} next={page.next} />
+          </main>
+        )}
+        {page.kind === 'notfound' && (
+          <main>
+            <NotFound />
           </main>
         )}
         {page.kind === 'branding' && (
@@ -469,6 +486,7 @@ export default function App() {
         )}
         {page.kind === 'home' && <Home ready={ready} />}
       </motion.div>
+      </Suspense>
     </>
   )
 }

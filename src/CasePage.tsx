@@ -27,8 +27,8 @@ export function CasePage({ study, next }: { study: CaseStudy; next: CaseStudy })
         </motion.p>
         <motion.h1
           className="mega case-title"
-          initial={reducedMotion ? false : { opacity: 0, y: 40, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={reducedMotion ? false : { opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease, delay: 0.2 }}
         >
           {study.name}

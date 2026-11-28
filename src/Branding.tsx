@@ -274,7 +274,7 @@ export function Branding() {
         <h2 className="headline">Components</h2>
         <p className="bk-note">Live components from the site. Copy the HTML, the CSS (pulled from the live stylesheet), or both. They need the tokens at the bottom of the page.</p>
         <div className="bk-wide">
-          <Specimen name="Work sphere (landing hero)" note="Cards curve like stickers on the inside of a sphere; drifts and follows the mouse. Needs Sphere.tsx" css={['.sphere', '.sphere-scene', '.tile', '.tile-strip', '.tile-face', '.tile-inner', '.sphere-vignette']}>
+          <Specimen name="Work sphere (landing hero)" note="Flat cards on the inside of a sphere; drifts and follows the mouse. Needs Sphere.tsx" css={['.sphere', '.sphere-scene', '.tile', '.tile-sheet', '.tile-face', '.tile-inner', '.sphere-vignette']}>
             <div className="bk-sphere">
               <Sphere />
             </div>

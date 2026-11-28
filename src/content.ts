@@ -78,7 +78,7 @@ export const work: CaseStudy[] = [
     stack: ['React', 'React Native', 'Node.js', 'AWS', 'AI curation'],
     accent: '#ff8a3d',
     photo: { id: '1501281668745-f7f57925c3b4', alt: 'A crowd at a live concert, phones up filming the stage' },
-    showcase: { url: 'spontaa.ai', web: '/shots/spontaa-web-lg.jpg', app: '/shots/spontaa-app-lg.jpg' },
+    showcase: { url: 'spontaa.ai', web: '/shots/spontaa-web-lg.avif', app: '/shots/spontaa-app-lg.avif' },
   },
   {
     id: 'pearbae',
@@ -104,7 +104,7 @@ export const work: CaseStudy[] = [
     stack: ['React Native', 'Node.js', 'WebRTC / VoIP', 'Real-time sync'],
     accent: '#ff5d8f',
     photo: { id: '1511632765486-a01980e01a18', alt: 'Four friends with arms around each other watching a sunset' },
-    showcase: { url: 'pearbae.com', web: '/shots/pearbae-web-lg.jpg', app: '/shots/pearbae-app-lg.jpg' },
+    showcase: { url: 'pearbae.com', web: '/shots/pearbae-web-lg.avif', app: '/shots/pearbae-app-lg.avif' },
   },
   {
     id: 'energy',
@@ -417,8 +417,8 @@ export const testimonials: Testimonial[] = [
 // only that project's frames, like a GIF. `web` frames fill the card; `app` frames sit as a phone.
 export type Shot = { src: string; kind: 'web' | 'app' }
 export type BannerProject = { name: string; shots: Shot[] }
-const web = (src: string): Shot => ({ src: `/shots/${src}.jpg`, kind: 'web' })
-const app = (src: string): Shot => ({ src: `/shots/${src}.jpg`, kind: 'app' })
+const web = (src: string): Shot => ({ src: `/shots/${src}.avif`, kind: 'web' })
+const app = (src: string): Shot => ({ src: `/shots/${src}.avif`, kind: 'app' })
 export const bannerProjects: BannerProject[] = [
   {
     name: 'Spontaa',

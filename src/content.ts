@@ -43,8 +43,7 @@ export const site = {
   contact: {
     email: 'iamprathameshashra@gmail.com',
     call: 'https://meetings-na2.hubspot.com/prathamesh-ashra?uuid=8213bdde-e0dc-404e-80fb-1cb748c9ffbe',
-    // TODO: confirm LinkedIn slug; X and YouTube still placeholders
-    linkedin: 'https://www.linkedin.com/in/prathamesh-ashra-b2318bab/',
+    linkedin: 'https://www.linkedin.com/in/prathamesh-ashra/',
     x: '', // TODO: X profile
     youtube: '', // TODO: channel URL
     resume: '/Prathamesh-Ashra-Resume.pdf',

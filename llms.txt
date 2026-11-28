@@ -1,0 +1,28 @@
+# Prathamesh Ashra
+
+> Prathamesh Ashra is a product manager and software engineer in Mumbai, India, with ten years of building web, mobile and AI products. He founded the app studio Codeamesh in 2020, was the founding developer of Spontaa, built the ID-verified social app Pearbae, has spent five years building trading tools for the power-trading firm The Data Duck, and moved the 50-year-old agency J M Mehta Tours and Travels online.
+
+- Based in: Mumbai, India
+- Current role: Product Manager
+- Founder: Codeamesh Consultancy LLP (app and AI studio, founded 2020)
+- Known for: AI product management, React, React Native, Node.js, LLM features, Mobile app development, 0 to 1 product development, Trading UIs
+- Contact: iamprathameshashra@gmail.com · https://www.linkedin.com/in/prathamesh-ashra-b2318bab/
+
+## Case studies
+
+- [Spontaa](https://prathameshashra.com/work/events): I was the first engineer on Spontaa’s founding team. Two years later the app was live across India, on the web, Android and iOS. Stack: React, React Native, Node.js, AWS, AI curation.
+- [Pearbae](https://prathameshashra.com/work/pearbae): A social app for India where every profile is checked with Aadhaar and you can call someone without giving out your number. Built and shipped to the App Store in about a year. Stack: React Native, Node.js, WebRTC / VoIP, Real-time sync.
+- [The Data Duck](https://prathameshashra.com/work/energy): Five years working inside a global power-trading firm, building the screens its quants and developers trade from. Stack: TypeScript, Node.js, Data pipelines.
+- [J M Mehta Tours and Travels](https://prathameshashra.com/work/travel): A travel agency that ran offline for 50 years. Over four years I moved the whole business online while it kept running. Stack: React, Node.js, Cloud.
+
+## Side projects
+
+- Content-Story: Write a story once and post it to every platform in one go. It’s in beta.
+- Quantbook: A backtesting notebook for Indian stocks. Test an NSE strategy, hedge it with options, and see how it would have done.
+- The Channel: Long-form videos on building AI products, from someone who was an engineer before he became a PM.
+
+## What clients say
+
+- The Data Duck (Power-trading desk): "Prathamesh has built and looked after the tools our power-trading desk uses daily for five years. Reliable, quick to pick up new needs, and he understands the business, not just the ticket."
+- Pearbae (iOS social app): "Prathamesh built Pearbae end to end: Aadhaar verification, in-app calling and real-time chat. He thought about safety and trust like a product person, not just a developer, and shipped it in a year."
+- J M Mehta Tours and Travels Pvt Ltd (50-year-old travel agency): "We had run offline for five decades. Over four years Prathamesh rebuilt everything into one online flow, from enquiry to trip, without breaking how our team actually works. Today we are fully online."

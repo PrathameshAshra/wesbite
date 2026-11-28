@@ -19,6 +19,7 @@ export function QuestInside({ quest }: { quest: SideQuest }) {
           {quest.screen === 'stories' && <StoriesScreen />}
           {quest.screen === 'chart' && <ChartScreen />}
           {quest.screen === 'video' && <VideoScreen />}
+          {quest.screen === 'chat' && <ChatScreen />}
           {spots.map((s, i) => (
             <button
               key={s.title}
@@ -164,6 +165,41 @@ function VideoScreen() {
             <Lines n={2} />
           </span>
         ))}
+      </aside>
+    </div>
+  )
+}
+
+const LADDER = [
+  ['Day 0', 'Polite reminder', 'sent'],
+  ['Day 7', 'Firm reminder', 'sent'],
+  ['Day 15', 'Call the party', 'now'],
+  ['Day 30', 'Alert the owner', 'later'],
+]
+
+function ChatScreen() {
+  return (
+    <div className="qi-grid qi-grid-side">
+      <div className="qi-main qi-chat">
+        <div className="qi-msg">
+          <Lines n={2} />
+          <span className="qi-pdf">Ledger.pdf</span>
+          <span className="qi-pay">Pay now</span>
+        </div>
+        <div className="qi-msg">
+          <Lines n={1} />
+          <span className="qi-pay">Pay now</span>
+        </div>
+      </div>
+      <aside className="qi-panel">
+        <strong>Follow-up</strong>
+        {LADDER.map(([day, what, state]) => (
+          <span key={day} className={`qi-step qi-${state}`}>
+            <em>{day}</em>
+            <span>{what}</span>
+          </span>
+        ))}
+        <span className="qi-paid">✓ Paid via link</span>
       </aside>
     </div>
   )

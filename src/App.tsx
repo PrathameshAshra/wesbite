@@ -176,6 +176,14 @@ function Work() {
           <a className="media-wrap" data-select={s.name} href={`/work/${s.id}`} onClick={linkTo(`/work/${s.id}`)} tabIndex={-1} aria-hidden>
             <WorkVisual study={s} />
           </a>
+          <dl className="stats" style={{ '--accent': s.accent } as React.CSSProperties}>
+            {s.metrics.map((m) => (
+              <div key={m.label}>
+                <dt>{m.label}</dt>
+                <dd>{m.value}</dd>
+              </div>
+            ))}
+          </dl>
         </article>
       ))}
     </section>

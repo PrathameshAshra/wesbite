@@ -41,7 +41,7 @@ export function QuestPage({ quest, next }: { quest: SideQuest; next: SideQuest }
         <div className="case-block">
           <Reveal>
             <p className="eyebrow qd-step">03 · How it works</p>
-            <h2 className="headline">Three steps</h2>
+            <h2 className="headline">How it works</h2>
           </Reveal>
           <Steps steps={quest.steps} />
         </div>
@@ -58,7 +58,7 @@ export function QuestPage({ quest, next }: { quest: SideQuest; next: SideQuest }
         <div className="case-block">
           <Reveal>
             <p className="eyebrow qd-step">05 · Where it’s at</p>
-            <h2 className="headline">So far</h2>
+            <h2 className="headline">By the numbers</h2>
           </Reveal>
           <div className="case-metrics">
             {quest.stats.map((s) => (

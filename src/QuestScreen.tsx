@@ -11,6 +11,7 @@ export function QuestScreen({ quest }: { quest: SideQuest }) {
       {quest.screen === 'stories' && <Stories />}
       {quest.screen === 'chart' && <Chart />}
       {quest.screen === 'video' && <Video />}
+      {quest.screen === 'chat' && <Chat />}
     </div>
   )
 }
@@ -109,6 +110,38 @@ function Video() {
           </li>
         ))}
       </ul>
+    </>
+  )
+}
+
+// Payment Collect: the WhatsApp reminder a party gets, with the ledger and a pay link.
+function Chat() {
+  return (
+    <>
+      <div className="qs-chat-head">
+        <i />
+        <span>Accounts · Reminders</span>
+      </div>
+      <div className="qs-bubble">
+        <span className="qs-lines">
+          <b />
+          <b />
+        </span>
+        <span className="qs-pdf">Ledger.pdf</span>
+        <span className="qs-pay">Pay now</span>
+      </div>
+      <div className="qs-bubble qs-bubble-late">
+        <span className="qs-lines">
+          <b />
+        </span>
+        <span className="qs-day">Day 7</span>
+      </div>
+      <div className="qs-bubble qs-bubble-me">
+        <span className="qs-lines">
+          <b />
+        </span>
+      </div>
+      <div className="qs-paid">✓ Paid · invoice closed</div>
     </>
   )
 }

@@ -383,7 +383,7 @@ main, .footer { position: relative; z-index: 1; }
 
 /* ---------- Work teasers (full-bleed photo) ---------- */
 .teaser {
-  position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: calc(100svh - 360px); overflow: hidden; border-radius: 22px;
+  position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: calc(100svh - 500px); overflow: hidden; border-radius: 22px;
   /* The project's own colour, with grain and a soft light, as the stage for the real product. */
   background:
     url('/grain.png'),
@@ -410,17 +410,13 @@ main, .footer { position: relative; z-index: 1; }
 /* The app's store screenshot, overlapping the browser on the right. */
 .sc-app { position: absolute; right: 7%; top: 6%; height: 84%; aspect-ratio: 562 / 1000; border-radius: 18px; object-fit: cover; box-shadow: 10px 18px 40px rgba(4, 10, 26, 0.5); }
 
-/* Outcome numbers along the bottom-left, under the browser. */
-.tz-metrics { position: absolute; left: 5%; bottom: 5%; display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-start; pointer-events: none; max-width: 60%; }
-.teaser-impact .tz-metrics { left: 0; right: 0; max-width: none; justify-content: center; }
-.tz-metric {
-  display: flex; align-items: baseline; gap: 10px; padding: 10px 16px; border-radius: 14px;
-  background: rgba(8, 18, 40, 0.6); border: 1px solid rgba(255, 255, 255, 0.18);
-  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); color: #fff; transition: transform 0.4s var(--ease);
-}
-.media-wrap:hover .tz-metric { transform: translateY(-4px); }
-.tz-metric strong { font-size: var(--fs-lg); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
-.tz-metric span { font-size: var(--fs-xs); color: rgba(255, 255, 255, 0.85); }
+/* Outcome numbers: a stat row under the card, so they never cover the product. */
+.stats { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; margin-top: 20px; }
+.stats div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 6px; padding: 14px 20px 0; border-top: 2px solid var(--glass-line); min-width: 0; }
+.stats div + div { border-left: 1px solid var(--glass-line); }
+.stats div:first-child { border-top-color: var(--accent); }
+.stats dd { font-family: var(--display); font-size: clamp(1.75rem, 3.2vw, 2.75rem); line-height: 1; text-transform: uppercase; color: var(--ink); white-space: nowrap; }
+.stats dt { font-size: var(--fs-xs); line-height: var(--lh-snug); color: var(--ink-2); opacity: 0.85; }
 
 /* ---------- Case-study rail ---------- */
 .work-rail {
@@ -466,6 +462,18 @@ main, .footer { position: relative; z-index: 1; }
 }
 .notch { position: absolute; top: 0.8em; left: 50%; transform: translateX(-50%); width: 5.8em; height: 1.7em; border-radius: 1em; background: #0b1626; }
 .quest-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Payment Collect phone */
+.qs-chat-head { display: flex; align-items: center; gap: 0.5em; font-weight: 700; font-size: 0.9em; }
+.qs-chat-head i { width: 1.8em; height: 1.8em; border-radius: 50%; background: #0b1626; }
+.qs-bubble { align-self: flex-start; width: 88%; display: flex; flex-direction: column; gap: 0.5em; padding: 0.7em; border-radius: 0.2em 1em 1em 1em; background: #fff; }
+.qs-bubble-late { width: 62%; flex-direction: row; align-items: center; }
+.qs-bubble-me { align-self: flex-end; width: 50%; border-radius: 1em 0.2em 1em 1em; background: #dcf8c6; }
+.qs-pdf { font-size: 0.8em; font-weight: 700; padding: 0.5em 0.6em; border-radius: 0.5em; background: rgba(11, 22, 38, 0.07); }
+.qs-pdf::before { content: 'PDF'; margin-right: 0.5em; padding: 0.1em 0.35em; border-radius: 0.3em; background: #e5484d; color: #fff; font-size: 0.8em; }
+.qs-pay { text-align: center; font-weight: 800; padding: 0.5em; border-radius: 0.6em; background: #0b1626; color: #fff; }
+.qs-day { font-size: 0.75em; font-weight: 800; padding: 0.2em 0.5em; border-radius: 1em; background: #ffd166; flex-shrink: 0; }
+.qs-paid { margin-top: auto; text-align: center; font-weight: 800; padding: 0.6em; border-radius: 0.8em; background: rgba(255, 255, 255, 0.45); border: 1px solid rgba(255, 255, 255, 0.6); }
 
 /* Mini UIs drawn inside the side-quest phones (QuestScreen.tsx). Sized in em so they scale with the phone. */
 .phone { container-type: size; }
@@ -639,6 +647,19 @@ main, .footer { position: relative; z-index: 1; }
 .qi-ep { font-weight: 800; font-size: 1.25em; line-height: 1.2; }
 .qi-up { display: flex; gap: 0.6em; align-items: center; padding: 0.5em; border-radius: 0.7em; background: #fff; }
 .qi-up i { width: 4em; aspect-ratio: 16 / 10; border-radius: 0.4em; background: #0b1626; flex-shrink: 0; }
+/* Payment Collect, look inside */
+.qi-chat { justify-content: center; gap: 1em; padding: 1em 1.2em; border-radius: 1em; background: #e9e2d6; min-height: 0; overflow: hidden; }
+.qi-msg { width: 78%; display: flex; flex-direction: column; gap: 0.6em; padding: 0.8em 1em; border-radius: 0.2em 1em 1em 1em; background: #fff; box-shadow: 0 0.3em 0.8em -0.4em rgba(11, 22, 38, 0.3); }
+.qi-pdf { font-weight: 700; padding: 0.6em 0.8em; border-radius: 0.6em; background: rgba(11, 22, 38, 0.06); }
+.qi-pdf::before { content: 'PDF'; margin-right: 0.6em; padding: 0.15em 0.4em; border-radius: 0.3em; background: #e5484d; color: #fff; font-size: 0.8em; font-weight: 800; }
+.qi-pay { text-align: center; font-weight: 800; padding: 0.6em; border-radius: 0.6em; color: #0a7a3c; border: 1px solid rgba(11, 22, 38, 0.1); }
+.qi-step { display: flex; align-items: center; gap: 0.6em; padding: 0.35em 0.7em; border-radius: 0.7em; background: #fff; font-weight: 600; font-size: 0.95em; }
+.qi-step em { font-style: normal; font-weight: 800; font-size: 0.8em; min-width: 4.2em; padding: 0.2em 0.5em; border-radius: 1em; text-align: center; background: rgba(11, 22, 38, 0.08); }
+.qi-sent { opacity: 0.55; }
+.qi-now { box-shadow: 0 0 0 2px var(--accent); }
+.qi-now em { background: var(--accent); }
+.qi-later { opacity: 0.4; }
+.qi-paid { margin-top: auto; text-align: center; font-weight: 800; padding: 0.6em; border-radius: 0.7em; background: #0b1626; color: #fff; }
 .qi-dot {
   position: absolute; z-index: 2; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%;
   display: grid; place-items: center; font-size: 13px; font-weight: 800; color: #fff; background: #0b1626;
@@ -656,7 +677,7 @@ main, .footer { position: relative; z-index: 1; }
 .qi-text { display: block; font-size: var(--fs-sm); line-height: var(--lh-snug); opacity: 0.85; }
 
 /* How it works: steps light up as they scroll in */
-.qd-steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; counter-reset: none; }
+.qd-steps { list-style: none; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 12px; counter-reset: none; }
 .qd-steps li {
   position: relative; display: flex; flex-direction: column; gap: 0.6rem; padding: 1.5rem; border-radius: 22px;
   background: var(--glass); border: 1px solid var(--glass-line); translate: 0 16px;
@@ -1011,7 +1032,7 @@ main, .footer { position: relative; z-index: 1; }
   .qd-hook { font-size: var(--fs-lg); }
   .qi { grid-template-columns: 1fr; }
   .qi-dot { width: 24px; height: 24px; margin: -12px 0 0 -12px; font-size: 11px; }
-  .qd-steps, .qd-calls { grid-template-columns: 1fr; }
+  .qd-steps, .qd-calls { grid-template-columns: 1fr; grid-auto-flow: row; }
   .qd-steps li:not(:last-child)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -15px; translate: -50% 0; }
   .qd-timeline li { flex-basis: 170px; }
   .said { grid-template-columns: 1fr; }
@@ -1025,13 +1046,14 @@ main, .footer { position: relative; z-index: 1; }
   .footer-sig { width: 86%; bottom: 52%; }
   .hill { height: 55%; }
   .project { padding: 88px 0 96px; }
-  .teaser { aspect-ratio: 4 / 5; max-height: calc(100svh - 380px); }
+  .teaser { aspect-ratio: 4 / 5; max-height: calc(100svh - 570px); }
   .sc-web { left: 6%; top: 6%; width: 74%; }
   .sc-impact { zoom: 0.78; }
   .sc-app { right: 5%; top: 30%; height: 50%; border-radius: 12px; }
-  .tz-metrics { left: 6%; bottom: 4%; max-width: 88%; gap: 6px; }
-  .tz-metric { padding: 7px 11px; gap: 6px; }
-  .tz-metric strong { font-size: var(--fs-md); }
+  .stats { margin-top: 14px; }
+  .stats div { padding: 10px 10px 0; gap: 4px; }
+  .stats dd { font-size: 1.5rem; }
+  .stats dt { font-size: 0.75rem; }
   .work-rail { display: none; }
 }
 

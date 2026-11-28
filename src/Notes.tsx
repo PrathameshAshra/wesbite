@@ -6,6 +6,14 @@ import { holdScroll, reducedMotion } from './scroll'
 const ease = [0.32, 0.72, 0, 1] as const
 const grow = { duration: reducedMotion ? 0 : 0.5, ease }
 
+// Framer scale-corrects border-radius and a single box-shadow only when they're set through
+// style/animate, so the card's drop shadow lives here, not in CSS.
+const shadow = {
+  rest: '0px 10px 30px -12px rgba(8, 28, 64, 0.5)',
+  hover: '0px 18px 40px -12px rgba(8, 28, 64, 0.6)',
+  open: '0px 30px 80px -20px rgba(4, 10, 26, 0.6)',
+}
+
 const initials = (name: string) =>
   name
     .split(' ')
@@ -53,21 +61,33 @@ export function Notes({ items }: { items: Testimonial[] }) {
                 layout
                 className={`note ${isOpen ? 'open' : ''}`}
                 style={{ borderRadius: 22 }}
-                transition={{ layout: grow, scale: { duration: 0.3, ease } }}
-                whileHover={isOpen ? undefined : { scale: 1.03 }}
+                initial={false}
+                animate={{ boxShadow: isOpen ? shadow.open : shadow.rest }}
+                transition={{ layout: grow, scale: { duration: 0.3, ease }, boxShadow: grow }}
+                whileHover={isOpen ? undefined : { scale: 1.03, boxShadow: shadow.hover }}
                 onClick={() => setOpen(isOpen ? null : i)}
                 aria-expanded={isOpen}
               >
+                {/* Glass edge: a 1px border can't be scale-corrected, so it is hidden for the whole
+                    resize and fades back in once the card has settled. */}
+                <motion.span
+                  className="note-ring"
+                  aria-hidden
+                  initial={false}
+                  animate={{ opacity: isOpen ? 0 : 1 }}
+                  transition={{ duration: isOpen ? 0.1 : 0.25, delay: isOpen ? 0 : grow.duration }}
+                />
                 <motion.span layout="position" className="note-face" transition={{ layout: grow }}>
                   {t.logo ? <img src={t.logo} alt="" width={44} height={44} loading="lazy" /> : <span className="note-initials">{initials(t.name)}</span>}
                 </motion.span>
                 <span className="note-body">
-                  <span className="note-who">
+                  <motion.span layout="position" className="note-who" transition={{ layout: grow }}>
                     <strong>{t.name}</strong>
                     <span>{t.role}</span>
-                  </span>
+                  </motion.span>
                   <motion.span
                     key={isOpen ? 'full' : 'short'}
+                    layout="position"
                     className="note-quote"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}

@@ -16,14 +16,14 @@ function makeStars(count: number): Star[][] {
 }
 
 function draw(canvas: HTMLCanvasElement, stars: Star[]) {
-  const dpr = window.devicePixelRatio || 1
+  // CSS-pixel resolution on purpose: stars are 1-3px soft dots, and full retina canvases (up to
+  // nine full screens on the home page) cost tens of MB of GPU memory on phones.
   const w = canvas.clientWidth
   const h = canvas.clientHeight
-  canvas.width = Math.round(w * dpr)
-  canvas.height = Math.round(h * dpr)
+  canvas.width = w
+  canvas.height = h
   const ctx = canvas.getContext('2d')
   if (!ctx) throw new Error('Stars need a 2D canvas context')
-  ctx.scale(dpr, dpr)
   ctx.fillStyle = '#fff'
   for (const s of stars) {
     ctx.globalAlpha = s.a

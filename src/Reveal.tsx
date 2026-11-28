@@ -24,33 +24,58 @@ function isUnit(el: Element) {
 
 // Wrap every word in a span and tag every animated piece. Runs once; the copy inside a Reveal
 // is static, so React never needs to touch these text nodes again.
-function split(root: HTMLElement) {
-  if (root.dataset.split) return
-  root.dataset.split = '1'
+// Every Reveal mounting in one render is split together: all style reads first, then all DOM
+// changes. Interleaving them made the browser recompute styles once per element (over a second
+// on a mid-range phone). The flush is a microtask, so it still lands before the first paint.
+let pending: HTMLElement[] = []
+
+function plan(root: HTMLElement) {
+  const texts: Text[] = []
+  const units: Element[] = []
   const visit = (node: Node) => {
-    for (const child of [...node.childNodes]) {
+    for (const child of node.childNodes) {
       if (child.nodeType === Node.TEXT_NODE) {
-        const text = child.textContent ?? ''
-        if (!text.trim()) continue
-        const frag = document.createDocumentFragment()
-        for (const part of text.split(/(\s+)/)) {
-          if (!part) continue
-          if (/^\s+$/.test(part)) frag.append(part)
-          else {
-            const w = document.createElement('span')
-            w.className = 'rv-u rv-w'
-            w.textContent = part
-            frag.append(w)
-          }
-        }
-        child.replaceWith(frag)
+        if (child.textContent?.trim()) texts.push(child as Text)
       } else if (child instanceof Element) {
-        if (isUnit(child)) child.classList.add('rv-u')
+        if (isUnit(child)) units.push(child)
         else visit(child)
       }
     }
   }
   visit(root)
+  return { texts, units }
+}
+
+function wrapWords(text: Text) {
+  const frag = document.createDocumentFragment()
+  for (const part of (text.textContent ?? '').split(/(\s+)/)) {
+    if (!part) continue
+    if (/^\s+$/.test(part)) frag.append(part)
+    else {
+      const w = document.createElement('span')
+      w.className = 'rv-u rv-w'
+      w.textContent = part
+      frag.append(w)
+    }
+  }
+  text.replaceWith(frag)
+}
+
+function flush() {
+  const roots = pending
+  pending = []
+  const plans = roots.map(plan) // reads only
+  for (const { texts, units } of plans) {
+    units.forEach((u) => u.classList.add('rv-u'))
+    texts.forEach(wrapWords)
+  }
+}
+
+function split(root: HTMLElement) {
+  if (root.dataset.split) return
+  root.dataset.split = '1'
+  if (pending.length === 0) queueMicrotask(flush)
+  pending.push(root)
 }
 
 // Group pieces into lines (by top, after wrapping), then time each piece by where it sits

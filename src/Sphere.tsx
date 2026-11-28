@@ -193,7 +193,9 @@ export function Sphere() {
               tiles.current[i] = el
             }}
             className="tile"
-            style={{ transform: `rotateY(${t.base}deg)` }}
+            // Hidden until the first frame shows the ones in view, so the first render only
+            // styles and lays out the handful of cards on screen, not all 80.
+            style={{ transform: `rotateY(${t.base}deg)`, display: 'none' }}
           >
             <div
               className="tile-sheet"

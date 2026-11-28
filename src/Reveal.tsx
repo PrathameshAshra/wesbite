@@ -5,14 +5,12 @@ import { reducedMotion } from './scroll'
 // (measured after wrapping, re-measured on resize). Each line is revealed by one edge that
 // sweeps across it left → right at a steady speed: every word starts when the edge reaches
 // it and finishes when the edge passes it, so the line reads as a single wipe. Lines go one
-// after another. Leaving the view (either direction) runs it backwards: right → left, bottom
-// line first. Buttons, chips, images and gradient text can't be split, so the edge crosses
+// after another. It plays once, the first time the text scrolls into view, and then stays
+// revealed. Buttons, chips, images and gradient text can't be split, so the edge crosses
 // each as one piece.
 
 const LINE_IN = 0.22 // s between line starts on the way in
 const SWEEP_IN = 0.6 // s for the edge to cross a full line
-const LINE_OUT = 0.1
-const SWEEP_OUT = 0.35
 
 // Pieces that wipe whole instead of word by word.
 function isUnit(el: Element) {
@@ -69,7 +67,6 @@ function measure(root: HTMLElement, delay: number) {
     }
     lines[lines.length - 1].push(p)
   }
-  const last = lines.length - 1
   lines.forEach((line, li) => {
     const left = Math.min(...line.map((p) => p.r.left))
     const right = Math.max(...line.map((p) => p.r.right))
@@ -77,11 +74,8 @@ function measure(root: HTMLElement, delay: number) {
     for (const p of line) {
       const from = (p.r.left - left) / width
       const span = p.r.width / width
-      const to = (right - p.r.right) / width
       p.el.style.setProperty('--rin', `${delay + li * LINE_IN + from * SWEEP_IN}s`)
       p.el.style.setProperty('--rin-d', `${span * SWEEP_IN}s`)
-      p.el.style.setProperty('--rout', `${(last - li) * LINE_OUT + to * SWEEP_OUT}s`)
-      p.el.style.setProperty('--rout-d', `${span * SWEEP_OUT}s`)
     }
   })
 }
@@ -104,10 +98,18 @@ export function Reveal({ children, delay = 0, className }: { children: React.Rea
   }, [delay])
 
   // The outer box is never clipped, so the browser can tell when it's on screen.
+  // First time in view: reveal and stop watching, so it never plays backwards or again.
   useEffect(() => {
     const el = outer.current
     if (!el) throw new Error('Reveal outer missing')
-    const io = new IntersectionObserver(([e]) => setShown(e.isIntersecting), { rootMargin: '-12% 0px' })
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return
+        setShown(true)
+        io.disconnect()
+      },
+      { rootMargin: '-12% 0px' },
+    )
     io.observe(el)
     return () => io.disconnect()
   }, [])

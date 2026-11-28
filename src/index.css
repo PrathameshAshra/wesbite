@@ -887,8 +887,5 @@ main, .footer { position: relative; z-index: 1; }
 /* Each piece is uncovered while the line's edge crosses it: linear, with its start and length
    set from its position on the line, so the whole line reads as one continuous wipe. */
 .rv-w { display: inline-block; }
-.rv .rv-u {
-  clip-path: inset(-25% 100% -25% 0%);
-  transition: clip-path var(--rout-d, 0.2s) linear var(--rout, 0s);
-}
+.rv .rv-u { clip-path: inset(-25% 100% -25% 0%); }
 .rv.shown .rv-u { clip-path: inset(-25% 0% -25% 0%); transition: clip-path var(--rin-d, 0.3s) linear var(--rin, 0s); }

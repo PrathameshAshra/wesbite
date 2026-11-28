@@ -3,9 +3,10 @@ import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { site, sideQuests as allQuests, HOME_QUESTS } from './content'
 import { QuestScreen } from './QuestScreen'
 import { linkTo } from './router'
+import { reducedMotion } from './scroll'
 
 const sideQuests = allQuests.slice(0, HOME_QUESTS)
-import { reducedMotion } from './scroll'
+const phone = window.matchMedia('(max-width: 820px)').matches
 
 // A section that stays pinned for `steps` screens while you scroll through it.
 // Reports scroll progress (0–1) through the pinned stretch, and places one snap marker per step.
@@ -30,6 +31,58 @@ function SnapMarkers({ steps, unit }: { steps: number; unit: number }) {
 const TICKS = 15
 
 export function SideQuests() {
+  return phone ? <SideQuestsSwipe /> : <SideQuestsPinned />
+}
+
+// Phones: one screen, quests side by side. Swipe sideways; the next card peeks in so it's
+// clear there's more, and the last card leads to every side quest.
+function SideQuestsSwipe() {
+  const [active, setActive] = useState(0)
+  const count = sideQuests.length + 1 // + the "all side quests" card
+  const onScroll = (e: React.UIEvent<HTMLUListElement>) => {
+    const el = e.currentTarget
+    const card = el.firstElementChild
+    if (!card) throw new Error('Side quest cards missing')
+    setActive(Math.min(count - 1, Math.round(el.scrollLeft / (card as HTMLElement).offsetWidth)))
+  }
+  return (
+    <section className="quests-swipe" id="side-quests" data-snap>
+      <h2 className="eyebrow">Side quests</h2>
+      <ul className="qs-row" onScroll={onScroll} aria-label="Side quests">
+        {sideQuests.map((q) => (
+          <li key={q.id} style={{ '--accent': q.accent } as React.CSSProperties}>
+            <a className="qs-card" href={`/side-quests/${q.id}`} onClick={linkTo(`/side-quests/${q.id}`)}>
+              <div className="phone" aria-hidden>
+                <QuestScreen quest={q} />
+              </div>
+              <h3 className="project-title">{q.name}</h3>
+              <p>{q.blurb}</p>
+              <span className="chip">
+                View details <span aria-hidden>→</span>
+              </span>
+            </a>
+          </li>
+        ))}
+        <li>
+          <a className="qs-card qs-all" href="/side-quests" onClick={linkTo('/side-quests')}>
+            <span className="eyebrow">{allQuests.length} side quests</span>
+            <h3 className="project-title">See them all</h3>
+            <span className="qs-all-arrow" aria-hidden>
+              →
+            </span>
+          </a>
+        </li>
+      </ul>
+      <div className="qs-dots" aria-hidden>
+        {Array.from({ length: count }, (_, i) => (
+          <i key={i} className={i === active ? 'on' : ''} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function SideQuestsPinned() {
   const { ref, progress } = usePinnedProgress()
   const n = sideQuests.length
   const active = Math.min(n - 1, Math.floor(progress * n))

@@ -549,6 +549,29 @@ main, .footer { position: relative; z-index: 1; }
 .qs-lines b { height: 0.5em; border-radius: 1em; background: rgba(11, 22, 38, 0.4); }
 .qs-lines b + b { width: 60%; background: rgba(11, 22, 38, 0.2); }
 
+/* ---------- Side quests on phones: one screen, swipe sideways (Pinned.tsx) ---------- */
+.quests-swipe { min-height: 100svh; padding: 92px 0 96px; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+.quests-swipe > .eyebrow { text-align: center; }
+.qs-row {
+  display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+  padding: 0 var(--gutter); scroll-padding-inline: var(--gutter); overscroll-behavior-x: contain;
+}
+.qs-row::-webkit-scrollbar { display: none; }
+.qs-row > li { flex: 0 0 80%; scroll-snap-align: start; display: flex; }
+.qs-card {
+  flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px; border-radius: 28px;
+  background: rgba(255, 255, 255, 0.08); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14); color: inherit; text-decoration: none;
+}
+.qs-card .phone { align-self: center; height: min(30svh, 260px); margin-bottom: 6px; }
+.qs-card .project-title { font-size: clamp(2rem, 9vw, 2.6rem); }
+.qs-card p { color: var(--ink-2); line-height: var(--lh-body); }
+.qs-card .chip { margin-top: auto; }
+.qs-all { justify-content: center; align-items: center; text-align: center; }
+.qs-all-arrow { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: #fff; color: #0a1c40; font-size: 1.6rem; margin-top: 8px; }
+.qs-dots { display: flex; justify-content: center; gap: 6px; }
+.qs-dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.35); transition: width 0.25s var(--ease), background-color 0.25s var(--ease); }
+.qs-dots i.on { width: 18px; background: #fff; }
+
 /* ---------- All side quests page ---------- */
 .quests-page { min-height: 100svh; padding: 150px var(--gutter) 8rem; background: linear-gradient(#04060e, #0a1c40 40%, var(--page)); }
 .qp-head { text-align: center; margin-bottom: 4.5rem; }

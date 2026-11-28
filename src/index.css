@@ -823,6 +823,7 @@ main, .footer { position: relative; z-index: 1; }
 .status i { width: 8px; height: 8px; border-radius: 50%; background: #83ff9e; box-shadow: 0 0 8px #83ff9e; }
 .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; padding-top: 0.9rem; border-top: 1px solid var(--glass-line); }
 .card-actions .chip { justify-content: center; }
+.card-actions .chip:nth-child(3) { grid-column: 1 / -1; }
 
 /* ---------- Footer scene ---------- */
 .footer { position: relative; z-index: 1; height: 100svh; min-height: 560px; overflow: hidden; }

@@ -95,7 +95,7 @@ ${list(testimonials.map((t) => `“${esc(t.quote)}” (${esc(t.name)}, ${esc(t.r
 <h2>What I build</h2>
 ${list(site.services.map(esc))}
 <h2>Contact</h2>
-<p><a href="mailto:${esc(site.contact.email)}">${esc(site.contact.email)}</a> · <a href="${esc(site.contact.call)}">Book a call</a> · <a href="${esc(site.contact.linkedin)}">LinkedIn</a></p>`,
+<p><a href="mailto:${esc(site.contact.email)}">${esc(site.contact.email)}</a> · <a href="${esc(site.contact.call)}">Book a call</a> · <a href="${esc(site.contact.linkedin)}">LinkedIn</a> · <a href="${esc(site.contact.resume)}">Resume (PDF)</a></p>`,
 })
 
 /* ---------- Case studies ---------- */
@@ -252,6 +252,7 @@ writeFileSync(
 - Founder: Codeamesh Consultancy LLP (app and AI studio, founded 2020)
 - Known for: ${site.expertise.join(', ')}
 - Contact: ${site.contact.email} · ${site.contact.linkedin}
+- Resume (PDF): ${site.url}${site.contact.resume}
 
 ## Case studies
 

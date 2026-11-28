@@ -265,6 +265,9 @@ function Contact() {
             <a className="chip ghost" href={`mailto:${c.email}`}>
               Email me
             </a>
+            <a className="chip ghost" href={c.resume} target="_blank" rel="noreferrer">
+              Resume
+            </a>
           </div>
         </div>
       </Reveal>

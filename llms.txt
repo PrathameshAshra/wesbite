@@ -21,7 +21,7 @@
 - [Payment Collect](https://prathameshashra.com/side-quests/payment-collect) (Idea + POC): An idea for manufacturers: pull overdue bills from Tally and send the reminders on WhatsApp, with a payment link. It isn’t a product yet. I built a rough POC on a test Tally company to work out how the Tally sync, WhatsApp reminders, payment links and the owner’s view should fit together.
 - [Threadline](https://prathameshashra.com/side-quests/threadline) (Personal tool): Follow a creator across every platform and read it all as one story, with links back to every post. I use it myself to keep up with the creators I follow. It isn’t a product and I’m not selling it.
 - [Quantbook](https://prathameshashra.com/side-quests/quantbook) (Personal tool): A backtesting notebook for Indian stocks. Test an NSE strategy, hedge it with options, and see how it would have done. Right now it is paper-trading a weekly Nifty iron condor. I built it for myself, it’s not a product.
-- [The Channel](https://prathameshashra.com/side-quests/the-channel) (In production): Long-form videos on building AI products, from someone who was an engineer before he became a PM. First up is “Evals explained for PMs by an ex-engineer”, in the works now.
+- [The Channel](https://prathameshashra.com/side-quests/the-channel) (In production): Long-form videos on building AI products, from an engineer who builds them for a living. First up is “Evals, explained by an engineer”, in the works now.
 
 ## What clients say
 

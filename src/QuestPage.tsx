@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import type { SideQuest } from './content'
+import { site, type SideQuest } from './content'
 import { reducedMotion } from './scroll'
 import { linkTo } from './router'
 import { Reveal } from './Reveal'
 import { QuestScreen } from './QuestScreen'
 import { QuestInside } from './QuestInside'
+import { Share } from './Share'
 
 const ease = [0.32, 0.72, 0, 1] as const
 
@@ -93,6 +94,9 @@ export function QuestPage({ quest, next }: { quest: SideQuest; next: SideQuest }
               {quest.cta} <span aria-hidden>↗</span>
             </a>
           )}
+          <div className="qd-share-end">
+            <Share url={questUrl(quest)} text={`${quest.name}: ${quest.blurb}`} />
+          </div>
         </div>
       </section>
 
@@ -111,6 +115,8 @@ export function QuestPage({ quest, next }: { quest: SideQuest; next: SideQuest }
     </article>
   )
 }
+
+const questUrl = (quest: SideQuest) => `${site.url}/side-quests/${quest.id}`
 
 /* ---------- Hero: the hook question, then the quest ---------- */
 
@@ -140,6 +146,9 @@ function Hero({ quest }: { quest: SideQuest }) {
           {quest.cta} <span aria-hidden>↗</span>
         </motion.a>
       )}
+      <motion.div className="qd-share-hero" {...rise(0.58)}>
+        <Share url={questUrl(quest)} text={`${quest.name}: ${quest.blurb}`} />
+      </motion.div>
       <motion.div className="qd-stage" {...rise(0.6, 60)}>
         <div className="phone" aria-hidden>
           <QuestScreen quest={quest} />

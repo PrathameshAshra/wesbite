@@ -564,6 +564,17 @@ main, .footer { position: relative; z-index: 1; }
 .quest-page .case-block .headline { margin-bottom: 1.25rem; }
 .quest-page .case-block > div > .rv > p:not(.eyebrow) { font-size: var(--fs-lg); line-height: var(--lh-body); color: var(--ink-2); max-width: 60ch; }
 
+/* Share row (Share.tsx) */
+.share { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.share-label { font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--track-caps); text-transform: uppercase; margin-right: 4px; }
+.share-btn {
+  padding: 0.5rem 0.95rem; border-radius: 999px; font-size: var(--fs-sm); font-weight: 600; color: #fff;
+  background: var(--glass); border: 1px solid var(--glass-line); transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.share-btn:hover { background: #fff; color: #0b1626; }
+.qd-share-hero { position: relative; display: flex; justify-content: center; margin-top: 1.25rem; }
+.qd-share-end { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-line); }
+
 /* Before / After */
 .qd-ba { margin-top: 2rem; display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
 .qd-switch { position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; padding: 4px; border-radius: 999px; background: var(--glass); border: 1px solid var(--glass-line); }
@@ -805,14 +816,16 @@ main, .footer { position: relative; z-index: 1; }
   position: fixed; left: 0; top: 0; z-index: 200; pointer-events: none; opacity: 0;
   width: 18px; height: 18px; border-radius: 9px;
   background: rgba(255, 255, 255, 0.62);
-  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.9), 0 0 0 1px rgba(8, 38, 84, 0.5), 0 4px 12px -4px rgba(10, 45, 95, 0.55);
+  /* White fill plus a dark ring: visible on white surfaces as well as the dark sky. */
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.9), 0 0 0 1.5px rgba(8, 28, 64, 0.6), 0 4px 12px -4px rgba(10, 45, 95, 0.55);
   transition: opacity 0.2s var(--ease), background-color 0.18s, box-shadow 0.18s;
   will-change: transform, width, height;
 }
 .ipad-pointer.on { opacity: 1; }
 .ipad-pointer.is-block {
   background: rgba(255, 255, 255, 0.16);
-  box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.55), inset 0 0 0 0.5px rgba(255, 255, 255, 0.3), 0 6px 18px -8px rgba(10, 45, 95, 0.5);
+  /* Light inner edge for dark backgrounds, dark outer ring for white buttons and cards. */
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.7), 0 0 0 1.5px rgba(8, 28, 64, 0.55), 0 6px 18px -8px rgba(10, 45, 95, 0.5);
 }
 /* Select: a Figma-style selection frame on product surfaces (work tiles, project cards). */
 .ipad-pointer.is-select {

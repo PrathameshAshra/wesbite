@@ -156,7 +156,7 @@ for (const q of sideQuests) {
         '@id': abs(path),
         url: abs(path),
         name: q.name,
-        description: `${q.blurb} ${q.idea}`,
+        description: `${q.blurb} ${q.itch}`,
         creator: { '@id': person['@id'] },
         keywords: q.tags.join(', '),
         creativeWorkStatus: q.status,
@@ -171,15 +171,25 @@ for (const q of sideQuests) {
     ],
     body: `${nav}
 <p>Side quest · ${esc(q.status)}</p>
+<p>${esc(q.hook)}</p>
 <h1>${esc(q.name)}</h1>
 <p>${esc(q.blurb)}</p>
 ${q.href ? `<p><a href="${esc(q.href)}">${esc(q.cta)}</a></p>` : ''}
-<h2>The idea</h2>
-<p>${esc(q.idea)}</p>
-<h2>What it does</h2>
-${list(q.does.map(esc))}
-<h2>Where it’s at</h2>
+<h2>Why it exists</h2>
+<p>${esc(q.itch)}</p>
+<p>Before (${esc(q.before.label)}): ${esc(q.before.points.join('; '))}. After (${esc(q.after.label)}): ${esc(q.after.points.join('; '))}.</p>
+<h2>What’s on screen</h2>
+${list(q.inside.spots.map((sp) => `<strong>${esc(sp.title)}</strong>: ${esc(sp.text)}`))}
+<h2>How it works</h2>
+${list(q.steps.map((st) => `<strong>${esc(st.title)}</strong>: ${esc(st.text)}`))}
+<h2>Decisions, and why</h2>
+${list(q.calls.map((c) => `<strong>${esc(c.call)}</strong>: ${esc(c.why)}`))}
+<h2>So far</h2>
+${list(q.stats.map((st) => `${esc(st.value)} ${esc(st.label)}`))}
+${list(q.milestones.map((m) => `${esc(m.when)}: ${esc(m.what)}`))}
 <p>${esc(q.now)}</p>
+<h2>Up next</h2>
+${list(q.next.map(esc))}
 <p>Tags: ${esc(q.tags.join(', '))}</p>
 <p>Built by <a href="/">${esc(site.name)}</a>.</p>`,
   })

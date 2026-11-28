@@ -554,12 +554,145 @@ main, .footer { position: relative; z-index: 1; }
   background: radial-gradient(60% 70% at 50% 60%, color-mix(in srgb, var(--accent) 45%, transparent), transparent 75%);
 }
 .qp-stage .phone { height: 380px; }
-/* Side quest detail page (QuestPage.tsx) */
+/* ---------- Side quest detail page (QuestPage.tsx) ---------- */
+.qd-hook { position: relative; max-width: 22ch; margin: 0 auto 1.25rem; font-size: var(--fs-xl); font-weight: 600; line-height: var(--lh-snug); text-wrap: balance; }
 .qd-cta { position: relative; margin-top: 1.5rem; }
 .qd-stage { position: relative; display: grid; place-items: center; margin: 3rem auto 0; padding-bottom: 4rem; }
 .qd-stage .phone { height: min(64svh, 560px); }
-.qd-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }
-.qd-tags li { padding: 0.4rem 0.85rem; border-radius: 999px; font-size: var(--fs-sm); font-weight: 600; background: var(--glass); border: 1px solid var(--glass-line); }
+.qd-step { color: var(--accent); margin-bottom: 0.75rem; }
+.qd-hint { font-size: var(--fs-sm) !important; margin-top: -0.75rem; }
+.quest-page .case-block .headline { margin-bottom: 1.25rem; }
+.quest-page .case-block > div > .rv > p:not(.eyebrow) { font-size: var(--fs-lg); line-height: var(--lh-body); color: var(--ink-2); max-width: 60ch; }
+
+/* Before / After */
+.qd-ba { margin-top: 2rem; display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+.qd-switch { position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; padding: 4px; border-radius: 999px; background: var(--glass); border: 1px solid var(--glass-line); }
+.qd-switch button { position: relative; z-index: 1; padding: 0.6rem 1.4rem; border-radius: 999px; font-weight: 600; font-size: var(--fs-sm); color: #fff; transition: color 0.25s var(--ease); }
+.qd-switch button[aria-pressed='true'] { color: #0b1626; }
+.qd-thumb { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 999px; background: #fff; transition: translate 0.35s var(--ease); }
+.qd-thumb.right { translate: 100% 0; }
+.qd-side { width: 100%; border-radius: 22px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.qd-side strong { font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: var(--fs-xl); line-height: 1; }
+.qd-side ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.qd-side li { padding: 0.65rem 1rem; border-radius: 14px; font-size: var(--fs-md); }
+.qd-side.is-before { background: rgba(8, 28, 64, 0.35); border: 1px dashed var(--glass-line); }
+.qd-side.is-before li { background: rgba(255, 255, 255, 0.08); border: 1px solid var(--glass-line); color: var(--ink-2); rotate: calc((var(--i) - 1.5) * 2deg); }
+.qd-side.is-after { background: #fff; color: #0b1626; box-shadow: 0 30px 60px -30px rgba(4, 10, 26, 0.6); }
+.qd-side.is-after li { background: color-mix(in srgb, var(--accent) 16%, #fff); font-weight: 600; }
+.qd-side.is-after li::before { content: '✓ '; color: color-mix(in srgb, var(--accent) 70%, #0b1626); }
+
+/* A look inside: illustrative screen with hotspots (QuestInside.tsx) */
+.qd-wide { max-width: none; }
+.qi { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 2rem; align-items: start; }
+.qi-frame { border-radius: 18px; overflow: hidden; background: #0b1626; border: 1px solid var(--glass-line); box-shadow: 0 40px 80px -30px color-mix(in srgb, var(--accent) 45%, transparent); }
+.qi-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #131f33; }
+.qi-bar i { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+.qi-bar i:nth-child(2) { background: #febc2e; }
+.qi-bar i:nth-child(3) { background: #28c840; }
+.qi-bar span { margin: 0 auto; padding: 3px 14px; border-radius: 6px; background: #1d2a42; font-size: 12px; color: #a5abb8; translate: -24px 0; }
+.qi-screen { position: relative; aspect-ratio: 16 / 10; font-size: clamp(8px, 1.1vw, 13px); color: #0b1626; background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 18%, #fff), #fff 60%); }
+.qi-note { padding: 8px 14px; font-size: 11px; color: #a5abb8; background: #131f33; }
+.qi-grid { position: absolute; inset: 0; padding: 1.6em; display: grid; gap: 1.2em; }
+.qi-grid-side { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); }
+.qi-main { display: flex; flex-direction: column; gap: 1em; min-width: 0; }
+.qi-panel { display: flex; flex-direction: column; gap: 0.6em; padding: 1em; border-radius: 1em; background: rgba(11, 22, 38, 0.05); border: 1px solid rgba(11, 22, 38, 0.08); min-width: 0; }
+.qi-panel strong { font-size: 1.05em; }
+.qi-lines { display: flex; flex-direction: column; gap: 0.45em; flex: 1; }
+.qi-lines b { height: 0.6em; border-radius: 1em; background: rgba(11, 22, 38, 0.22); }
+.qi-lines b:last-child { width: 65%; background: rgba(11, 22, 38, 0.12); }
+.qi-creator { display: flex; align-items: center; gap: 0.8em; }
+.qi-avatar { width: 3.2em; height: 3.2em; border-radius: 50%; flex-shrink: 0; background: linear-gradient(140deg, #ffd166, #ef476f 55%, #7c5cff); box-shadow: 0 0 0 0.2em #fff, 0 0 0 0.35em var(--accent); }
+.qi-badges { display: flex; gap: 0.3em; }
+.qi-badges em, .qi-src { font-style: normal; font-weight: 800; font-size: 0.8em; padding: 0.25em 0.45em; border-radius: 0.4em; background: #0b1626; color: #fff; }
+.qi-story { flex: 1; display: flex; flex-direction: column; gap: 0.9em; padding: 1.1em; border-radius: 1em; background: #fff; box-shadow: 0 0.6em 1.6em -0.8em rgba(11, 22, 38, 0.3); }
+.qi-story p { display: flex; align-items: flex-start; gap: 0.8em; }
+.qi-verdict-row { display: flex; align-items: center; justify-content: space-between; gap: 0.5em; font-weight: 600; font-size: 0.95em; }
+.qi-verdict-row .qs-verdict { background: rgba(11, 22, 38, 0.06); }
+.qi-input { display: flex; align-items: center; gap: 0.8em; padding: 0.9em 1em; border-radius: 0.9em; background: #fff; border: 1px solid rgba(11, 22, 38, 0.12); font-weight: 600; }
+.qi-input span { flex: 1; min-width: 0; }
+.qi-input em { font-style: normal; padding: 0.4em 0.8em; border-radius: 0.6em; background: #0b1626; color: #fff; font-weight: 800; flex-shrink: 0; }
+.qi-chart { flex: 1; position: relative; border-radius: 1em; background: #fff; box-shadow: 0 0.6em 1.6em -0.8em rgba(11, 22, 38, 0.3); padding: 1em 1em 2.4em; min-height: 0; }
+.qi-chart svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.qi-chart .grid { stroke: rgba(11, 22, 38, 0.1); stroke-width: 0.5; fill: none; }
+.qi-chart .raw { stroke: rgba(11, 22, 38, 0.35); stroke-width: 2; fill: none; stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; }
+.qi-chart .hedged { stroke: var(--accent); stroke-width: 2.5; fill: none; vector-effect: non-scaling-stroke; }
+.qi-legend { position: absolute; left: 1em; bottom: 0.7em; display: flex; gap: 1.2em; font-size: 0.85em; font-weight: 600; }
+.qi-legend span { display: inline-flex; align-items: center; gap: 0.4em; }
+.qi-legend i { width: 1.2em; height: 0.25em; border-radius: 1em; }
+.qi-legend .l-raw { background: rgba(11, 22, 38, 0.35); }
+.qi-legend .l-hedged { background: var(--accent); }
+.qi-paper { align-self: flex-start; font-weight: 800; font-size: 0.85em; padding: 0.3em 0.7em; border-radius: 1em; background: #0b1626; color: #fff; }
+.qi-note-card { display: flex; padding: 0.7em; border-radius: 0.7em; background: #fff; }
+.qi-player { position: relative; aspect-ratio: 16 / 9; border-radius: 1em; display: grid; place-items: center; overflow: hidden; background: radial-gradient(70% 90% at 30% 20%, rgba(255, 255, 255, 0.35), transparent 60%), #0b1626; font-size: 1.6em; }
+.qi-scrub { position: absolute; left: 0.6em; right: 0.6em; bottom: 0.5em; height: 0.2em; border-radius: 1em; background: rgba(255, 255, 255, 0.25); }
+.qi-scrub i { position: absolute; inset: 0; border-radius: inherit; background: var(--accent); transform-origin: left; animation: qs-fill 8s linear infinite; }
+.qi-ep { font-weight: 800; font-size: 1.25em; line-height: 1.2; }
+.qi-up { display: flex; gap: 0.6em; align-items: center; padding: 0.5em; border-radius: 0.7em; background: #fff; }
+.qi-up i { width: 4em; aspect-ratio: 16 / 10; border-radius: 0.4em; background: #0b1626; flex-shrink: 0; }
+.qi-dot {
+  position: absolute; z-index: 2; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 13px; font-weight: 800; color: #fff; background: #0b1626;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 60%, transparent); transition: scale 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+.qi-dot::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid var(--accent); animation: qi-ping 2s ease-out infinite; }
+.qi-dot.on { background: var(--accent); scale: 1.15; }
+@keyframes qi-ping { from { opacity: 0.9; transform: scale(1); } to { opacity: 0; transform: scale(1.8); } }
+.qi-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.qi-list button { width: 100%; display: flex; gap: 12px; align-items: flex-start; text-align: left; padding: 14px 16px; border-radius: 16px; border: 1px solid var(--glass-line); background: var(--glass); color: #fff; transition: background-color 0.2s var(--ease), color 0.2s var(--ease); }
+.qi-list button.on { background: #fff; color: #0b1626; border-color: transparent; }
+.qi-num { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 800; background: rgba(255, 255, 255, 0.15); }
+.qi-list button.on .qi-num { background: var(--accent); color: #0b1626; }
+.qi-list strong { display: block; font-size: var(--fs-md); margin-bottom: 2px; }
+.qi-text { display: block; font-size: var(--fs-sm); line-height: var(--lh-snug); opacity: 0.85; }
+
+/* How it works: steps light up as they scroll in */
+.qd-steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; counter-reset: none; }
+.qd-steps li {
+  position: relative; display: flex; flex-direction: column; gap: 0.6rem; padding: 1.5rem; border-radius: 22px;
+  background: var(--glass); border: 1px solid var(--glass-line); opacity: 0.35; translate: 0 16px;
+  transition: opacity 0.6s var(--ease), translate 0.6s var(--ease), background-color 0.6s var(--ease), box-shadow 0.6s var(--ease);
+}
+.qd-steps li:not(:last-child)::after { content: '→'; position: absolute; right: -11px; top: 50%; translate: 0 -50%; z-index: 1; font-size: 18px; opacity: 0.6; }
+.qd-steps li.on { opacity: 1; translate: 0 0; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent); }
+.qd-steps strong { font-size: var(--fs-lg); }
+.qd-steps p { color: var(--ink-2); font-size: var(--fs-md); line-height: var(--lh-snug); }
+
+/* Calls I made: flip cards */
+.qd-calls { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.qd-card { position: relative; display: block; width: 100%; min-height: 190px; perspective: 900px; text-align: left; color: inherit; }
+.qd-face {
+  position: absolute; inset: 0; display: flex; flex-direction: column; gap: 0.6rem; padding: 1.4rem; border-radius: 22px;
+  backface-visibility: hidden; transition: rotate 0.6s var(--ease);
+}
+.qd-front { background: var(--glass); border: 1px solid var(--glass-line); }
+.qd-front strong { font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: var(--fs-xl); line-height: 1.05; }
+.qd-flip-hint { margin-top: auto; font-size: var(--fs-sm); font-weight: 600; opacity: 0.7; }
+.qd-back { background: #fff; color: #0b1626; rotate: y 180deg; font-size: var(--fs-md); line-height: var(--lh-snug); }
+.qd-back .eyebrow { color: color-mix(in srgb, var(--accent) 60%, #0b1626); }
+.qd-card.flipped .qd-front { rotate: y 180deg; }
+.qd-card.flipped .qd-back { rotate: y 360deg; }
+.qd-card:hover .qd-front { border-color: color-mix(in srgb, var(--accent) 70%, transparent); }
+
+/* Where it's at: draggable milestone timeline */
+.qd-timeline {
+  list-style: none; display: flex; gap: 0; margin: 2rem 0 1.5rem; padding: 0.5rem 0 1rem; overflow-x: auto; cursor: grab;
+  scroll-snap-type: x proximity; scrollbar-width: thin; user-select: none;
+}
+.qd-timeline.dragging { cursor: grabbing; scroll-snap-type: none; }
+.qd-timeline li { position: relative; flex: 0 0 220px; display: flex; flex-direction: column; gap: 10px; padding-right: 20px; scroll-snap-align: start; }
+.qd-timeline li::before { content: ''; position: absolute; left: 0; right: 0; top: calc(1.2em + 18px); height: 2px; background: var(--glass-line); }
+.qd-timeline li:last-child::before { right: auto; width: 0; }
+.qd-timeline i { position: relative; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 50%, transparent); }
+.qd-timeline li.now i { background: var(--accent); box-shadow: 0 0 0 4px #fff, 0 0 20px var(--accent); }
+.qd-when { font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--track-caps); text-transform: uppercase; opacity: 0.75; }
+.qd-what { font-size: var(--fs-md); line-height: var(--lh-snug); max-width: 18ch; }
+
+/* What's next */
+.qd-next { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.qd-next li { padding: 0.8rem 1.2rem; border-radius: 16px; font-weight: 600; font-size: var(--fs-md); background: var(--glass); border: 1px dashed color-mix(in srgb, var(--accent) 70%, transparent); }
+.qd-next li::before { content: '→ '; color: var(--accent); }
+.qd-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.25rem; }
+.qd-tags li { padding: 0.35rem 0.8rem; border-radius: 999px; font-size: var(--fs-xs); font-weight: 600; opacity: 0.8; border: 1px solid var(--glass-line); }
 .qp-card > p { color: var(--ink-2); font-size: var(--fs-md); line-height: var(--lh-body); }
 
 /* ---------- Testimonials ---------- */
@@ -741,7 +874,7 @@ main, .footer { position: relative; z-index: 1; }
 .case-built-row { display: grid; grid-template-columns: 4rem 1fr; gap: 1rem; }
 .case-num { font-family: var(--display); font-size: var(--fs-xl); line-height: 1; color: var(--accent); }
 /* On the light theme's blue page, accent-coloured text fails contrast, so it goes white there. */
-[data-theme='light'] :is(.case-facts .eyebrow, .case-metrics strong, .case-num) { color: #fff; }
+[data-theme='light'] :is(.case-facts .eyebrow, .case-metrics strong, .case-num, .qd-step) { color: #fff; }
 .case-outcome { font-weight: 600; color: var(--ink) !important; }
 .case-next {
   position: relative; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; text-align: center;
@@ -859,6 +992,12 @@ main, .footer { position: relative; z-index: 1; }
   .phone { height: min(36svh, 330px); }
   .quest-actions { justify-content: center; }
   .qp-stage .phone { height: 340px; }
+  .qd-hook { font-size: var(--fs-lg); }
+  .qi { grid-template-columns: 1fr; }
+  .qi-dot { width: 24px; height: 24px; margin: -12px 0 0 -12px; font-size: 11px; }
+  .qd-steps, .qd-calls { grid-template-columns: 1fr; }
+  .qd-steps li:not(:last-child)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -15px; translate: -50% 0; }
+  .qd-timeline li { flex-basis: 170px; }
   .said { grid-template-columns: 1fr; }
   .pill a { padding: 0.55rem 0.7rem; font-size: 0.9375rem; }
   .pill a:nth-child(2) { display: none; }

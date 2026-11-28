@@ -156,8 +156,11 @@ export const work: CaseStudy[] = [
   },
 ]
 
-// One side project. The home section and /side-quests show `blurb`; /side-quests/<id> shows the rest.
-// The outbound button only shows once `href` is a real link. `screen` picks the mini UI drawn in the phone.
+// One side project. The home section and /side-quests show `blurb`; /side-quests/<id> tells the
+// full story: a hook, why it exists (with a before/after), a look inside (an illustrative screen with
+// hotspots, never real screenshots), how it works, calls made along the way, where it's at, and what's
+// next. Only real facts and numbers go here. The outbound button only shows once `href` is a real link.
+export type Hotspot = { x: number; y: number; title: string; text: string } // x, y in % of the screen
 export type SideQuest = {
   id: string
   name: string
@@ -167,9 +170,17 @@ export type SideQuest = {
   accent: string
   screen: 'stories' | 'chart' | 'video'
   status: string
-  idea: string
-  does: string[]
+  hook: string
+  itch: string
+  before: { label: string; points: string[] }
+  after: { label: string; points: string[] }
+  inside: { title: string; spots: Hotspot[] }
+  steps: { title: string; text: string }[]
+  calls: { call: string; why: string }[]
+  stats: { value: string; label: string }[]
+  milestones: { when: string; what: string }[]
   now: string
+  next: string[]
   tags: string[]
 }
 
@@ -186,15 +197,39 @@ export const sideQuests: SideQuest[] = [
     accent: '#ff7a59',
     screen: 'stories',
     status: 'In beta',
-    idea:
-      'A creator says one thing on X, goes deeper on YouTube, and gets argued with on Reddit. If you want the full picture you end up opening six apps and stitching it together in your head. Content-Story does the stitching for you.',
-    does: [
-      'Follows creators across X, YouTube, LinkedIn, Instagram, TikTok and Reddit',
-      'Joins their posts and the comments around them into one story you can read top to bottom',
-      'Links every line back to the post it came from, so nothing is taken on trust',
-      'Gives a verdict per platform, so you can see how the same take landed in different places',
+    hook: 'What if you could read a creator’s whole week in one scroll?',
+    itch:
+      'Keeping up with one creator meant X for the take, YouTube for the long version and Reddit for the argument. By the time I had pieced it together, I had lost the thread. I wanted something that did the piecing for me.',
+    before: { label: 'Six apps', points: ['X for the hot take', 'YouTube for the long version', 'Reddit for the argument', 'Three more apps for the rest'] },
+    after: { label: 'One story', points: ['Every post in one readable story', 'Each line linked to where it came from', 'A verdict for each platform'] },
+    inside: {
+      title: 'content-story / creator',
+      spots: [
+        { x: 9, y: 9, title: 'One creator, six platforms', text: 'Pick who to follow once. It watches X, YouTube, LinkedIn, Instagram, TikTok and Reddit for you.' },
+        { x: 52, y: 50, title: 'Every line has a source', text: 'Small badges link each line back to the original post, so you can check it yourself.' },
+        { x: 95, y: 13, title: 'A verdict per platform', text: 'See how the same take landed in each place. Loved on one, argued with on another.' },
+      ],
+    },
+    steps: [
+      { title: 'Follow', text: 'Pick a creator. Content-Story finds them across six platforms.' },
+      { title: 'Stitch', text: 'Their posts and the comments around them are joined, in order, into one story.' },
+      { title: 'Read', text: 'You get the story with a source on every line and a verdict for each platform.' },
+    ],
+    calls: [
+      { call: 'Landing page before the product is done', why: 'Getting people in early beats polishing in private, so the beta page went up first.' },
+      { call: 'Priced in rupees', why: 'The first users are brands, agencies and newsletter writers here, so the pricing is in rupees.' },
+      { call: 'No final name yet', why: 'The name has to feel like a real object and carry an emotion. Content-Story holds the spot until one does.' },
+    ],
+    stats: [
+      { value: '6', label: 'platforms followed' },
+      { value: 'Beta', label: 'live now' },
+    ],
+    milestones: [
+      { when: 'Sep 2026', what: 'Beta page live' },
+      { when: 'Now', what: 'In beta, picking the final name' },
     ],
     now: 'The beta is live. Pricing is in rupees and aimed at brands, agencies and newsletter writers. The final name is still being picked.',
+    next: ['Pick the final name', 'Domain and social handles', 'Onboard the first brands'],
     tags: ['X', 'YouTube', 'LinkedIn', 'Instagram', 'TikTok', 'Reddit'],
   },
   {
@@ -206,16 +241,42 @@ export const sideQuests: SideQuest[] = [
     accent: '#7c5cff',
     screen: 'chart',
     status: 'Personal tool',
-    idea:
-      'I wanted to test trading ideas for Indian markets without writing a backtest by hand every time. So the idea flipped: I type the theory in plain words, and the app works out the backtest, runs it and shows me the charts.',
-    does: [
-      'Turns a plain-English trading theory into a backtest on Indian equities and F&O',
-      'Hedges stock positions with their own options, and compares strategies side by side',
-      'Pulls market data from Zerodha Kite and favours index-level strategies, so it stays light on API calls',
-      'Installs on my phone, with a running notes stream so each study builds on the last',
-      'Paper trades only. If a strategy holds up, I place the real trade myself',
+    hook: 'What if testing a trading idea took one sentence?',
+    itch:
+      'Every trading idea I had for Indian markets meant writing another backtest by hand. Most ideas died in the setup, not in the results. I wanted to say the theory and get the answer.',
+    before: { label: 'Notebook', points: ['Write the backtest by hand', 'Wire up data for every idea', 'Most ideas die in the setup'] },
+    after: { label: 'One sentence', points: ['Type the theory in plain English', 'Claude builds and runs the backtest', 'Charts to compare, then decide'] },
+    inside: {
+      title: 'quantbook / new study',
+      spots: [
+        { x: 3, y: 6, title: 'The theory, in plain words', text: 'Type the idea the way you would say it out loud. No code.' },
+        { x: 40, y: 58, title: 'Strategy vs hedge', text: 'The backtest draws the strategy with and without its options hedge, side by side.' },
+        { x: 95, y: 30, title: 'Notes that carry over', text: 'A running notes stream, so each new study builds on the last one.' },
+        { x: 85, y: 9, title: 'Paper only', text: 'Nothing is bought or sold here. If a strategy holds up, I place the trade myself.' },
+      ],
+    },
+    steps: [
+      { title: 'State', text: 'Type a theory about Indian stocks or F&O in plain English.' },
+      { title: 'Test', text: 'It pulls data from Zerodha Kite, builds the backtest and runs it.' },
+      { title: 'Compare', text: 'Charts show how it would have done, hedged and unhedged. Then I decide.' },
+    ],
+    calls: [
+      { call: 'Dropped the notebook', why: 'Writing cells was the slow part. Now I state the theory and the app does the rest.' },
+      { call: 'A phone app, not a ChatGPT plug-in', why: 'An installable app with its own notes stream keeps every study’s context in one place.' },
+      { call: 'Light on data, on purpose', why: 'Kite API calls add up, so it favours index-level strategies over huge stock lists.' },
+    ],
+    stats: [
+      { value: '₹0', label: 'real money in the app' },
+      { value: 'Weekly', label: 'Nifty iron condor, on paper' },
+    ],
+    milestones: [
+      { when: 'Oct 2026', what: 'First version, notebook style' },
+      { when: 'Oct 2026', what: 'Switched to plain-English theories' },
+      { when: 'Oct 2026', what: 'Paper-trading a weekly Nifty iron condor' },
+      { when: 'Now', what: 'Personal tool, stock F&O next' },
     ],
     now: 'Right now it is paper-trading a weekly Nifty iron condor. It is built for me, not as a product.',
+    next: ['Stock options and futures', 'Hedging stocks with their own options', 'Option-chain snapshots'],
     tags: ['NSE', 'F&O', 'Zerodha Kite', 'Claude', 'PWA'],
   },
   {
@@ -227,14 +288,39 @@ export const sideQuests: SideQuest[] = [
     accent: '#ff3b3b',
     screen: 'video',
     status: 'In production',
-    idea:
-      'Most talk about AI products comes from one side, either engineers or product people. I have been both, so the channel sits in the middle: how AI products actually get built and shipped, explained for PMs by someone who used to write the code.',
-    does: [
-      'Long-form episodes on building AI products, as video and podcast',
-      'Explains the engineering side of AI in a way product managers can use',
-      'Told from India, where a lot of this work is actually being done',
+    hook: 'What if AI product talk came from someone who has sat on both sides?',
+    itch:
+      'Most talk about AI products comes from one camp, engineers or product people. I have been both, so the channel sits in the middle: how AI products actually get built, explained for PMs by someone who used to write the code.',
+    before: { label: 'Two camps', points: ['Engineers talk models and metrics', 'PMs talk users and roadmaps', 'Nobody translates'] },
+    after: { label: 'One room', points: ['Engineering ideas, explained for PMs', 'Examples from real product work', 'Long enough to go deep'] },
+    inside: {
+      title: 'The Channel · Episode 1',
+      spots: [
+        { x: 59, y: 11, title: 'Long-form, on purpose', text: 'Episodes run long enough to actually explain things, as video and as a podcast.' },
+        { x: 30, y: 80, title: 'First up: evals', text: '“Evals explained for PMs by an ex-engineer”, in the works now.' },
+        { x: 95, y: 13, title: 'One idea per episode', text: 'Each episode takes one engineering idea PMs keep running into and makes it usable.' },
+      ],
+    },
+    steps: [
+      { title: 'Pick one idea', text: 'One engineering idea that PMs keep running into.' },
+      { title: 'Show it', text: 'Explain it through a real example, not a slide of definitions.' },
+      { title: 'Ship it', text: 'Out as a long-form video and a podcast episode.' },
+    ],
+    calls: [
+      { call: 'Long-form, not shorts', why: 'Long video and podcast is the format I can actually keep up every week.' },
+      { call: 'No ads, no sponsors', why: 'The channel is not there to make money. It is there to share what I learn.' },
+      { call: 'The demo has to earn its place', why: 'The first demo for the evals episode got scrapped for not feeling real enough. Still picking the right one.' },
+    ],
+    stats: [
+      { value: '1', label: 'episode in the works' },
+      { value: 'Weekly', label: 'long-form, once it starts' },
+    ],
+    milestones: [
+      { when: 'Oct 2026', what: 'Channel planned, first topic picked' },
+      { when: 'Now', what: 'Evals episode in the works' },
     ],
     now: 'First up is “Evals explained for PMs by an ex-engineer”, in the works now.',
+    next: ['Ship the evals episode', 'Go weekly', 'Podcast feeds'],
     tags: ['YouTube', 'Podcast', 'AI products', 'Evals'],
   },
 ]

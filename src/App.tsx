@@ -67,9 +67,8 @@ function Hero({ ready }: { ready: boolean }) {
         </motion.p>
         <motion.h1
           className="mega"
-          // No opacity fade: an invisible h1 doesn't count as painted, which held LCP back ~5s.
-          initial={reducedMotion ? false : { y: 40, filter: 'blur(10px)' }}
-          animate={shown ? { y: 0, filter: 'blur(0px)' } : undefined}
+          initial={reducedMotion ? false : { opacity: 0, y: 40, filter: 'blur(10px)' }}
+          animate={shown ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
           transition={{ duration: 1.1, ease, delay: 0.3 }}
         >
           <span className="sr-only">{site.name}, </span>

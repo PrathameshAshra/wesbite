@@ -7,7 +7,7 @@ import { reducedMotion } from './scroll'
 // The Work card shows the real product, not a stock photo: a browser frame with the website
 // and the app's store screenshot, staged on the project's own colour. Projects without
 // screenshots show their animated impact card in the browser frame instead. The pieces drift
-// at different speeds on scroll for depth, and the outcome numbers sit along the bottom.
+// at different speeds on scroll for depth. The outcome numbers sit under the card (App.tsx).
 
 function Browser({ url, children }: { url: string; children: React.ReactNode }) {
   return (
@@ -56,14 +56,6 @@ export function WorkVisual({ study }: { study: CaseStudy }) {
       {sc && (
         <motion.img className="sc-app" style={{ y: fast }} src={sc.app} alt={`${study.name} app`} loading="lazy" decoding="async" />
       )}
-      <div className="tz-metrics">
-        {study.metrics.map((m) => (
-          <div key={m.label} className="tz-metric">
-            <strong>{m.value}</strong>
-            <span>{m.label}</span>
-          </div>
-        ))}
-      </div>
     </motion.div>
   )
 }

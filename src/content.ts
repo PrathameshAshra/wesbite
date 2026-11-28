@@ -62,8 +62,8 @@ export const work: CaseStudy[] = [
     years: '2 years',
     metrics: [
       { value: '1M+', label: 'views' },
-      { value: '2 yrs', label: 'to a pan-India launch' },
-      { value: '3', label: 'platforms shipped' },
+      { value: '3', label: 'platforms: web, iOS, Android' },
+      { value: '2 yrs', label: 'zero to pan-India launch' },
     ],
     problem:
       'Spontaa wanted people to find real plans in their city and actually show up. When I joined there was nothing yet. No app, no team, no servers.',
@@ -88,8 +88,9 @@ export const work: CaseStudy[] = [
     role: 'Lead developer',
     years: '1 year build · just launched',
     metrics: [
-      { value: '1 yr', label: 'commit to launch' },
-      { value: '0', label: 'numbers shared to call' },
+      { value: '100%', label: 'Aadhaar-checked' },
+      { value: '1 yr', label: 'idea to App Store' },
+      { value: '0', label: 'phone numbers shared to call' },
     ],
     problem:
       'On most social apps in India you can’t tell who’s real. Pearbae wanted every profile verified, and the app still had to feel fun to use.',
@@ -113,8 +114,9 @@ export const work: CaseStudy[] = [
     role: 'Embedded engineer',
     years: '5 years',
     metrics: [
-      { value: '5 yrs', label: 'and counting' },
-      { value: '2', label: 'continents of markets' },
+      { value: '5 yrs', label: 'on the trading desk' },
+      { value: 'EU + Asia', label: 'power markets covered' },
+      { value: 'Daily', label: 'used by the traders' },
     ],
     problem:
       'The firm trades electricity in markets across Europe and Asia. Prices move fast and the models behind each trade are complicated, so the tools on screen have to keep up.',
@@ -137,9 +139,9 @@ export const work: CaseStudy[] = [
     role: 'Tech lead',
     years: '4 years',
     metrics: [
-      { value: '50 yrs', label: 'offline before we started' },
+      { value: '50 yrs', label: 'run on paper and phone calls' },
       { value: '100%', label: 'online now' },
-      { value: '4 yrs', label: 'steady rollout' },
+      { value: '4 yrs', label: 'rollout, business never paused' },
     ],
     problem:
       'For 50 years the agency ran on phone calls, paper files and people’s memory. Growing meant moving online, slowly enough that nothing broke for customers.',
@@ -168,7 +170,7 @@ export type SideQuest = {
   cta: string
   href: string
   accent: string
-  screen: 'stories' | 'chart' | 'video'
+  screen: 'stories' | 'chart' | 'video' | 'chat'
   status: string
   hook: string
   itch: string
@@ -188,6 +190,62 @@ export type SideQuest = {
 export const HOME_QUESTS = 3
 
 export const sideQuests: SideQuest[] = [
+  {
+    id: 'payment-collect',
+    name: 'Payment Collect',
+    blurb: 'Payment follow-ups for manufacturers. Overdue bills come straight from Tally and go out on WhatsApp with a payment link.',
+    cta: 'Talk to me about it',
+    href: site.contact.call,
+    accent: '#25d366',
+    screen: 'chat',
+    status: 'In build',
+    hook: 'What if overdue payments chased themselves?',
+    itch:
+      'Indian MSMEs wait 73 days on average to get an invoice paid (Recordent, 2026), and ₹7.34 lakh crore sits stuck in delayed payments (GAME, FISME and C2FO, 2024). At most manufacturers I know, following up is still one person with Tally on one screen and a phone in hand.',
+    before: {
+      label: 'Phone and Tally',
+      points: ['Someone checks Tally for who owes what', 'Calls each party, one by one', 'Ledgers sent by hand', 'The owner hears about it when cash gets tight'],
+    },
+    after: {
+      label: 'On autopilot',
+      points: ['Overdue bills read straight from Tally', 'A WhatsApp reminder with the ledger and a payment link', 'Firmer reminders on a schedule, calls only when needed', 'Paid invoices mark themselves'],
+    },
+    inside: {
+      title: 'payment-collect / overdue',
+      spots: [
+        { x: 6, y: 30, title: 'Ledger and pay link in one message', text: 'The party gets their ledger PDF and a one-tap payment link on WhatsApp. No “please send the details” back and forth.' },
+        { x: 6, y: 66, title: 'Firmer, on a schedule', text: 'Polite on the due date, firmer at day 7. VIP parties never get the firm one.' },
+        { x: 63, y: 55, title: 'A person makes the hard call', text: 'At day 15 the party is flagged for a call, and at day 30 the owner gets an alert. Automation does the routine chasing, people handle the relationship.' },
+        { x: 63, y: 83, title: 'Paid marks itself', text: 'When money comes in through the link, the invoice is marked paid. Tally catches up when the receipt is entered.' },
+      ],
+    },
+    steps: [
+      { title: 'Sync', text: 'A small connector reads outstanding bills from Tally while it’s open. Nobody re-enters anything.' },
+      { title: 'Remind', text: 'On the due date the party gets a WhatsApp with their ledger and a payment link.' },
+      { title: 'Escalate', text: 'Firmer at day 7, flagged for a call at day 15, owner alerted at day 30.' },
+      { title: 'Settle', text: 'Paying through the link marks the invoice paid on the dashboard.' },
+    ],
+    calls: [
+      { call: 'Tally stays', why: 'Manufacturers here run on Tally, and asking them to switch kills the deal. Payment Collect reads Tally, and Tally stays the source of truth.' },
+      { call: 'WhatsApp, not email', why: 'Industry benchmarks put WhatsApp open rates near 98%, against roughly 21% for email. A reminder nobody opens isn’t a reminder.' },
+      { call: 'Meta’s API directly, no reseller', why: 'WhatsApp resellers add a markup on every message. Going direct keeps each reminder at a few paise.' },
+      { call: 'A payment link in every message', why: '“Please pay” with no easy way to pay is just noise. The link also confirms the payment without anyone checking the bank.' },
+      { call: 'A person makes the day-15 call', why: 'In Indian B2B the relationship is the collateral. A bot calling a ten-year customer about money does more damage than the delay.' },
+      { call: 'VIP parties skip the firm reminder', why: 'Some customers you never send a stern message to. The owner marks them once.' },
+    ],
+    stats: [
+      { value: '73 days', label: 'average wait to get an MSME invoice paid (Recordent, 2026)' },
+      { value: '22%', label: 'lower DSO when receivables are automated (PYMNTS and Mastercard)' },
+      { value: '98%', label: 'WhatsApp open rate, vs about 21% for email (industry benchmarks)' },
+    ],
+    milestones: [
+      { when: 'Nov 2026', what: 'Research and build plan' },
+      { when: 'Now', what: 'Building the demo on a test Tally company' },
+    ],
+    now: 'The demo is being built on a test Tally company: the Tally sync, WhatsApp reminders, payment links and the owner’s dashboard.',
+    next: ['Finish the demo', 'WhatsApp message templates approved', 'First manufacturers using it'],
+    tags: ['Tally', 'WhatsApp', 'Razorpay', 'Manufacturing', 'MSME'],
+  },
   {
     id: 'content-story',
     name: 'Content-Story',

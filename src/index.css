@@ -486,7 +486,7 @@ main, .footer { position: relative; z-index: 1; }
   background: rgba(255, 255, 255, 0.34); border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-/* Content-Story */
+/* Threadline */
 .qs-creator { display: flex; align-items: center; gap: 0.6em; }
 .qs-creator i {
   width: 2.6em; height: 2.6em; border-radius: 50%; border: 0.2em solid #fff; flex-shrink: 0;

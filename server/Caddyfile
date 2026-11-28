@@ -16,6 +16,9 @@ prathameshashra.com {
 	@slash path_regexp slash ^(.+)/$
 	redir @slash {re.slash.1}{?query} permanent
 
+	# Old name of the Threadline side quest.
+	redir /side-quests/content-story /side-quests/threadline permanent
+
 	# Hashed bundles and fonts never change. Images load straight from cache (refreshed in the
 	# background), so the hero's screenshot tiles never flash empty on reload. Pages always
 	# revalidate, so a deploy shows up at once and never points at a bundle that's gone.

@@ -23,7 +23,7 @@ const SOURCES = [
   { p: 'Rd', verdict: 'Pushback' },
 ]
 
-// Content-Story: a creator's posts across platforms, read as one source-linked story.
+// Threadline: a creator's posts across platforms, read as one source-linked story.
 function Stories() {
   return (
     <>

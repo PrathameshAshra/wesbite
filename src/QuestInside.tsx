@@ -154,7 +154,7 @@ function VideoScreen() {
             <i />
           </span>
         </div>
-        <p className="qi-ep">Evals explained for PMs by an ex-engineer</p>
+        <p className="qi-ep">Evals, explained by an engineer</p>
         <Lines n={2} />
       </div>
       <aside className="qi-panel">

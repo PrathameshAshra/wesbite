@@ -47,6 +47,9 @@ export function SideQuests() {
               <i key={i} className={i < Math.max(1, filled) ? 'on' : ''} />
             ))}
           </div>
+          <a className="chip ghost quest-all" href="/side-quests" onClick={linkTo('/side-quests')}>
+            View all side quests <span aria-hidden>→</span>
+          </a>
         </div>
         {sideQuests.map((q, i) => (
           <motion.div
@@ -74,9 +77,6 @@ export function SideQuests() {
               <div className="quest-actions">
                 <a className="chip" href={`/side-quests/${q.id}`} onClick={linkTo(`/side-quests/${q.id}`)}>
                   View details <span aria-hidden>→</span>
-                </a>
-                <a className="chip ghost" href="/side-quests" onClick={linkTo('/side-quests')}>
-                  View all side quests <span aria-hidden>→</span>
                 </a>
               </div>
             </div>

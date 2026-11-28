@@ -415,7 +415,7 @@ function route(path: string): Route {
 }
 
 // Keep in step with the titles scripts/prerender.mjs writes for crawlers.
-const TITLES = { home: `${site.name} · AI Product Manager & Engineer in Mumbai`, branding: `Brand kit · ${site.name}`, quests: `Side quests · ${site.name}`, notfound: `Page not found · ${site.name}` }
+const TITLES = { home: `${site.name} · Senior Software Engineer, Web, Mobile & AI · Mumbai`, branding: `Brand kit · ${site.name}`, quests: `Side quests · ${site.name}`, notfound: `Page not found · ${site.name}` }
 
 export default function App() {
   const path = usePath()

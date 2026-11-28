@@ -24,20 +24,20 @@ export type CaseStudy = {
 export const site = {
   name: 'Prathamesh Ashra',
   url: 'https://prathameshashra.com',
-  kicker: 'Engineer turned product manager · Mumbai',
+  kicker: 'Senior software engineer · Mumbai',
   title: 'AI Product Builder',
   // Plain, factual summary for search engines and AI assistants: meta description, JSON-LD, llms.txt.
   // Keep it to facts a stranger could check.
   description:
-    'Prathamesh Ashra is a product manager and software engineer in Mumbai, India, with ten years of building web, mobile and AI products. He founded the app studio Codeamesh in 2020, was the founding developer of Spontaa, built the ID-verified social app Pearbae, has spent five years building trading tools for the power-trading firm The Data Duck, and moved the 50-year-old agency J M Mehta Tours and Travels online.',
+    'Prathamesh Ashra is a senior software engineer in Mumbai, India, with eight years of building web, mobile and AI products. At The Data Duck he has spent five years building trading tools for a power-trading firm, and was the founding engineer of Spontaa and lead developer of the ID-verified social app Pearbae. Before that he moved the 50-year-old agency J M Mehta Tours and Travels online. He founded the app studio Codeamesh in 2020.',
   // Short version for the Google snippet (it cuts off around 160 characters).
-  metaDescription: 'Product manager and engineer in Mumbai. Ten years building web, mobile and AI apps, including Spontaa and Pearbae. Founder of Codeamesh.',
+  metaDescription: 'Senior software engineer in Mumbai. Eight years building web, mobile and AI apps, including Spontaa, Pearbae and trading tools for a power-trading firm.',
   // What he is known for, used as knowsAbout in structured data.
-  expertise: ['AI product management', 'React', 'React Native', 'Node.js', 'LLM features', 'Mobile app development', '0 to 1 product development', 'Trading UIs'],
+  expertise: ['AI products', 'React', 'React Native', 'Node.js', 'LLM features', 'Mobile app development', '0 to 1 product development', 'Trading UIs'],
   statement: ['Love shipping things', 'people actually'],
   statementWord: 'use',
   about:
-    'I’ve been building software for about ten years. I started Codeamesh in 2020, was the first engineer at Spontaa, built Pearbae, and these days I work as a product manager.',
+    'I’ve been building software for about eight years. I’m a senior software engineer at The Data Duck, where I build trading tools for a power-trading firm. There I was also the first engineer on Spontaa and built Pearbae. I started Codeamesh in 2020.',
   status: 'Open to chat',
   services: ['Web & mobile apps', 'AI products', '0 → 1 MVPs', 'Product strategy'],
   contact: {
@@ -57,7 +57,7 @@ export const work: CaseStudy[] = [
     eyebrow: 'Founding developer · Consumer social',
     name: 'Spontaa',
     oneLiner: 'I was the first engineer on Spontaa’s founding team. Two years later the app was live across India, on the web, Android and iOS.',
-    role: 'Lead developer, founding team',
+    role: 'Founding engineer, via The Data Duck',
     years: '2 years',
     metrics: [
       { value: '1M+', label: 'views' },
@@ -84,7 +84,7 @@ export const work: CaseStudy[] = [
     eyebrow: 'Social app · India',
     name: 'Pearbae',
     oneLiner: 'A social app for India where every profile is checked with Aadhaar and you can call someone without giving out your number. Built and shipped to the App Store in about a year.',
-    role: 'Lead developer',
+    role: 'Lead developer, via The Data Duck',
     years: '1 year build · just launched',
     metrics: [
       { value: '100%', label: 'Aadhaar-checked' },

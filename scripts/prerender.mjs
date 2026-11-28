@@ -33,7 +33,8 @@ const person = {
   name: site.name,
   url: site.url,
   image: abs('/me.jpg'),
-  jobTitle: 'Product Manager',
+  jobTitle: 'Senior Software Engineer',
+  worksFor: { '@type': 'Organization', name: 'The Data Duck' },
   description: site.description,
   address: { '@type': 'PostalAddress', addressLocality: 'Mumbai', addressCountry: 'IN' },
   knowsAbout: site.expertise,
@@ -75,7 +76,7 @@ const list = (items) => `<ul>${items.map((i) => `<li>${i}</li>`).join('')}</ul>`
 /* ---------- Home ---------- */
 page({
   path: '/',
-  title: `${site.name} · AI Product Manager & Engineer in Mumbai`,
+  title: `${site.name} · Senior Software Engineer, Web, Mobile & AI · Mumbai`,
   description: site.metaDescription,
   jsonLd: [
     { '@type': 'ProfilePage', '@id': abs('/'), url: site.url, name: site.name, dateModified: contentDate, mainEntity: { '@id': person['@id'] } },
@@ -248,7 +249,7 @@ writeFileSync(
 > ${site.description}
 
 - Based in: Mumbai, India
-- Current role: Product Manager
+- Current role: Senior Software Engineer, The Data Duck
 - Founder: Codeamesh Consultancy LLP (app and AI studio, founded 2020)
 - Known for: ${site.expertise.join(', ')}
 - Contact: ${site.contact.email} · ${site.contact.linkedin}

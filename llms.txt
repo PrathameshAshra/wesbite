@@ -17,9 +17,9 @@
 
 ## Side projects
 
-- [Payment Collect](https://prathameshashra.com/side-quests/payment-collect) (Idea + POC): My take on payment follow-ups for manufacturers: read overdue bills straight from Tally and chase them on WhatsApp with a payment link. This is a vision, not a product yet. I built a quick POC on a test Tally company to get a feel for how the Tally sync, WhatsApp reminders, payment links and the owner’s view should fit together.
+- [Payment Collect](https://prathameshashra.com/side-quests/payment-collect) (Idea + POC): An idea for manufacturers: pull overdue bills from Tally and send the reminders on WhatsApp, with a payment link. It isn’t a product yet. I built a rough POC on a test Tally company to work out how the Tally sync, WhatsApp reminders, payment links and the owner’s view should fit together.
 - [Content-Story](https://prathameshashra.com/side-quests/content-story) (In beta): Follow a creator across every platform and read it all as one story, with links back to every post. The beta is live. Pricing is in rupees and aimed at brands, agencies and newsletter writers. The final name is still being picked.
-- [Quantbook](https://prathameshashra.com/side-quests/quantbook) (Personal tool): A backtesting notebook for Indian stocks. Test an NSE strategy, hedge it with options, and see how it would have done. Right now it is paper-trading a weekly Nifty iron condor. It is built for me, not as a product.
+- [Quantbook](https://prathameshashra.com/side-quests/quantbook) (Personal tool): A backtesting notebook for Indian stocks. Test an NSE strategy, hedge it with options, and see how it would have done. Right now it is paper-trading a weekly Nifty iron condor. I built it for myself, it’s not a product.
 - [The Channel](https://prathameshashra.com/side-quests/the-channel) (In production): Long-form videos on building AI products, from someone who was an engineer before he became a PM. First up is “Evals explained for PMs by an ex-engineer”, in the works now.
 
 ## What clients say

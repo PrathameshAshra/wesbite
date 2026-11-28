@@ -29,7 +29,7 @@ export const site = {
   // Plain, factual summary for search engines and AI assistants: meta description, JSON-LD, llms.txt.
   // Keep it to facts a stranger could check.
   description:
-    'Prathamesh Ashra is a senior software engineer in Mumbai, India, with eight years of building web, mobile and AI products. At The Data Duck he has spent five years building trading tools for a power-trading firm, and was the founding engineer of Spontaa and lead developer of the ID-verified social app Pearbae. Before that he moved the 50-year-old agency J M Mehta Tours and Travels online. He founded the app studio Codeamesh in 2020.',
+    'Prathamesh Ashra is a senior software engineer in Mumbai, India, with eight years of building web, mobile and AI products. At The Data Duck he has spent five years building trading tools for a power-trading firm, and was the founding engineer of Spontaa and front-end lead on the ID-verified social app Pearbae. Before that he moved the 50-year-old agency J M Mehta Tours and Travels online. He founded the app studio Codeamesh in 2020.',
   // Short version for the Google snippet (it cuts off around 160 characters).
   metaDescription: 'Senior software engineer in Mumbai. Eight years building web, mobile and AI apps, including Spontaa, Pearbae and trading tools for a power-trading firm.',
   // What he is known for, used as knowsAbout in structured data.
@@ -84,7 +84,7 @@ export const work: CaseStudy[] = [
     eyebrow: 'Social app · India',
     name: 'Pearbae',
     oneLiner: 'A social app for India where every profile is checked with Aadhaar and you can call someone without giving out your number. Built and shipped to the App Store in about a year.',
-    role: 'Lead developer, via The Data Duck',
+    role: 'Front-end lead, via The Data Duck',
     years: '1 year build · just launched',
     metrics: [
       { value: '100%', label: 'Aadhaar-checked' },

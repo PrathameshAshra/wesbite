@@ -103,7 +103,7 @@ function Travel() {
           </i>
         ))}
       </div>
-      <span className="im-foot">4-year rollout, never stopped trading</span>
+      <span className="im-foot">2019 – 2021 rollout, bookings never stopped</span>
     </div>
   )
 }

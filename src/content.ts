@@ -134,23 +134,23 @@ export const work: CaseStudy[] = [
     id: 'travel',
     eyebrow: 'Digital transformation · Travel',
     name: 'J M Mehta Tours and Travels',
-    oneLiner: 'A travel agency that ran offline for 50 years. Over four years I moved the whole business online while it kept running.',
-    role: 'Tech lead',
-    years: '4 years',
+    oneLiner: 'A travel agency that ran on paper and phone calls for 50 years. From 2019 to 2021 I moved the whole business onto one online system, and it never stopped taking bookings.',
+    role: 'Full-stack developer',
+    years: '2019 – 2021',
     metrics: [
       { value: '50 yrs', label: 'run on paper and phone calls' },
       { value: '100%', label: 'online now' },
-      { value: '4 yrs', label: 'rollout, business never paused' },
+      { value: '0', label: 'days bookings stopped' },
     ],
     problem:
       'For 50 years the agency ran on phone calls, paper files and people’s memory. Growing meant moving online, slowly enough that nothing broke for customers.',
     built: [
-      'One online flow, from the first enquiry to the booked trip',
-      'Internal tools that replaced the paper files',
-      'A slow rollout over four years, so the business kept running the whole time',
+      'Bookings, billing, invoicing, customer records, approvals and OTP verification in one system, replacing the paper files',
+      'Travelport and other supplier APIs joined into one flight and booking flow, from the first enquiry to the booked trip',
+      'A part-by-part rollout over two and a half years, so the agency kept taking bookings the whole time',
     ],
-    outcome: 'The agency runs fully online now.',
-    stack: ['React', 'Node.js', 'Cloud'],
+    outcome: 'The agency runs fully online now, on the system I built.',
+    stack: ['Angular', 'Node.js', 'Express', 'SQL', 'AWS', 'Travelport'],
     accent: '#2ec4a6',
     photo: { id: '1512343879784-a960bf40e7f2', alt: 'A palm-lined tropical beach with turquoise water' },
     showcase: null,
@@ -407,7 +407,7 @@ export const testimonials: Testimonial[] = [
     role: '50-year-old travel agency',
     short: 'Took our 50-year-old business fully online.',
     quote:
-      'We had run offline for five decades. Over four years Prathamesh rebuilt everything into one online flow, from enquiry to trip, without breaking how our team actually works. Today we are fully online.',
+      'We had run offline for five decades. Between 2019 and 2021 Prathamesh rebuilt everything into one online flow, from enquiry to trip, without breaking how our team actually works. Today we are fully online.',
   },
 ]
 

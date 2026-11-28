@@ -47,8 +47,7 @@ export const site = {
     linkedin: 'https://www.linkedin.com/in/prathamesh-ashra-b2318bab/',
     x: '', // TODO: X profile
     youtube: '', // TODO: channel URL
-    // TODO: resume PDF in /public
-    resume: '',
+    resume: '/Prathamesh-Ashra-Resume.pdf',
   },
 }
 

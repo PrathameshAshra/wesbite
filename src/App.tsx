@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import type Lenis from 'lenis'
-import { site, work, testimonials } from './content'
+import { site, work, testimonials, sideQuests } from './content'
 import { holdScroll, reducedMotion, startScroll, startSnap } from './scroll'
 import { Reveal } from './Reveal'
 import { applyTheme, initialTheme, type Theme } from './theme'
@@ -17,6 +17,7 @@ import { Notes } from './Notes'
 import { CasePage } from './CasePage'
 import { Branding } from './Branding'
 import { QuestsPage } from './QuestsPage'
+import { QuestPage } from './QuestPage'
 import { linkTo, navigate, usePath } from './router'
 
 const ease = [0.32, 0.72, 0, 1] as const
@@ -349,11 +350,19 @@ function Home({ ready }: { ready: boolean }) {
   )
 }
 
-type Route = { kind: 'home' } | { kind: 'branding' } | { kind: 'quests' } | { kind: 'case'; study: (typeof work)[number]; next: (typeof work)[number] }
+type Route =
+  | { kind: 'home' }
+  | { kind: 'branding' }
+  | { kind: 'quests' }
+  | { kind: 'quest'; quest: (typeof sideQuests)[number]; next: (typeof sideQuests)[number] }
+  | { kind: 'case'; study: (typeof work)[number]; next: (typeof work)[number] }
 
 function route(path: string): Route {
   if (/^\/branding\/?$/.test(path)) return { kind: 'branding' }
   if (/^\/side-quests\/?$/.test(path)) return { kind: 'quests' }
+  const q = path.match(/^\/side-quests\/([^/]+)\/?$/)
+  const qi = q ? sideQuests.findIndex((s) => s.id === q[1]) : -1
+  if (qi >= 0) return { kind: 'quest', quest: sideQuests[qi], next: sideQuests[(qi + 1) % sideQuests.length] }
   const m = path.match(/^\/work\/([^/]+)\/?$/)
   const i = m ? work.findIndex((w) => w.id === m[1]) : -1
   return i < 0 ? { kind: 'home' } : { kind: 'case', study: work[i], next: work[(i + 1) % work.length] }
@@ -381,7 +390,12 @@ export default function App() {
   }, [home, path])
 
   useEffect(() => {
-    document.title = page.kind === 'case' ? `${page.study.name} case study · ${site.name}` : TITLES[page.kind]
+    document.title =
+      page.kind === 'case'
+        ? `${page.study.name} case study · ${site.name}`
+        : page.kind === 'quest'
+          ? `${page.quest.name} · Side quest · ${site.name}`
+          : TITLES[page.kind]
   }, [page])
 
   useEffect(() => {
@@ -419,6 +433,11 @@ export default function App() {
         {page.kind === 'quests' && (
           <main>
             <QuestsPage />
+          </main>
+        )}
+        {page.kind === 'quest' && (
+          <main>
+            <QuestPage quest={page.quest} next={page.next} />
           </main>
         )}
         {page.kind === 'home' && <Home ready={ready} />}

@@ -156,37 +156,86 @@ export const work: CaseStudy[] = [
   },
 ]
 
-// The button only shows once `href` is a real link. `screen` picks the mini UI drawn in the phone.
-export type SideQuest = { name: string; blurb: string; cta: string; href: string; accent: string; screen: 'stories' | 'chart' | 'video' }
+// One side project. The home section and /side-quests show `blurb`; /side-quests/<id> shows the rest.
+// The outbound button only shows once `href` is a real link. `screen` picks the mini UI drawn in the phone.
+export type SideQuest = {
+  id: string
+  name: string
+  blurb: string
+  cta: string
+  href: string
+  accent: string
+  screen: 'stories' | 'chart' | 'video'
+  status: string
+  idea: string
+  does: string[]
+  now: string
+  tags: string[]
+}
 
 // How many side quests the home page shows; the rest live on /side-quests.
 export const HOME_QUESTS = 3
 
-// TODO: real links
 export const sideQuests: SideQuest[] = [
   {
+    id: 'content-story',
     name: 'Content-Story',
-    blurb: 'Write a story once and post it to every platform in one go. It’s in beta.',
-    cta: 'Join the beta',
-    href: '', // TODO: beta sign-up link
+    blurb: 'Follow a creator across every platform and read it all as one story, with links back to every post.',
+    cta: 'See the beta',
+    href: 'https://content-story.onrender.com/',
     accent: '#ff7a59',
     screen: 'stories',
+    status: 'In beta',
+    idea:
+      'A creator says one thing on X, goes deeper on YouTube, and gets argued with on Reddit. If you want the full picture you end up opening six apps and stitching it together in your head. Content-Story does the stitching for you.',
+    does: [
+      'Follows creators across X, YouTube, LinkedIn, Instagram, TikTok and Reddit',
+      'Joins their posts and the comments around them into one story you can read top to bottom',
+      'Links every line back to the post it came from, so nothing is taken on trust',
+      'Gives a verdict per platform, so you can see how the same take landed in different places',
+    ],
+    now: 'The beta is live. Pricing is in rupees and aimed at brands, agencies and newsletter writers. The final name is still being picked.',
+    tags: ['X', 'YouTube', 'LinkedIn', 'Instagram', 'TikTok', 'Reddit'],
   },
   {
+    id: 'quantbook',
     name: 'Quantbook',
     blurb: 'A backtesting notebook for Indian stocks. Test an NSE strategy, hedge it with options, and see how it would have done.',
     cta: 'Open Quantbook',
-    href: '', // TODO: quant.prathameshashra.com is down since the server wipe
+    href: '',
     accent: '#7c5cff',
     screen: 'chart',
+    status: 'Personal tool',
+    idea:
+      'I wanted to test trading ideas for Indian markets without writing a backtest by hand every time. So the idea flipped: I type the theory in plain words, and the app works out the backtest, runs it and shows me the charts.',
+    does: [
+      'Turns a plain-English trading theory into a backtest on Indian equities and F&O',
+      'Hedges stock positions with their own options, and compares strategies side by side',
+      'Pulls market data from Zerodha Kite and favours index-level strategies, so it stays light on API calls',
+      'Installs on my phone, with a running notes stream so each study builds on the last',
+      'Paper trades only. If a strategy holds up, I place the real trade myself',
+    ],
+    now: 'Right now it is paper-trading a weekly Nifty iron condor. It is built for me, not as a product.',
+    tags: ['NSE', 'F&O', 'Zerodha Kite', 'Claude', 'PWA'],
   },
   {
+    id: 'the-channel',
     name: 'The Channel',
     blurb: 'Long-form videos on building AI products, from someone who was an engineer before he became a PM.',
     cta: 'Watch on YouTube',
-    href: '', // TODO: channel URL
+    href: '',
     accent: '#ff3b3b',
     screen: 'video',
+    status: 'In production',
+    idea:
+      'Most talk about AI products comes from one side, either engineers or product people. I have been both, so the channel sits in the middle: how AI products actually get built and shipped, explained for PMs by someone who used to write the code.',
+    does: [
+      'Long-form episodes on building AI products, as video and podcast',
+      'Explains the engineering side of AI in a way product managers can use',
+      'Told from India, where a lot of this work is actually being done',
+    ],
+    now: 'First up is “Evals explained for PMs by an ex-engineer”, in the works now.',
+    tags: ['YouTube', 'Podcast', 'AI products', 'Evals'],
   },
 ]
 

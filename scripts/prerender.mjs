@@ -134,17 +134,59 @@ page({
       '@type': 'ItemList',
       '@id': abs('/side-quests'),
       name: `Side projects by ${site.name}`,
-      itemListElement: sideQuests.map((q, i) => ({ '@type': 'ListItem', position: i + 1, name: q.name, description: q.blurb, ...(q.href && { url: q.href }) })),
+      itemListElement: sideQuests.map((q, i) => ({ '@type': 'ListItem', position: i + 1, name: q.name, description: q.blurb, url: abs(`/side-quests/${q.id}`) })),
     },
     person,
   ],
   body: `${nav}
 <h1>Side quests: things ${esc(site.name)} builds for fun</h1>
-${list(sideQuests.map((q) => `<strong>${esc(q.name)}</strong>: ${esc(q.blurb)}`))}`,
+${list(sideQuests.map((q) => `<a href="/side-quests/${q.id}"><strong>${esc(q.name)}</strong></a>: ${esc(q.blurb)}`))}`,
 })
 
+/* ---------- Side quest pages ---------- */
+for (const q of sideQuests) {
+  const path = `/side-quests/${q.id}`
+  page({
+    path,
+    title: `${q.name} · Side quest · ${site.name}`,
+    description: q.blurb,
+    jsonLd: [
+      {
+        '@type': 'CreativeWork',
+        '@id': abs(path),
+        url: abs(path),
+        name: q.name,
+        description: `${q.blurb} ${q.idea}`,
+        creator: { '@id': person['@id'] },
+        keywords: q.tags.join(', '),
+        creativeWorkStatus: q.status,
+        ...(q.href && { sameAs: q.href }),
+      },
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+        { '@type': 'ListItem', position: 2, name: 'Side quests', item: abs('/side-quests') },
+        { '@type': 'ListItem', position: 3, name: q.name, item: abs(path) },
+      ] },
+      person,
+    ],
+    body: `${nav}
+<p>Side quest · ${esc(q.status)}</p>
+<h1>${esc(q.name)}</h1>
+<p>${esc(q.blurb)}</p>
+${q.href ? `<p><a href="${esc(q.href)}">${esc(q.cta)}</a></p>` : ''}
+<h2>The idea</h2>
+<p>${esc(q.idea)}</p>
+<h2>What it does</h2>
+${list(q.does.map(esc))}
+<h2>Where it’s at</h2>
+<p>${esc(q.now)}</p>
+<p>Tags: ${esc(q.tags.join(', '))}</p>
+<p>Built by <a href="/">${esc(site.name)}</a>.</p>`,
+  })
+}
+
 /* ---------- sitemap.xml ---------- */
-const paths = ['/', ...work.map((w) => `/work/${w.id}`), '/side-quests']
+const paths = ['/', ...work.map((w) => `/work/${w.id}`), '/side-quests', ...sideQuests.map((q) => `/side-quests/${q.id}`)]
 writeFileSync(
   DIST + 'sitemap.xml',
   `<?xml version="1.0" encoding="UTF-8"?>
@@ -173,7 +215,7 @@ ${work.map((w) => `- [${w.name}](${abs(`/work/${w.id}`)}): ${w.oneLiner} Stack: 
 
 ## Side projects
 
-${sideQuests.map((q) => `- ${q.name}: ${q.blurb}`).join('\n')}
+${sideQuests.map((q) => `- [${q.name}](${abs(`/side-quests/${q.id}`)}) (${q.status}): ${q.blurb} ${q.now}`).join('\n')}
 
 ## What clients say
 

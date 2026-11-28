@@ -35,7 +35,8 @@ prathameshashra.com {
 	}
 	# Prerendered routes live at /work/<id>.html etc. (scripts/prerender.mjs); anything else gets the app shell.
 	handle {
-		try_files {path} {path}.html /index.html
+		# {path}.html first: /side-quests is both a page and a folder of quest pages.
+		try_files {path}.html {path} /index.html
 		file_server
 	}
 }

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { sideQuests } from './content'
 import { reducedMotion } from './scroll'
 import { QuestScreen } from './QuestScreen'
+import { linkTo } from './router'
 
 const ease = [0.32, 0.72, 0, 1] as const
 
@@ -20,7 +21,7 @@ export function QuestsPage() {
       <ul className="qp-grid">
         {sideQuests.map((q, i) => (
           <motion.li
-            key={q.name}
+            key={q.id}
             className="qp-card"
             style={{ '--accent': q.accent } as React.CSSProperties}
             initial={reducedMotion ? false : { opacity: 0, y: 40 }}
@@ -34,11 +35,9 @@ export function QuestsPage() {
             </div>
             <h2 className="project-title">{q.name}</h2>
             <p>{q.blurb}</p>
-            {q.href && (
-              <a className="chip" href={q.href} target="_blank" rel="noreferrer">
-                {q.cta} <span aria-hidden>↗</span>
-              </a>
-            )}
+            <a className="chip" href={`/side-quests/${q.id}`} onClick={linkTo(`/side-quests/${q.id}`)}>
+              View details <span aria-hidden>→</span>
+            </a>
           </motion.li>
         ))}
       </ul>

@@ -50,7 +50,7 @@ export function SideQuests() {
         </div>
         {sideQuests.map((q, i) => (
           <motion.div
-            key={q.name}
+            key={q.id}
             className="quest"
             style={{ '--accent': q.accent } as React.CSSProperties}
             initial={false}
@@ -72,11 +72,9 @@ export function SideQuests() {
             <div className="quest-copy">
               <p>{q.blurb}</p>
               <div className="quest-actions">
-                {q.href && (
-                  <a className="chip" href={q.href} target="_blank" rel="noreferrer">
-                    {q.cta} <span aria-hidden>↗</span>
-                  </a>
-                )}
+                <a className="chip" href={`/side-quests/${q.id}`} onClick={linkTo(`/side-quests/${q.id}`)}>
+                  View details <span aria-hidden>→</span>
+                </a>
                 <a className="chip ghost" href="/side-quests" onClick={linkTo('/side-quests')}>
                   View all side quests <span aria-hidden>→</span>
                 </a>

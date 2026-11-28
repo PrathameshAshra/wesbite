@@ -15,16 +15,23 @@ export function QuestScreen({ quest }: { quest: SideQuest }) {
   )
 }
 
-const PLATFORMS = ['IG', 'in', 'X', 'YT']
+// One creator's week, stitched from several platforms, each source with its own verdict.
+const SOURCES = [
+  { p: 'X', verdict: 'Loved' },
+  { p: 'YT', verdict: 'Mixed' },
+  { p: 'Rd', verdict: 'Pushback' },
+]
 
-// Content-Story: one story, posted to every platform at once.
+// Content-Story: a creator's posts across platforms, read as one source-linked story.
 function Stories() {
   return (
     <>
-      <div className="qs-rings">
-        {[0, 1, 2, 3].map((i) => (
-          <i key={i} className={i === 0 ? 'me' : ''} />
-        ))}
+      <div className="qs-creator">
+        <i />
+        <span>
+          <b />
+          <b />
+        </span>
       </div>
       <div className="qs-story">
         <div className="qs-progress">
@@ -32,17 +39,25 @@ function Stories() {
           <span className="live" />
           <span />
         </div>
-        <p className="qs-story-text">Shipped it today</p>
-        <div className="qs-sticker">New</div>
+        <span className="qs-lines qs-story-lines">
+          <b />
+          <b />
+          <b />
+          <b />
+        </span>
+        <p className="qs-story-text">This week, in one story</p>
       </div>
-      <div className="qs-platforms">
-        {PLATFORMS.map((p) => (
-          <span key={p}>
-            {p}
-            <i>✓</i>
-          </span>
+      <ul className="qs-sources">
+        {SOURCES.map((s) => (
+          <li key={s.p}>
+            <span className="qs-src">{s.p}</span>
+            <span className="qs-lines">
+              <b />
+            </span>
+            <span className={`qs-verdict v-${s.verdict.toLowerCase()}`}>{s.verdict}</span>
+          </li>
         ))}
-      </div>
+      </ul>
     </>
   )
 }

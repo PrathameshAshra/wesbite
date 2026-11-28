@@ -1,6 +1,10 @@
 import { useRef, useState } from 'react'
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { site, sideQuests } from './content'
+import { site, sideQuests as allQuests, HOME_QUESTS } from './content'
+import { QuestScreen } from './QuestScreen'
+import { linkTo } from './router'
+
+const sideQuests = allQuests.slice(0, HOME_QUESTS)
 import { reducedMotion } from './scroll'
 
 // A section that stays pinned for `steps` screens while you scroll through it.
@@ -37,7 +41,7 @@ export function SideQuests() {
       <SnapMarkers steps={n} unit={100} />
       <div className="pin">
         <div className="quest-label">
-          <p className="eyebrow">Side quests</p>
+          <h2 className="eyebrow">Side quests</h2>
           <div className="ticks" role="progressbar" aria-label="Side quests progress" aria-valuemin={1} aria-valuemax={n} aria-valuenow={active + 1}>
             {Array.from({ length: TICKS }, (_, i) => (
               <i key={i} className={i < Math.max(1, filled) ? 'on' : ''} />
@@ -63,19 +67,20 @@ export function SideQuests() {
               aria-hidden
               style={{ transform: reducedMotion ? undefined : `perspective(900px) rotateY(${(local - 0.5) * -36}deg) rotateZ(${i % 2 ? 3 : -3}deg)` }}
             >
-              <div className="screen">
-                <span className="notch" />
-                <strong>{q.name}</strong>
-                <b /><b /><b />
-              </div>
+              <QuestScreen quest={q} />
             </div>
             <div className="quest-copy">
               <p>{q.blurb}</p>
-              {q.href && (
-                <a className="chip" href={q.href} target="_blank" rel="noreferrer">
-                  {q.cta} <span aria-hidden>↗</span>
+              <div className="quest-actions">
+                {q.href && (
+                  <a className="chip" href={q.href} target="_blank" rel="noreferrer">
+                    {q.cta} <span aria-hidden>↗</span>
+                  </a>
+                )}
+                <a className="chip ghost" href="/side-quests" onClick={linkTo('/side-quests')}>
+                  View all side quests <span aria-hidden>→</span>
                 </a>
-              )}
+              </div>
             </div>
           </motion.div>
         ))}
@@ -94,7 +99,7 @@ export function Build() {
     <section className="build" id="build" ref={ref} style={{ height: `calc(100svh + ${(n - 1) * STEP}svh)` }}>
       <SnapMarkers steps={n} unit={STEP} />
       <div className="pin build-pin">
-        <p className="eyebrow section-label">What I build</p>
+        <h2 className="eyebrow section-label">What I build</h2>
         {site.services.map((s, i) => (
           <p key={s} className={`headline build-item ${i <= active ? 'on' : ''}`}>
             {s}

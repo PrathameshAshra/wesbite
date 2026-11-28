@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { work, bannerProjects, type BannerProject } from './content'
 import { reducedMotion } from './scroll'
 import { ImpactCard, impactIsPhone } from './Impact'
@@ -33,11 +33,15 @@ const STRIP_W = 2 * R * Math.sin(STRIP_RAD / 2)
 const isShotTile = (c: number, r: number) => (c + r * 2) % 4 === 0
 const SHOT_MS = 2400
 
+// The screenshot clock. Only shot tiles read it, so a tick re-renders those, not all 640 strips.
+const FrameClock = createContext(0)
+
 const sheetNo = (project: BannerProject) => String(bannerProjects.indexOf(project) + 1).padStart(2, '0')
 
 // The project's current frame; keyed by src so each new frame fades in. A phone shot leaves
 // empty blueprint either side, so drafting props sit on the sheet around it.
-function ShotTile({ project, frame }: { project: BannerProject; frame: number }) {
+function ShotTile({ project, offset }: { project: BannerProject; offset: number }) {
+  const frame = useContext(FrameClock) + offset
   const shot = project.shots[frame % project.shots.length]
   return (
     <>
@@ -154,6 +158,7 @@ export function Sphere() {
     const ro = new ResizeObserver(fit)
     ro.observe(el)
 
+    const shown: boolean[] = []
     let raf = 0
     let last = performance.now()
     const frame = (now: number) => {
@@ -165,11 +170,17 @@ export function Sphere() {
       if (scene.current) {
         scene.current.style.transform = `translateZ(var(--persp)) rotateX(${look.y}deg) rotateY(${look.x + drift.current}deg)`
       }
+      // Tiles outside the field of view are taken out of layout and paint entirely.
+      // Only touch the DOM when a tile crosses the edge, not every frame.
       layout.forEach((t, i) => {
         const el = tiles.current[i]
         if (!el) return
         const theta = ((((t.base + drift.current) % 360) + 540) % 360) - 180
-        el.style.visibility = Math.abs(theta) < visible ? 'visible' : 'hidden'
+        const show = Math.abs(theta) < visible
+        if (shown[i] !== show) {
+          shown[i] = show
+          el.style.display = show ? '' : 'none'
+        }
       })
       raf = requestAnimationFrame(frame)
     }
@@ -181,10 +192,10 @@ export function Sphere() {
     }
   }, [layout, onScreen])
 
-  return (
-    <div className={`sphere${onScreen ? '' : ' paused'}`} ref={root} aria-hidden>
-      <div className="sphere-scene" ref={scene}>
-        {layout.map((t, i) => (
+  // Built once: frame ticks reach the shot tiles through FrameClock, not by re-rendering this.
+  const tileNodes = useMemo(
+    () =>
+      layout.map((t, i) => (
           <div
             key={i}
             ref={(el) => {
@@ -212,7 +223,7 @@ export function Sphere() {
                 >
                   <Tacks n={i} />
                   {t.project ? (
-                    <ShotTile project={t.project} frame={frame + t.n} />
+                    <ShotTile project={t.project} offset={t.n} />
                   ) : (
                     <>
                       <div className={`tile-inner k-impact${impactIsPhone(t.study) ? ' k-impact-phone' : ''}`}>
@@ -225,7 +236,14 @@ export function Sphere() {
               </div>
             ))}
           </div>
-        ))}
+      )),
+    [layout],
+  )
+
+  return (
+    <div className={`sphere${onScreen ? '' : ' paused'}`} ref={root} aria-hidden>
+      <div className="sphere-scene" ref={scene}>
+        <FrameClock.Provider value={frame}>{tileNodes}</FrameClock.Provider>
       </div>
       <div className="sphere-vignette" />
     </div>

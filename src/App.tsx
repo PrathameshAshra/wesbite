@@ -16,6 +16,7 @@ import { WorkVisual } from './WorkVisual'
 import { Notes } from './Notes'
 import { CasePage } from './CasePage'
 import { Branding } from './Branding'
+import { QuestsPage } from './QuestsPage'
 import { linkTo, navigate, usePath } from './router'
 
 const ease = [0.32, 0.72, 0, 1] as const
@@ -66,13 +67,14 @@ function Hero({ ready }: { ready: boolean }) {
         </motion.p>
         <motion.h1
           className="mega"
-          initial={reducedMotion ? false : { opacity: 0, y: 40, filter: 'blur(10px)' }}
-          animate={shown ? { opacity: 1, y: 0, filter: 'blur(0px)' } : undefined}
+          // No opacity fade: an invisible h1 doesn't count as painted, which held LCP back ~5s.
+          initial={reducedMotion ? false : { y: 40, filter: 'blur(10px)' }}
+          animate={shown ? { y: 0, filter: 'blur(0px)' } : undefined}
           transition={{ duration: 1.1, ease, delay: 0.3 }}
         >
+          <span className="sr-only">{site.name}, </span>
           {site.title}
         </motion.h1>
-        <span className="sr-only">{site.name}</span>
       </div>
     </section>
   )
@@ -150,7 +152,8 @@ function Work() {
               View project <span aria-hidden>→</span>
             </a>
           </Reveal>
-          <a className="media-wrap" data-select={s.name} href={`/work/${s.id}`} onClick={linkTo(`/work/${s.id}`)} aria-label={`Open the ${s.name} case study`}>
+          {/* Same target as the "View project" chip, so it stays out of the tab order and screen readers. */}
+          <a className="media-wrap" data-select={s.name} href={`/work/${s.id}`} onClick={linkTo(`/work/${s.id}`)} tabIndex={-1} aria-hidden>
             <WorkVisual study={s} />
           </a>
         </article>
@@ -347,16 +350,18 @@ function Home({ ready }: { ready: boolean }) {
   )
 }
 
-type Route = { kind: 'home' } | { kind: 'branding' } | { kind: 'case'; study: (typeof work)[number]; next: (typeof work)[number] }
+type Route = { kind: 'home' } | { kind: 'branding' } | { kind: 'quests' } | { kind: 'case'; study: (typeof work)[number]; next: (typeof work)[number] }
 
 function route(path: string): Route {
   if (/^\/branding\/?$/.test(path)) return { kind: 'branding' }
+  if (/^\/side-quests\/?$/.test(path)) return { kind: 'quests' }
   const m = path.match(/^\/work\/([^/]+)\/?$/)
   const i = m ? work.findIndex((w) => w.id === m[1]) : -1
   return i < 0 ? { kind: 'home' } : { kind: 'case', study: work[i], next: work[(i + 1) % work.length] }
 }
 
-const TITLES = { home: 'Engineer turned Product Manager', branding: 'Brand kit' }
+// Keep in step with the titles scripts/prerender.mjs writes for crawlers.
+const TITLES = { home: `${site.name} · AI Product Manager & Engineer in Mumbai`, branding: `Brand kit · ${site.name}`, quests: `Side quests · ${site.name}` }
 
 export default function App() {
   const path = usePath()
@@ -377,7 +382,7 @@ export default function App() {
   }, [home, path])
 
   useEffect(() => {
-    document.title = page.kind === 'case' ? `${page.study.name} · ${site.name}` : `${site.name} · ${TITLES[page.kind]}`
+    document.title = page.kind === 'case' ? `${page.study.name} case study · ${site.name}` : TITLES[page.kind]
   }, [page])
 
   useEffect(() => {
@@ -402,8 +407,21 @@ export default function App() {
       <Backdrop />
       <Chrome home={home} lenis={lenis} theme={theme} onTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
       <motion.div key={path} initial={reducedMotion ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, ease }}>
-        {page.kind === 'case' && <CasePage study={page.study} next={page.next} />}
-        {page.kind === 'branding' && <Branding />}
+        {page.kind === 'case' && (
+          <main>
+            <CasePage study={page.study} next={page.next} />
+          </main>
+        )}
+        {page.kind === 'branding' && (
+          <main>
+            <Branding />
+          </main>
+        )}
+        {page.kind === 'quests' && (
+          <main>
+            <QuestsPage />
+          </main>
+        )}
         {page.kind === 'home' && <Home ready={ready} />}
       </motion.div>
     </>

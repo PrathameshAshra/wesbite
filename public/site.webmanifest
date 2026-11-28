@@ -1,0 +1,10 @@
+{
+  "name": "Prathamesh Ashra",
+  "short_name": "Prathamesh",
+  "description": "Product manager and engineer in Mumbai. Ten years building web, mobile and AI apps.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0b1626",
+  "theme_color": "#1d6fd8",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

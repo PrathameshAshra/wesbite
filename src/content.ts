@@ -24,19 +24,24 @@ export type CaseStudy = {
 export const site = {
   name: 'Prathamesh Ashra',
   url: 'https://prathameshashra.com',
-  // TODO: replace placeholder hook + title
-  kicker: 'An engineer who thinks like a PM',
-  title: 'Product Builder',
-  hook: 'I build products that make it out of the demo and into people’s pockets.',
+  kicker: 'Engineer turned product manager · Mumbai',
+  title: 'AI Product Builder',
+  // Plain, factual summary for search engines and AI assistants: meta description, JSON-LD, llms.txt.
+  // Keep it to facts a stranger could check.
+  description:
+    'Prathamesh Ashra is a product manager and software engineer in Mumbai, India, with ten years of building web, mobile and AI products. He founded the app studio Codeamesh in 2020, was the founding developer of Spontaa, built the ID-verified social app Pearbae, has spent five years building trading tools for the power-trading firm The Data Duck, and moved the 50-year-old agency J M Mehta Tours and Travels online.',
+  // Short version for the Google snippet (it cuts off around 160 characters).
+  metaDescription: 'Product manager and engineer in Mumbai. Ten years building web, mobile and AI apps, including Spontaa and Pearbae. Founder of Codeamesh.',
+  // What he is known for, used as knowsAbout in structured data.
+  expertise: ['AI product management', 'React', 'React Native', 'Node.js', 'LLM features', 'Mobile app development', '0 to 1 product development', 'Trading UIs'],
   statement: ['Love shipping things', 'people actually'],
   statementWord: 'use',
   about:
-    'A decade of shipping software across web, mobile and AI. I founded Codeamesh in 2020, led builds from first commit to pan-India launch, and now think about products as much as I build them.',
+    'I’ve been building software for about ten years. I started Codeamesh in 2020, was the first engineer at Spontaa, built Pearbae, and these days I work as a product manager.',
   status: 'Open to chat',
-  services: ['Web & mobile apps', 'AI products', '0 → 1 products', 'Product strategy'],
+  services: ['Web & mobile apps', 'AI products', '0 → 1 MVPs', 'Product strategy'],
   contact: {
-    // TODO: confirm email
-    email: 'hello@prathameshashra.com',
+    email: 'iamprathameshashra@gmail.com',
     call: 'https://meetings-na2.hubspot.com/prathamesh-ashra?uuid=8213bdde-e0dc-404e-80fb-1cb748c9ffbe',
     // TODO: confirm LinkedIn slug; X and YouTube still placeholders
     linkedin: 'https://www.linkedin.com/in/prathamesh-ashra-b2318bab/',
@@ -52,7 +57,7 @@ export const work: CaseStudy[] = [
     id: 'events',
     eyebrow: 'Founding developer · Consumer social',
     name: 'Spontaa',
-    oneLiner: 'Founding developer. Took a spontaneous-plans app from zero to a pan-India launch in two years.',
+    oneLiner: 'I was the first engineer on Spontaa’s founding team. Two years later the app was live across India, on the web, Android and iOS.',
     role: 'Lead developer, founding team',
     years: '2 years',
     metrics: [
@@ -61,15 +66,15 @@ export const work: CaseStudy[] = [
       { value: '3', label: 'platforms shipped' },
     ],
     problem:
-      'A young startup wanted people to discover and show up to real-world plans in their city. There was no product, no team and no infrastructure yet.',
+      'Spontaa wanted people to find real plans in their city and actually show up. When I joined there was nothing yet. No app, no team, no servers.',
     built: [
       'Web, Android and iOS apps end to end, as the first engineer on the founding team',
-      'AI curation that finds good places and plans using maps and live data, with city-boundary logic',
-      'Interactive in-app games to keep people coming back between events',
-      'An AWS-only backend that grew from first users to thousands of downloads',
+      'AI that picks places and plans from maps and live data, and knows where one city ends and the next starts',
+      'Small in-app games, so people had a reason to open the app between events',
+      'The whole backend on AWS, from our first users to thousands of downloads',
     ],
     outcome:
-      'Thousands of downloads, over a million views, and events running live across India within two years.',
+      'Within two years we had thousands of downloads, over a million views, and events running in cities across India.',
     stack: ['React', 'React Native', 'Node.js', 'AWS', 'AI curation'],
     accent: '#ff8a3d',
     photo: { id: '1501281668745-f7f57925c3b4', alt: 'A crowd at a live concert, phones up filming the stage' },
@@ -79,7 +84,7 @@ export const work: CaseStudy[] = [
     id: 'pearbae',
     eyebrow: 'Social app · India',
     name: 'Pearbae',
-    oneLiner: 'Shipped a trust-first social app in a year: every profile ID-verified, calls without sharing numbers.',
+    oneLiner: 'A social app for India where every profile is checked with Aadhaar and you can call someone without giving out your number. Built and shipped to the App Store in about a year.',
     role: 'Lead developer',
     years: '1 year build · just launched',
     metrics: [
@@ -87,14 +92,14 @@ export const work: CaseStudy[] = [
       { value: '0', label: 'numbers shared to call' },
     ],
     problem:
-      'Meeting new people online in India runs on trust, and most apps can’t prove anyone is real. The brief: make every profile verifiable without killing the vibe.',
+      'On most social apps in India you can’t tell who’s real. Pearbae wanted every profile verified, and the app still had to feel fun to use.',
     built: [
       'Aadhaar-based identity verification built into onboarding',
       'In-app VoIP calling so numbers never have to be shared',
       'Real-time chat, presence and live updates across the app',
       'The full iOS build through App Store review to launch',
     ],
-    outcome: 'A year of building, now live for users across India.',
+    outcome: 'It took a year. Pearbae is live in India now.',
     stack: ['React Native', 'Node.js', 'WebRTC / VoIP', 'Real-time sync'],
     accent: '#ff5d8f',
     photo: { id: '1511632765486-a01980e01a18', alt: 'Four friends with arms around each other watching a sunset' },
@@ -104,7 +109,7 @@ export const work: CaseStudy[] = [
     id: 'energy',
     eyebrow: 'Energy trading · embedded engineer',
     name: 'The Data Duck',
-    oneLiner: 'Five years embedded with a global power-trading firm, building the UIs its quants and developers trade on.',
+    oneLiner: 'Five years working inside a global power-trading firm, building the screens its quants and developers trade from.',
     role: 'Embedded engineer',
     years: '5 years',
     metrics: [
@@ -112,13 +117,13 @@ export const work: CaseStudy[] = [
       { value: '2', label: 'continents of markets' },
     ],
     problem:
-      'A global power-trading firm trades electricity across Europe and Asia. Its quants and developers need interfaces that keep up with fast markets and complex models, built to the standard of a firm operating at that scale.',
+      'The firm trades electricity in markets across Europe and Asia. Prices move fast and the models behind each trade are complicated, so the tools on screen have to keep up.',
     built: [
-      'Trading UIs the firm’s quants and developers use to build, run and watch their trades',
-      'Research into the tools and approaches the desk takes on',
-      'Specs and write-ups the team builds from, across multiple international power markets',
+      'Trading UIs the quants and developers use to build, run and watch their trades',
+      'Research on tools and approaches the desk is weighing up',
+      'Specs and write-ups the team builds from, for power markets in several countries',
     ],
-    outcome: 'Five years in, still the firm’s go-to for the interfaces its traders work in.',
+    outcome: 'Five years on, I’m still who they call when their traders need a new screen.',
     stack: ['TypeScript', 'Node.js', 'Data pipelines'],
     accent: '#4da3ff',
     photo: { id: '1473341304170-971dccb5ac1e', alt: 'Electricity pylons and power lines against an orange sunset' },
@@ -127,24 +132,23 @@ export const work: CaseStudy[] = [
   {
     id: 'travel',
     eyebrow: 'Digital transformation · Travel',
-    // TODO: agency name + impact numbers
-    name: 'Travel, online',
-    oneLiner: 'Took a 50-year-old travel agency fully online over four years, without the business ever stopping.',
+    name: 'J M Mehta Tours and Travels',
+    oneLiner: 'A travel agency that ran offline for 50 years. Over four years I moved the whole business online while it kept running.',
     role: 'Tech lead',
     years: '4 years',
     metrics: [
-      { value: '50 yrs', label: 'of offline, modernised' },
+      { value: '50 yrs', label: 'offline before we started' },
       { value: '100%', label: 'online now' },
       { value: '4 yrs', label: 'steady rollout' },
     ],
     problem:
-      'A trusted agency with 50 years of history ran almost everything on phone calls, paper and memory. Growing meant going digital without losing what customers loved.',
+      'For 50 years the agency ran on phone calls, paper files and people’s memory. Growing meant moving online, slowly enough that nothing broke for customers.',
     built: [
-      'An end-to-end online flow, from first enquiry to booked trip',
-      'Internal tools that replaced paper-based operations',
-      'A gradual rollout over four years so the business never stopped',
+      'One online flow, from the first enquiry to the booked trip',
+      'Internal tools that replaced the paper files',
+      'A slow rollout over four years, so the business kept running the whole time',
     ],
-    outcome: 'The agency now runs online, start to finish.',
+    outcome: 'The agency runs fully online now.',
     stack: ['React', 'Node.js', 'Cloud'],
     accent: '#2ec4a6',
     photo: { id: '1512343879784-a960bf40e7f2', alt: 'A palm-lined tropical beach with turquoise water' },
@@ -152,31 +156,37 @@ export const work: CaseStudy[] = [
   },
 ]
 
-// The button only shows once `href` is a real link.
-export type SideQuest = { name: string; blurb: string; cta: string; href: string; accent: string }
+// The button only shows once `href` is a real link. `screen` picks the mini UI drawn in the phone.
+export type SideQuest = { name: string; blurb: string; cta: string; href: string; accent: string; screen: 'stories' | 'chart' | 'video' }
+
+// How many side quests the home page shows; the rest live on /side-quests.
+export const HOME_QUESTS = 3
 
 // TODO: real links
 export const sideQuests: SideQuest[] = [
   {
     name: 'Content-Story',
-    blurb: 'Stories, but for every platform at once. Post once, show up everywhere.',
+    blurb: 'Write a story once and post it to every platform in one go. It’s in beta.',
     cta: 'Join the beta',
     href: '', // TODO: beta sign-up link
     accent: '#ff7a59',
+    screen: 'stories',
   },
   {
     name: 'Quantbook',
-    blurb: 'A notebook for backtesting Indian equity strategies, hedged with options.',
+    blurb: 'A backtesting notebook for Indian stocks. Test an NSE strategy, hedge it with options, and see how it would have done.',
     cta: 'Open Quantbook',
     href: '', // TODO: quant.prathameshashra.com is down since the server wipe
     accent: '#7c5cff',
+    screen: 'chart',
   },
   {
     name: 'The Channel',
-    blurb: 'Long-form talks on building AI products, from an engineer-turned-PM in India.',
+    blurb: 'Long-form videos on building AI products, from someone who was an engineer before he became a PM.',
     cta: 'Watch on YouTube',
     href: '', // TODO: channel URL
     accent: '#ff3b3b',
+    screen: 'video',
   },
 ]
 
@@ -202,7 +212,7 @@ export const testimonials: Testimonial[] = [
       'Prathamesh built Pearbae end to end: Aadhaar verification, in-app calling and real-time chat. He thought about safety and trust like a product person, not just a developer, and shipped it in a year.',
   },
   {
-    name: 'J.M. Mehta Travel & Tour Co. Pvt. Ltd.',
+    name: 'J M Mehta Tours and Travels Pvt Ltd',
     role: '50-year-old travel agency',
     short: 'Took our 50-year-old business fully online.',
     quote:

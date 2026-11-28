@@ -96,7 +96,8 @@ export function Reveal({ children, delay = 0, className }: { children: React.Rea
     if (!el) throw new Error('Reveal inner missing')
     if (reducedMotion) return
     split(el)
-    measure(el, delay)
+    // ResizeObserver fires once on observe, after layout and before paint, so this is also the
+    // first measure. Measuring here directly as well forced an extra reflow per block on load.
     const ro = new ResizeObserver(() => measure(el, delay))
     ro.observe(el)
     return () => ro.disconnect()

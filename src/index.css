@@ -83,6 +83,9 @@ body {
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 :focus-visible { outline: 2px solid #fff; outline-offset: 3px; border-radius: 10px; }
+/* Crawlable copy written by scripts/prerender.mjs; React replaces it on load. */
+.prerender { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem; color: #fff; line-height: 1.6; }
+.prerender a { text-decoration: underline; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 p { text-wrap: pretty; }
 
@@ -165,6 +168,8 @@ p { text-wrap: pretty; }
 .splash { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; }
 .splash-bg { position: absolute; inset: 0; background: linear-gradient(#04060e, #0a1c40 70%, #0e2d5c); }
 .splash .stars, .hero .stars { opacity: 1; }
+/* The light theme hides the page's background stars; stop their twinkle too so they cost nothing. */
+[data-theme='light'] .backdrop .stars span { animation-play-state: paused; }
 .splash-sig-wrap { width: 820px; max-width: 84vw; transform-origin: 50% 50%; }
 .splash-sig { width: 100%; height: auto; color: #fff; position: relative; display: block; }
 /* The signature writes itself: a soft-edged mask sweeps left to right, like ink following a pen. */
@@ -298,7 +303,7 @@ p { text-wrap: pretty; }
 /* Travel: paper ledger to 100% online, the booking flow lights up stage by stage. */
 @property --pct { syntax: '<integer>'; inherits: false; initial-value: 0; }
 .im-travel { background: #fbf6ea; color: #0b1626; }
-.im-travel small { color: color-mix(in srgb, var(--accent) 70%, #0b1626); }
+.im-travel small { color: color-mix(in srgb, var(--accent) 45%, #0b1626); }
 .im-from-to { display: flex; align-items: center; gap: 14px; }
 .im-ledger { width: 54px; height: 64px; border-radius: 4px; background: #fff; box-shadow: 3px 5px 0 #e6dcc6; padding: 10px 8px; display: flex; flex-direction: column; gap: 8px; rotate: -4deg; }
 .im-ledger i { height: 2px; background: #c9bda3; }
@@ -310,8 +315,8 @@ p { text-wrap: pretty; }
 .im-bar i { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; animation: im-bar 6s var(--ease) infinite; }
 @keyframes im-bar { 0% { transform: scaleX(0); } 55%, 100% { transform: scaleX(1); } }
 .im-stages { display: flex; gap: 6px; }
-.im-travel .im-stages i { background: #ece3cf; color: #9a8f78; animation-name: im-light-paper; }
-@keyframes im-light-paper { 0%, 8% { background: #ece3cf; color: #9a8f78; } 14%, 88% { background: var(--accent); color: #0b1626; } 100% { background: #ece3cf; color: #9a8f78; } }
+.im-travel .im-stages i { background: #ece3cf; color: #5e5747; animation-name: im-light-paper; }
+@keyframes im-light-paper { 0%, 8% { background: #ece3cf; color: #5e5747; } 14%, 88% { background: var(--accent); color: #0b1626; } 100% { background: #ece3cf; color: #5e5747; } }
 .im-foot { margin-top: auto; font-size: 12px; color: #6b6352; }
 .sphere-vignette {
   position: absolute; inset: 0; pointer-events: none;
@@ -458,9 +463,94 @@ main, .footer { position: relative; z-index: 1; }
   height: 100%; border-radius: 31px; padding: 50px 18px 18px; display: flex; flex-direction: column; gap: 10px; position: relative;
   background: linear-gradient(170deg, color-mix(in srgb, var(--accent) 80%, #fff), var(--accent));
 }
-.notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 76px; height: 22px; border-radius: 12px; background: #0b1626; }
-.screen strong { font-size: var(--fs-lg); font-weight: 700; line-height: 1.15; color: #0b1626; }
-.screen b { height: 56px; border-radius: 14px; background: rgba(255, 255, 255, 0.32); }
+.notch { position: absolute; top: 0.8em; left: 50%; transform: translateX(-50%); width: 5.8em; height: 1.7em; border-radius: 1em; background: #0b1626; }
+.quest-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Mini UIs drawn inside the side-quest phones (QuestScreen.tsx). Sized in em so they scale with the phone. */
+.phone { container-type: size; }
+.screen { font-size: 5.3cqw; padding: 4.2em 1.3em 1.4em; gap: 0.9em; color: #0b1626; overflow: hidden; }
+.qs-bar strong { font-size: 1.45em; font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; }
+.qs-story, .qs-chart, .qs-player, .qs-queue li, .qs-platforms span, .qs-legend, .qs-run {
+  background: rgba(255, 255, 255, 0.34); border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Content-Story */
+.qs-rings { display: flex; gap: 0.6em; }
+.qs-rings i {
+  width: 2.8em; height: 2.8em; border-radius: 50%; border: 0.2em solid #fff;
+  background: linear-gradient(140deg, #ffd166, #ef476f 55%, #7c5cff); box-shadow: 0 0 0 0.15em var(--accent);
+}
+.qs-rings i.me { background: linear-gradient(140deg, #fff, color-mix(in srgb, var(--accent) 40%, #fff)); }
+.qs-story {
+  flex: 1; border-radius: 1.2em; padding: 0.8em; display: flex; flex-direction: column; justify-content: space-between; position: relative;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.12));
+}
+.qs-progress { display: flex; gap: 0.3em; }
+.qs-progress span { flex: 1; height: 0.3em; border-radius: 1em; background: rgba(11, 22, 38, 0.18); overflow: hidden; position: relative; }
+.qs-progress .done { background: #0b1626; }
+.qs-progress .live::after { content: ''; position: absolute; inset: 0; background: #0b1626; transform-origin: left; animation: qs-fill 3s linear infinite; }
+@keyframes qs-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.qs-story-text { font-size: 1.5em; font-weight: 800; line-height: 1.05; max-width: 6ch; }
+.qs-sticker {
+  position: absolute; right: 0.8em; top: 2.2em; rotate: 8deg; padding: 0.35em 0.7em; border-radius: 0.6em;
+  background: #0b1626; color: #fff; font-weight: 700; font-size: 0.95em;
+}
+.qs-platforms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4em; }
+.qs-platforms span {
+  border-radius: 0.7em; padding: 0.5em 0; display: flex; flex-direction: column; align-items: center; gap: 0.15em; font-weight: 800; font-size: 0.95em;
+}
+.qs-platforms i { font-style: normal; font-size: 0.8em; color: #0a7a3c; }
+
+/* Quantbook */
+.qs-ticker { display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
+.qs-tag { font-size: 0.85em; padding: 0.25em 0.6em; border-radius: 1em; background: #0b1626; color: #fff; }
+.qs-chart { flex: 1; border-radius: 1em; min-height: 0; position: relative; }
+.qs-chart svg { position: absolute; inset: 0.6em; width: calc(100% - 1.2em); height: calc(100% - 1.2em); display: block; overflow: visible; }
+.qs-chart .grid { stroke: rgba(11, 22, 38, 0.12); stroke-width: 0.5; fill: none; }
+.qs-chart .area { fill: rgba(255, 255, 255, 0.45); }
+.qs-chart .line { stroke: #0b1626; stroke-width: 2; fill: none; stroke-linejoin: round; vector-effect: non-scaling-stroke; stroke-dasharray: 400; animation: qs-draw 4s var(--ease) infinite; }
+.qs-chart .hedge { stroke: #fff; stroke-width: 2; fill: none; stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; }
+@keyframes qs-draw { 0% { stroke-dashoffset: 400; } 60%, 100% { stroke-dashoffset: 0; } }
+.qs-legend { display: flex; gap: 1em; padding: 0.55em 0.8em; border-radius: 0.8em; font-size: 0.9em; font-weight: 600; }
+.qs-legend span { display: inline-flex; align-items: center; gap: 0.4em; }
+.qs-legend i { width: 1em; height: 0.25em; border-radius: 1em; }
+.qs-legend .l-strat { background: #0b1626; }
+.qs-legend .l-hedge { background: #fff; }
+.qs-run { border-radius: 0.8em; padding: 0.7em; text-align: center; font-weight: 800; background: #0b1626; color: #fff; border-color: transparent; }
+
+/* The Channel */
+.qs-player {
+  aspect-ratio: 16 / 10; border-radius: 1em; position: relative; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(70% 90% at 30% 20%, rgba(255, 255, 255, 0.6), transparent 60%), #0b1626;
+}
+.qs-play { width: 3em; height: 3em; border-radius: 50%; background: var(--accent); position: relative; box-shadow: 0 0 0 0.5em rgba(255, 255, 255, 0.18); }
+.qs-play::after { content: ''; position: absolute; left: 1.15em; top: 0.85em; border-left: 1.1em solid #fff; border-top: 0.65em solid transparent; border-bottom: 0.65em solid transparent; }
+.qs-scrub { position: absolute; left: 0.8em; right: 0.8em; bottom: 0.7em; height: 0.3em; border-radius: 1em; background: rgba(255, 255, 255, 0.25); }
+.qs-scrub span { position: absolute; inset: 0; border-radius: inherit; background: var(--accent); transform-origin: left; animation: qs-fill 8s linear infinite; }
+.qs-ep { font-weight: 800; font-size: 1.15em; line-height: 1.15; }
+.qs-queue { list-style: none; display: flex; flex-direction: column; gap: 0.5em; }
+.qs-queue li { display: flex; gap: 0.6em; align-items: center; border-radius: 0.8em; padding: 0.45em; }
+.qs-thumb { width: 3.6em; aspect-ratio: 16 / 10; border-radius: 0.5em; background: #0b1626; flex-shrink: 0; }
+.qs-lines { flex: 1; display: flex; flex-direction: column; gap: 0.35em; }
+.qs-lines b { height: 0.5em; border-radius: 1em; background: rgba(11, 22, 38, 0.4); }
+.qs-lines b + b { width: 60%; background: rgba(11, 22, 38, 0.2); }
+
+/* ---------- All side quests page ---------- */
+.quests-page { min-height: 100svh; padding: 150px var(--gutter) 8rem; background: linear-gradient(#04060e, #0a1c40 40%, var(--page)); }
+.qp-head { text-align: center; margin-bottom: 4.5rem; }
+.qp-head .eyebrow { margin-bottom: 1rem; }
+.qp-head .mega { max-width: 14ch; margin: 0 auto; }
+.qp-grid { list-style: none; max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+.qp-card {
+  border-radius: 28px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; gap: 0.9rem;
+  background: var(--glass); border: 1px solid var(--glass-line);
+}
+.qp-stage {
+  width: 100%; display: grid; place-items: center; padding: 2rem 0; border-radius: 20px; margin-bottom: 0.4rem;
+  background: radial-gradient(60% 70% at 50% 60%, color-mix(in srgb, var(--accent) 45%, transparent), transparent 75%);
+}
+.qp-stage .phone { height: 380px; }
+.qp-card > p { color: var(--ink-2); font-size: var(--fs-md); line-height: var(--lh-body); }
 
 /* ---------- Testimonials ---------- */
 .said { max-width: 1000px; min-height: 100svh; margin: 0 auto; padding: 8rem var(--gutter); display: grid; grid-template-columns: 1fr 1.3fr; gap: 3rem; align-content: center; align-items: start; }
@@ -637,8 +727,11 @@ main, .footer { position: relative; z-index: 1; }
 .case-block .headline { text-align: left; margin-bottom: 1.5rem; }
 .case-block > p, .case-built p { font-size: var(--fs-lg); line-height: var(--lh-body); color: var(--ink-2); max-width: 60ch; }
 .case-built { list-style: none; display: flex; flex-direction: column; }
-.case-built li { display: grid; grid-template-columns: 4rem 1fr; gap: 1rem; padding: 1.5rem 0; border-top: 1px solid var(--glass-line); }
+.case-built li { padding: 1.5rem 0; border-top: 1px solid var(--glass-line); }
+.case-built-row { display: grid; grid-template-columns: 4rem 1fr; gap: 1rem; }
 .case-num { font-family: var(--display); font-size: var(--fs-xl); line-height: 1; color: var(--accent); }
+/* On the light theme's blue page, accent-coloured text fails contrast, so it goes white there. */
+[data-theme='light'] :is(.case-facts .eyebrow, .case-metrics strong, .case-num) { color: #fff; }
 .case-outcome { font-weight: 600; color: var(--ink) !important; }
 .case-next {
   position: relative; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; text-align: center;
@@ -745,7 +838,7 @@ main, .footer { position: relative; z-index: 1; }
   .case-hero { padding-top: 110px; }
   .case-facts { grid-template-columns: 1fr; gap: 1.25rem; }
   .case-body { gap: 4rem; padding-top: 3rem; }
-  .case-built li { grid-template-columns: 3rem 1fr; }
+  .case-built-row { grid-template-columns: 3rem 1fr; }
   .bk-grid.two, .bk-grid.three { grid-template-columns: 1fr; }
   .bk-swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .bk-type-row { grid-template-columns: 1fr; gap: 0.5rem; }
@@ -754,6 +847,8 @@ main, .footer { position: relative; z-index: 1; }
   .quest-name .project-title { text-align: center; }
   .quest-copy p { margin-inline: auto; }
   .phone { height: min(36svh, 330px); }
+  .quest-actions { justify-content: center; }
+  .qp-stage .phone { height: 340px; }
   .said { grid-template-columns: 1fr; }
   .pill a { padding: 0.55rem 0.7rem; font-size: 0.9375rem; }
   .pill a:nth-child(2) { display: none; }

@@ -92,12 +92,12 @@ export function CasePage({ study, next }: { study: CaseStudy; next: CaseStudy })
           </Reveal>
           <ol className="case-built">
             {study.built.map((b, i) => (
-              <Reveal key={b} delay={i * 0.05}>
-                <li>
+              <li key={b}>
+                <Reveal delay={i * 0.05} className="case-built-row">
                   <span className="case-num">{String(i + 1).padStart(2, '0')}</span>
                   <p>{b}</p>
-                </li>
-              </Reveal>
+                </Reveal>
+              </li>
             ))}
           </ol>
         </div>

@@ -20,11 +20,20 @@ type Mode = 'free' | 'block' | 'select'
 
 const inside = (r: DOMRect, x: number, y: number, m: number) => x > r.left - m && x < r.right + m && y > r.top - m && y < r.bottom + m
 
+// Only button-sized links get the highlight. A link the size of a whole section (the "next
+// project" banner) would stretch the highlight across the screen and lose the pointer, so the
+// plain dot stays.
+const MAX_BLOCK = { w: 480, h: 200 }
+const buttonSized = (el: HTMLElement) => {
+  const r = el.getBoundingClientRect()
+  return r.width <= MAX_BLOCK.w && r.height <= MAX_BLOCK.h
+}
+
 const pick = (el: Element | null): { el: HTMLElement; mode: Mode } | null => {
   const sel = el?.closest<HTMLElement>(SELECT)
   if (sel) return { el: sel, mode: 'select' }
   const block = el?.closest<HTMLElement>(BLOCK)
-  return block ? { el: block, mode: 'block' } : null
+  return block && buttonSized(block) ? { el: block, mode: 'block' } : null
 }
 
 export function Cursor() {

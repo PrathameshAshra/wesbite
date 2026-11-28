@@ -19,7 +19,7 @@ const person = {
   '@id': abs('/#person'),
   name: site.name,
   url: site.url,
-  image: abs('/og.jpg'),
+  image: abs('/me.jpg'),
   jobTitle: 'Product Manager',
   description: site.description,
   address: { '@type': 'PostalAddress', addressLocality: 'Mumbai', addressCountry: 'IN' },

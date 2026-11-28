@@ -223,8 +223,7 @@ function Contact() {
       <Reveal>
         <div className="card glass">
           <div className="photo">
-            {/* TODO: your photo at /public/me.jpg */}
-            <span>Photo</span>
+            <img src="/me.jpg" alt={`${site.name}, smiling, in a cap and glasses`} width={400} height={400} loading="lazy" decoding="async" />
           </div>
           <h2 className="project-title">{site.name}</h2>
           <p className="status">
